@@ -3,11 +3,12 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    [Header("Controllers")]
+    public CameraController cameraController;
+
     [Header("References")]
     public CharacterController characterController;
     public Animator animator;
-    public Transform cameraPivot;
-    public Transform cameraTransform;
 
     [Header("Movement Settings")]
     public float walkSpeed = 1.5f;
@@ -16,14 +17,6 @@ public class PlayerController : MonoBehaviour
     public float deceleration = 2.5f;
     public float directionSmoothSpeed = 10f;
     public float rotationSpeed = 3f;
-
-    [Header("Camera Settings")]
-    public float mouseSensitivity = 3f;
-    public float minPitch = -30f;
-    public float maxPitch = 60f;
-    public float defaultDistance = 2f;
-    public float cameraCollisionRadius = 0.2f;
-    public LayerMask collisionLayers;
 
     [Header("Gravity Settings")]
     public float gravity = -9.81f;
@@ -37,49 +30,13 @@ public class PlayerController : MonoBehaviour
     private Vector3 moveDirection;
     private Vector3 lastNonZeroMoveDirection = Vector3.zero;
 
-    private float yaw = 0f;
-    private float pitch = 20f;
-
     void Update()
     {
-        HandleCameraRotation();
         ProcessInput();
         ApplyGravity();
         MovePlayer();
         HandleAnimation();
     }
-
-    void LateUpdate()
-    {
-        HandleCameraPosition();
-    }
-
-    #region Camera
-    void HandleCameraRotation()
-    {
-        yaw += Input.GetAxis("Mouse X") * mouseSensitivity;
-        pitch -= Input.GetAxis("Mouse Y") * mouseSensitivity;
-        pitch = Mathf.Clamp(pitch, minPitch, maxPitch);
-
-        cameraPivot.rotation = Quaternion.Euler(pitch, yaw, 0f);
-    }
-
-    void HandleCameraPosition()
-    {
-        Vector3 desiredPos = cameraPivot.position - cameraPivot.forward * defaultDistance;
-
-        if (Physics.SphereCast(cameraPivot.position, cameraCollisionRadius, -cameraPivot.forward, out RaycastHit hit, defaultDistance, collisionLayers))
-        {
-            cameraTransform.position = hit.point + cameraPivot.forward * cameraCollisionRadius;
-        }
-        else
-        {
-            cameraTransform.position = desiredPos;
-        }
-
-        cameraTransform.LookAt(cameraPivot.position);
-    }
-    #endregion
 
     #region Movement
     void ProcessInput()
@@ -90,11 +47,11 @@ public class PlayerController : MonoBehaviour
 
         Vector3 inputDir = new Vector3(horizontal, 0f, vertical).normalized;
 
-        Vector3 camForward = cameraTransform.forward;
+        Vector3 camForward = cameraController.GetTransform().forward;
         camForward.y = 0;
         camForward.Normalize();
 
-        Vector3 camRight = cameraTransform.right;
+        Vector3 camRight = cameraController.GetTransform().right;
         camRight.y = 0;
         camRight.Normalize();
 
@@ -171,7 +128,7 @@ public class PlayerController : MonoBehaviour
     #region Animation
     void HandleAnimation()
     {
-        Quaternion yawOnlyRotation = Quaternion.Euler(0, cameraTransform.eulerAngles.y, 0);
+        Quaternion yawOnlyRotation = Quaternion.Euler(0, cameraController.GetTransform().eulerAngles.y, 0);
         Vector3 cameraRelativeMoveDir = Quaternion.Inverse(yawOnlyRotation) * moveDirection;
 
         animator.SetFloat("moveX", cameraRelativeMoveDir.x, 0.1f, Time.deltaTime);
@@ -185,7 +142,7 @@ public class PlayerController : MonoBehaviour
         }
         else if (currentSpeed > walkSpeed)
         {
-            normalizedSpeed = Mathf.InverseLerp(walkSpeed, runSpeed, currentSpeed);
+            normalizedSpeed = Mathf.InverseLerp(walkSpeed, runSpeed, currentSpeed) * 0.5f + 0.5f;
         }
 
         animator.SetFloat("speed", normalizedSpeed, 0.1f, Time.deltaTime);

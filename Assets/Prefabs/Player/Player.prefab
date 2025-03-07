@@ -411,7 +411,7 @@ Transform:
   m_GameObject: {fileID: 1547790610646184026}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.2, z: 0}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -520,24 +520,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca81f96e23c3c6c4c8349834a2dcdb39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cameraController: {fileID: 0}
   characterController: {fileID: 3095103042998027790}
   animator: {fileID: 1146766042470041675}
-  cameraPivot: {fileID: 6435304552766777602}
-  cameraTransform: {fileID: 0}
   walkSpeed: 1.5
   runSpeed: 5
   acceleration: 5
   deceleration: 2.5
   directionSmoothSpeed: 10
   rotationSpeed: 3
-  mouseSensitivity: 3
-  minPitch: -30
-  maxPitch: 60
-  defaultDistance: 2
-  cameraCollisionRadius: 0.2
-  collisionLayers:
-    serializedVersion: 2
-    m_Bits: 128
   gravity: -9.81
   groundedCheckDistance: 0.1
   groundMask:

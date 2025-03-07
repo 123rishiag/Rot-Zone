@@ -240,6 +240,11 @@ MonoBehaviour:
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
   m_SoftShadowQuality: 1
+--- !u!4 &771288666 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6435304552766777602, guid: b3be32f90d47f8e48ac4d1630b45d456, type: 3}
+  m_PrefabInstance: {fileID: 4160769066363564752}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0
@@ -491,9 +496,9 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 412605806165008903, guid: b3be32f90d47f8e48ac4d1630b45d456, type: 3}
-      propertyPath: cameraTransform
+      propertyPath: cameraController
       value: 
-      objectReference: {fileID: 9166199259500346505}
+      objectReference: {fileID: 9199063788929511427}
     - target: {fileID: 1784011369718158210, guid: b3be32f90d47f8e48ac4d1630b45d456, type: 3}
       propertyPath: m_Name
       value: Player
@@ -555,6 +560,7 @@ GameObject:
   - component: {fileID: 1487306533568874930}
   - component: {fileID: 9199063788929511426}
   - component: {fileID: 6096498030452458524}
+  - component: {fileID: 9199063788929511427}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -615,7 +621,7 @@ Transform:
   m_GameObject: {fileID: 5819368568451834848}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -2}
+  m_LocalPosition: {x: 0, y: 1, z: -2.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -629,6 +635,27 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5819368568451834848}
   m_Enabled: 1
+--- !u!114 &9199063788929511427
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5819368568451834848}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 769c4c221ed7f55459f6ddd8e33816e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cameraPivot: {fileID: 771288666}
+  mouseSensitivity: 3
+  minPitch: -30
+  maxPitch: 60
+  defaultDistance: 2.5
+  cameraCollisionRadius: 0.2
+  collisionLayers:
+    serializedVersion: 2
+    m_Bits: 128
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
