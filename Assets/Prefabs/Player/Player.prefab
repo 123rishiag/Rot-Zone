@@ -521,17 +521,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cameraController: {fileID: 0}
-  characterController: {fileID: 3095103042998027790}
-  animator: {fileID: 1146766042470041675}
   walkSpeed: 1.5
   runSpeed: 5
-  acceleration: 5
-  deceleration: 2.5
+  accelerationFactor: 5
+  decelerationFactor: 2.5
   directionSmoothSpeed: 10
   rotationSpeed: 3
-  gravity: -9.81
-  groundedCheckDistance: 0.1
-  groundMask:
+  gravityFactor: 9.81
+  groundCheckDistance: 0.2
+  groundLayer:
     serializedVersion: 2
     m_Bits: 128
 --- !u!1 &1915527914439269040

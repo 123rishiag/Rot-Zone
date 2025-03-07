@@ -50,4 +50,16 @@ public class CameraController : MonoBehaviour
     }
 
     public Transform GetTransform() => transform;
+    public Vector3 GetCameraForwardXZNormalized() => GetCameraXZNormalizedVector(transform.forward);
+    public Vector3 GetCameraRightXZNormalized() => GetCameraXZNormalizedVector(transform.right);
+    private Vector3 GetCameraXZNormalizedVector(Vector3 _cameraVector)
+    {
+        // Disabling Camera Height as for movement of player, camera's height doesn't matter
+        _cameraVector.y = 0;
+
+        // Normalizing Camera Vectors as magnitude is not needed only direction
+        _cameraVector.Normalize();
+
+        return _cameraVector;
+    }
 }
