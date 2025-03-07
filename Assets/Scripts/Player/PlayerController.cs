@@ -23,39 +23,70 @@ public class PlayerController : MonoBehaviour
     public float groundedCheckDistance = 0.1f;
     public LayerMask groundMask;
 
+    private PlayerState playerState = PlayerState.TPOSE;
+    private PlayerState playerLastState;
     private float verticalVelocity = 0f;
     private bool isGrounded = false;
 
     private float currentSpeed = 0f;
     private Vector3 moveDirection;
     private Vector3 lastNonZeroMoveDirection = Vector3.zero;
+    private Vector3 inputDir;
+
+    void Start()
+    {
+        ChangeState(PlayerState.IDLE);
+    }
 
     void Update()
     {
-        ProcessInput();
         ApplyGravity();
+        ProcessInput();
+        UpdateDirection();
+        UpdateSpeed();
+        UpdatePlayerState();
         MovePlayer();
         HandleAnimation();
+        UpdateAnimationParameters();
     }
 
     #region Movement
+
+    void ApplyGravity()
+    {
+        isGrounded = Physics.CheckSphere(transform.position, groundedCheckDistance, groundMask);
+
+        if (isGrounded && verticalVelocity < 0)
+        {
+            verticalVelocity = -2f;
+        }
+        else
+        {
+            verticalVelocity += gravity * Time.deltaTime;
+        }
+    }
     void ProcessInput()
     {
+        if (playerState == PlayerState.FALL)
+            return; // Disable input while falling
+
         float horizontal = Input.GetAxisRaw("Horizontal");
         float vertical = Input.GetAxisRaw("Vertical");
-        bool isRunning = Input.GetKey(KeyCode.LeftShift);
 
-        Vector3 inputDir = new Vector3(horizontal, 0f, vertical).normalized;
+        inputDir = new Vector3(horizontal, 0f, vertical).normalized;
+    }
 
-        Vector3 camForward = cameraController.GetTransform().forward;
-        camForward.y = 0;
-        camForward.Normalize();
+    void UpdateDirection()
+    {
+        Vector3 cameraForward = cameraController.GetTransform().forward;
+        cameraForward.y = 0;
+        cameraForward.Normalize();
 
-        Vector3 camRight = cameraController.GetTransform().right;
-        camRight.y = 0;
-        camRight.Normalize();
+        Vector3 cameraRight = cameraController.GetTransform().right;
+        cameraRight.y = 0;
+        cameraRight.Normalize();
 
-        Vector3 targetDirection = (camForward * vertical + camRight * horizontal).normalized;
+        Vector3 targetDirection = (cameraForward * inputDir.z + cameraRight * inputDir.x).normalized;
 
         if (inputDir.magnitude > 0.01f)
         {
@@ -71,22 +102,17 @@ public class PlayerController : MonoBehaviour
             moveDirection = Vector3.Lerp(moveDirection, Vector3.zero, Time.deltaTime * directionSmoothSpeed);
         }
 
-        RotatePlayer(inputDir, camForward);
-        UpdateSpeed(inputDir, isRunning);
-    }
-
-    void RotatePlayer(Vector3 _inputDir, Vector3 _cameraForward)
-    {
-        if (_inputDir.magnitude > 0.1f)
+        if (inputDir.magnitude > 0.1f)
         {
-            Quaternion targetRotation = Quaternion.LookRotation(_cameraForward);
+            Quaternion targetRotation = Quaternion.LookRotation(cameraForward);
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
         }
     }
 
-    void UpdateSpeed(Vector3 _inputDir, bool _isRunning)
+    void UpdateSpeed()
     {
-        float targetSpeed = _inputDir != Vector3.zero ? (_isRunning ? runSpeed : walkSpeed) : 0f;
+        bool isRunning = Input.GetKey(KeyCode.LeftShift);
+        float targetSpeed = inputDir != Vector3.zero ? (isRunning ? runSpeed : walkSpeed) : 0f;
 
         if (currentSpeed < targetSpeed)
         {
@@ -102,20 +128,6 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    void ApplyGravity()
-    {
-        isGrounded = Physics.CheckSphere(transform.position, groundedCheckDistance, groundMask);
-
-        if (isGrounded && verticalVelocity < 0)
-        {
-            verticalVelocity = -2f;
-        }
-        else
-        {
-            verticalVelocity += gravity * Time.deltaTime;
-        }
-    }
-
     void MovePlayer()
     {
         Vector3 move = (moveDirection * currentSpeed);
@@ -125,8 +137,50 @@ public class PlayerController : MonoBehaviour
     }
     #endregion
 
+    #region Player State
+    void UpdatePlayerState()
+    {
+        if (!isGrounded)
+        {
+            ChangeState(PlayerState.FALL);
+        }
+        else if (currentSpeed == 0)
+        {
+            ChangeState(PlayerState.IDLE);
+        }
+        else if (currentSpeed <= walkSpeed)
+        {
+            ChangeState(PlayerState.WALK);
+        }
+        else
+        {
+            ChangeState(PlayerState.RUN);
+        }
+    }
+    #endregion
+
     #region Animation
     void HandleAnimation()
+    {
+        if (playerLastState == playerState)
+            return;
+
+        switch(playerState)
+        {
+            case PlayerState.IDLE:
+            case PlayerState.WALK:
+            case PlayerState.RUN:
+                animator.Play("Movement Locomotion");
+                break;
+            case PlayerState.FALL:
+                animator.Play("Fall");
+                break;
+            default:
+                animator.Play("TPose");
+                break;
+        }
+    }
+    void UpdateAnimationParameters()
     {
         Quaternion yawOnlyRotation = Quaternion.Euler(0, cameraController.GetTransform().eulerAngles.y, 0);
         Vector3 cameraRelativeMoveDir = Quaternion.Inverse(yawOnlyRotation) * moveDirection;
@@ -148,4 +202,19 @@ public class PlayerController : MonoBehaviour
         animator.SetFloat("speed", normalizedSpeed, 0.1f, Time.deltaTime);
     }
     #endregion
+
+    void ChangeState(PlayerState _playerState)
+    {
+        playerLastState = playerState;
+        playerState = _playerState;
+    }
+}
+
+public enum PlayerState
+{
+    TPOSE,
+    IDLE,
+    WALK,
+    RUN,
+    FALL,
 }
