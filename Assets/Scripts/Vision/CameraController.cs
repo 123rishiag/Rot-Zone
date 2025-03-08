@@ -9,23 +9,34 @@ public class CameraController : MonoBehaviour
     public float maxPitch = 60f;
     public float defaultDistance = 2.5f;
     public float cameraCollisionRadius = 0.2f;
+    public float initialYaw = 0f;
+    public float initialPitch = 20f;
     public LayerMask collisionLayers;
 
-    private float yaw = 0f;
-    private float pitch = 20f;
+    // Private Variables
+    private float yaw;
+    private float pitch;
 
-    void Update()
+    private void Start()
+    {
+        // Setting Variables
+        yaw = initialYaw;
+        pitch = initialPitch;
+    }
+
+    private void Update()
     {
         HandleCameraRotation();
     }
 
-    void LateUpdate()
+    private void LateUpdate()
     {
         HandleCameraPosition();
     }
 
-    void HandleCameraRotation()
+    private void HandleCameraRotation()
     {
+        // Setting horizontal and vertical rotation based on mouse movement after clamping it on vertical axis
         yaw += Input.GetAxis("Mouse X") * mouseSensitivity;
         pitch -= Input.GetAxis("Mouse Y") * mouseSensitivity;
         pitch = Mathf.Clamp(pitch, minPitch, maxPitch);
@@ -33,10 +44,12 @@ public class CameraController : MonoBehaviour
         cameraPivot.rotation = Quaternion.Euler(pitch, yaw, 0f);
     }
 
-    void HandleCameraPosition()
+    private void HandleCameraPosition()
     {
+        // Setting Camera Position based on camera pivot on player
         Vector3 desiredPos = cameraPivot.position - cameraPivot.forward * defaultDistance;
 
+        // If Camera collides with a world object like ground, it will stop there, other wise the desired position
         if (Physics.SphereCast(cameraPivot.position, cameraCollisionRadius, -cameraPivot.forward, out RaycastHit hit, defaultDistance, collisionLayers))
         {
             transform.position = hit.point + cameraPivot.forward * cameraCollisionRadius;
@@ -46,9 +59,11 @@ public class CameraController : MonoBehaviour
             transform.position = desiredPos;
         }
 
+        // So that camera look towards the player, not just rotate orbitally
         transform.LookAt(cameraPivot.position);
     }
 
+    // Getters
     public Transform GetTransform() => transform;
     public Vector3 GetCameraForwardXZNormalized() => GetCameraXZNormalizedVector(transform.forward);
     public Vector3 GetCameraRightXZNormalized() => GetCameraXZNormalizedVector(transform.right);
