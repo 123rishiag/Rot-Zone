@@ -5,7 +5,7 @@ public class CameraController : MonoBehaviour
     [Header("Camera Settings")]
     public Transform cameraPivot;
     public float mouseSensitivity = 3f;
-    public float minPitch = -30f;
+    public float minPitch = 30f;
     public float maxPitch = 60f;
     public float defaultDistance = 2.5f;
     public float cameraCollisionRadius = 0.2f;
@@ -39,7 +39,7 @@ public class CameraController : MonoBehaviour
         // Setting horizontal and vertical rotation based on mouse movement after clamping it on vertical axis
         yaw += Input.GetAxis("Mouse X") * mouseSensitivity;
         pitch -= Input.GetAxis("Mouse Y") * mouseSensitivity;
-        pitch = Mathf.Clamp(pitch, minPitch, maxPitch);
+        pitch = Mathf.Clamp(pitch, -minPitch, maxPitch);
 
         cameraPivot.rotation = Quaternion.Euler(pitch, yaw, 0f);
     }

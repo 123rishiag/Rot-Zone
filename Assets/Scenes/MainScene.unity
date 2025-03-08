@@ -757,10 +757,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cameraPivot: {fileID: 771288666}
   mouseSensitivity: 3
-  minPitch: -30
+  minPitch: 30
   maxPitch: 60
   defaultDistance: 2.5
   cameraCollisionRadius: 0.2
+  initialYaw: 0
+  initialPitch: 20
   collisionLayers:
     serializedVersion: 2
     m_Bits: 128
