@@ -3,6 +3,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     [Header("Controllers")]
+    [SerializeField] private InputController inputController;
     [SerializeField] private CameraController cameraController;
 
     [Header("Movement Settings")]
@@ -22,11 +23,8 @@ public class PlayerController : MonoBehaviour
     private CharacterController characterController;
     private Animator animator;
 
-    private PlayerState playerState;
-    private PlayerState playerLastState;
-
-    private Vector3 inputDir;
-    private bool isRunning;
+    private PlayerMovementState playerMovementState;
+    private PlayerMovementState playerLastMovementState;
 
     private Vector3 moveDirection;
     private Vector3 lastMoveDirection;
@@ -34,6 +32,9 @@ public class PlayerController : MonoBehaviour
     private float currentSpeed;
     private float yawRotation;
     private bool isGrounded;
+
+    private Vector3 inputDirection;
+    private bool isRunning;
 
     private void Awake()
     {
@@ -45,64 +46,70 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         // Setting Variables
-        playerState = PlayerState.NONE;
-        ChangeState(PlayerState.IDLE);
+        playerMovementState = PlayerMovementState.NONE;
+        ChangeState(PlayerMovementState.IDLE);
         lastMoveDirection = Vector3.zero;
         verticalVelocity = 0f;
         currentSpeed = 0f;
         yawRotation = 0f;
         isGrounded = false;
+
+        AssignInputs();
     }
+
+    #region Input
+    private void AssignInputs()
+    {
+        // Not taking inputs if Player is Falling
+        if (playerMovementState == PlayerMovementState.FALL)
+            return;
+
+        // Camera Inputs
+        InputControls inputControls = inputController.GetInputControls();
+
+        inputControls.Player.Movement.performed += ctx =>
+        {
+            Vector2 input = ctx.ReadValue<Vector2>();
+            inputDirection = new Vector3(input.x, 0f, input.y);
+        };
+        inputControls.Player.Movement.canceled += ctx => inputDirection = Vector3.zero;
+
+        inputControls.Player.IsRunning.performed += ctx => isRunning = true;
+        inputControls.Player.Movement.canceled += ctx => isRunning = false;
+    }
+    #endregion
 
     private void Update()
     {
-        GetInput();
         UpdatePlayerState();
         MovePlayer();
         UpdateAnimation();
     }
 
-    #region Input
-    private void GetInput()
-    {
-        // Disable input while falling
-        if (playerState == PlayerState.FALL)
-            return;
-
-        // Movement Input
-        float horizontal = Input.GetAxisRaw("Horizontal");
-        float vertical = Input.GetAxisRaw("Vertical");
-        inputDir = new Vector3(horizontal, 0f, vertical).normalized;
-
-        // Run Input
-        isRunning = Input.GetKey(KeyCode.LeftShift);
-    }
-    #endregion
-
-    #region Player State
+    #region Player Movement State
     private void UpdatePlayerState()
     {
         if (!isGrounded)
         {
-            ChangeState(PlayerState.FALL);
+            ChangeState(PlayerMovementState.FALL);
         }
         else if (currentSpeed == 0)
         {
-            ChangeState(PlayerState.IDLE);
+            ChangeState(PlayerMovementState.IDLE);
         }
         else if (currentSpeed <= walkSpeed)
         {
-            ChangeState(PlayerState.WALK);
+            ChangeState(PlayerMovementState.WALK);
         }
         else
         {
-            ChangeState(PlayerState.RUN);
+            ChangeState(PlayerMovementState.RUN);
         }
     }
-    private void ChangeState(PlayerState _playerState)
+    private void ChangeState(PlayerMovementState _playerState)
     {
-        playerLastState = playerState;
-        playerState = _playerState;
+        playerLastMovementState = playerMovementState;
+        playerMovementState = _playerState;
     }
     #endregion
 
@@ -119,11 +126,11 @@ public class PlayerController : MonoBehaviour
         // Fetching target direction based on below conditions
         Vector3 targetDirection = Vector3.zero;
         // If Player is pressing any movement input, movement direction will be based on movement input
-        if (inputDir.magnitude > 0.1f)
+        if (inputDirection.magnitude > 0.1f)
         {
             // Fetching Target Direction where player is trying to move in world based on input and camera
-            targetDirection = (cameraController.GetCameraForwardXZNormalized() * inputDir.z +
-                cameraController.GetCameraRightXZNormalized() * inputDir.x).normalized;
+            targetDirection = (cameraController.GetCameraForwardXZNormalized() * inputDirection.z +
+                cameraController.GetCameraRightXZNormalized() * inputDirection.x).normalized;
 
             RotatePlayerTowardsCamera();
             lastMoveDirection = moveDirection;
@@ -139,7 +146,7 @@ public class PlayerController : MonoBehaviour
     private void RotatePlayerTowardsCamera()
     {
         // Rotate Player Towards Camera, when player is not falling
-        if (playerState == PlayerState.FALL)
+        if (playerMovementState == PlayerMovementState.FALL)
             return;
 
         Quaternion targetRotation = Quaternion.LookRotation(cameraController.GetCameraForwardXZNormalized());
@@ -165,7 +172,7 @@ public class PlayerController : MonoBehaviour
     private void UpdateSpeed()
     {
         // Fetching target spped based on inputs
-        float targetSpeed = inputDir != Vector3.zero ? (isRunning ? runSpeed : walkSpeed) : 0f;
+        float targetSpeed = inputDirection != Vector3.zero ? (isRunning ? runSpeed : walkSpeed) : 0f;
 
         // Applying Acceleration and DeAcceleration
         if (currentSpeed < targetSpeed)
@@ -192,17 +199,17 @@ public class PlayerController : MonoBehaviour
     {
         UpdateAnimationParameters();
 
-        if (playerLastState == playerState)
+        if (playerLastMovementState == playerMovementState)
             return;
 
-        switch (playerState)
+        switch (playerMovementState)
         {
-            case PlayerState.IDLE:
-            case PlayerState.WALK:
-            case PlayerState.RUN:
+            case PlayerMovementState.IDLE:
+            case PlayerMovementState.WALK:
+            case PlayerMovementState.RUN:
                 animator.Play("Movement Locomotion");
                 break;
-            case PlayerState.FALL:
+            case PlayerMovementState.FALL:
                 animator.Play("Fall");
                 break;
             default:
@@ -216,7 +223,7 @@ public class PlayerController : MonoBehaviour
         // but we want camera rotation of last point where movement input was given as we dont want
         // camera local rotation to keep changing animation parameters while deacceleration
         // which will lead to player's movement animation out of sync with movement direction
-        if (inputDir.magnitude > 0.1f)
+        if (inputDirection.magnitude > 0.1f)
         {
             yawRotation = cameraController.GetTransform().eulerAngles.y;
         }
@@ -257,7 +264,7 @@ public class PlayerController : MonoBehaviour
     #endregion
 }
 
-public enum PlayerState
+public enum PlayerMovementState
 {
     NONE,
     IDLE,

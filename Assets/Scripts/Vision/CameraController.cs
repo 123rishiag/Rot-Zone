@@ -2,26 +2,42 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
+    [Header("Controllers")]
+    [SerializeField] private InputController inputController;
+
     [Header("Camera Settings")]
-    public Transform cameraPivot;
-    public float mouseSensitivity = 3f;
-    public float minPitch = 30f;
-    public float maxPitch = 60f;
-    public float defaultDistance = 2.5f;
-    public float cameraCollisionRadius = 0.2f;
-    public float initialYaw = 0f;
-    public float initialPitch = 20f;
-    public LayerMask collisionLayers;
+    [SerializeField] private Transform cameraPivot;
+    [SerializeField] private float mouseSensitivity = 0.5f;
+    [SerializeField] private float minPitch = 30f;
+    [SerializeField] private float maxPitch = 60f;
+    [SerializeField] private float defaultDistance = 2.5f;
+    [SerializeField] private float cameraCollisionRadius = 0.2f;
+    [SerializeField] private float initialYaw = 0f;
+    [SerializeField] private float initialPitch = 20f;
+    [SerializeField] private LayerMask collisionLayers;
 
     // Private Variables
     private float yaw;
     private float pitch;
+
+    private Vector2 cameraMouseDelta;
 
     private void Start()
     {
         // Setting Variables
         yaw = initialYaw;
         pitch = initialPitch;
+
+        AssignInputs();
+    }
+
+    private void AssignInputs()
+    {
+        // Camera Inputs
+        InputControls inputControls = inputController.GetInputControls();
+
+        inputControls.Camera.MouseDelta.performed += ctx => cameraMouseDelta = ctx.ReadValue<Vector2>();
+        inputControls.Camera.MouseDelta.canceled += ctx => cameraMouseDelta = Vector2.zero;
     }
 
     private void Update()
@@ -37,8 +53,8 @@ public class CameraController : MonoBehaviour
     private void HandleCameraRotation()
     {
         // Setting horizontal and vertical rotation based on mouse movement after clamping it on vertical axis
-        yaw += Input.GetAxis("Mouse X") * mouseSensitivity;
-        pitch -= Input.GetAxis("Mouse Y") * mouseSensitivity;
+        yaw += cameraMouseDelta.x * mouseSensitivity;
+        pitch -= cameraMouseDelta.y * mouseSensitivity;
         pitch = Mathf.Clamp(pitch, -minPitch, maxPitch);
 
         cameraPivot.rotation = Quaternion.Euler(pitch, yaw, 0f);
