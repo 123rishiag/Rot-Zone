@@ -19,12 +19,18 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float groundCheckDistance = 0.2f;
     [SerializeField] private LayerMask groundLayer;
 
+    [Header("Weapon Settings")]
+    [SerializeField] private float weaponLayerWeightChangeFactor = 10f;
+
     // Private Variables
     private CharacterController characterController;
     private Animator animator;
 
     private PlayerMovementState playerMovementState;
     private PlayerMovementState playerLastMovementState;
+
+    private PlayerActionState playerActionState;
+    private PlayerActionState playerLastActionState;
 
     private Vector3 moveDirection;
     private Vector3 lastMoveDirection;
@@ -33,8 +39,13 @@ public class PlayerController : MonoBehaviour
     private float yawRotation;
     private bool isGrounded;
 
+    private int weaponAnimationLayerIndex;
+    private float weaponAnimationLayerWeight;
+
     private Vector3 inputDirection;
     private bool isRunning;
+    private bool isAiming;
+    private bool isFiring;
 
     private void Awake()
     {
@@ -47,12 +58,18 @@ public class PlayerController : MonoBehaviour
     {
         // Setting Variables
         playerMovementState = PlayerMovementState.NONE;
-        ChangeState(PlayerMovementState.IDLE);
+        playerActionState = PlayerActionState.NONE;
+        ChangeMovementState(PlayerMovementState.IDLE);
+        ChangeActionState(PlayerActionState.NONE);
+
         lastMoveDirection = Vector3.zero;
         verticalVelocity = 0f;
         currentSpeed = 0f;
         yawRotation = 0f;
         isGrounded = false;
+
+        weaponAnimationLayerIndex = 1;
+        weaponAnimationLayerWeight = 0f;
 
         AssignInputs();
     }
@@ -74,42 +91,76 @@ public class PlayerController : MonoBehaviour
         };
         inputControls.Player.Movement.canceled += ctx => inputDirection = Vector3.zero;
 
-        inputControls.Player.IsRunning.performed += ctx => isRunning = true;
-        inputControls.Player.Movement.canceled += ctx => isRunning = false;
+        inputControls.Player.Run.performed += ctx => isRunning = true;
+        inputControls.Player.Run.canceled += ctx => isRunning = false;
+
+        inputControls.Player.Run.performed += ctx => isRunning = true;
+        inputControls.Player.Run.canceled += ctx => isRunning = false;
+
+        inputControls.Player.Aim.performed += ctx => isAiming = true;
+        inputControls.Player.Aim.canceled += ctx => isAiming = false;
+
+        inputControls.Player.Fire.performed += ctx => isFiring = true;
+        inputControls.Player.Fire.canceled += ctx => isFiring = false;
     }
     #endregion
 
     private void Update()
     {
-        UpdatePlayerState();
+        UpdateMovementState();
+        UpdateActionState();
         MovePlayer();
-        UpdateAnimation();
+
+        UpdateAnimationLayerWeight();
+        UpdateAnimationParameters();
+        UpdateMovementAnimation();
+        UpdateActionAnimation();
     }
 
     #region Player Movement State
-    private void UpdatePlayerState()
+    private void UpdateMovementState()
     {
         if (!isGrounded)
         {
-            ChangeState(PlayerMovementState.FALL);
+            ChangeMovementState(PlayerMovementState.FALL);
         }
         else if (currentSpeed == 0)
         {
-            ChangeState(PlayerMovementState.IDLE);
+            ChangeMovementState(PlayerMovementState.IDLE);
         }
         else if (currentSpeed <= walkSpeed)
         {
-            ChangeState(PlayerMovementState.WALK);
+            ChangeMovementState(PlayerMovementState.WALK);
         }
         else
         {
-            ChangeState(PlayerMovementState.RUN);
+            ChangeMovementState(PlayerMovementState.RUN);
         }
     }
-    private void ChangeState(PlayerMovementState _playerState)
+    private void UpdateActionState()
+    {
+        if (isFiring)
+        {
+            ChangeActionState(PlayerActionState.FIRE);
+        }
+        else if(isAiming)
+        {
+            ChangeActionState(PlayerActionState.AIM);
+        }    
+        else
+        {
+            ChangeActionState(PlayerActionState.NONE);
+        }
+    }
+    private void ChangeMovementState(PlayerMovementState _playerMovementState)
     {
         playerLastMovementState = playerMovementState;
-        playerMovementState = _playerState;
+        playerMovementState = _playerMovementState;
+    }
+    private void ChangeActionState(PlayerActionState _playerActionState)
+    {
+        playerLastActionState = playerActionState;
+        playerActionState = _playerActionState;
     }
     #endregion
 
@@ -171,7 +222,7 @@ public class PlayerController : MonoBehaviour
     }
     private void UpdateSpeed()
     {
-        // Fetching target spped based on inputs
+        // Fetching target speed based on inputs
         float targetSpeed = inputDirection != Vector3.zero ? (isRunning ? runSpeed : walkSpeed) : 0f;
 
         // Applying Acceleration and DeAcceleration
@@ -195,10 +246,8 @@ public class PlayerController : MonoBehaviour
     #endregion
 
     #region Animation
-    private void UpdateAnimation()
+    private void UpdateMovementAnimation()
     {
-        UpdateAnimationParameters();
-
         if (playerLastMovementState == playerMovementState)
             return;
 
@@ -215,6 +264,36 @@ public class PlayerController : MonoBehaviour
             default:
                 animator.Play("TPose");
                 break;
+        }
+    }
+    private void UpdateActionAnimation()
+    {
+        if (playerLastActionState == playerActionState)
+            return;
+
+        weaponAnimationLayerWeight = 1f;
+
+        switch (playerActionState)
+        {
+            case PlayerActionState.FIRE:
+                animator.Play("Rifle_Fire");
+                break;
+            case PlayerActionState.AIM:
+                animator.Play("Rifle_Idle");
+                break;
+            default:
+                weaponAnimationLayerWeight = 0f;
+                break;
+        }
+    }
+    private void UpdateAnimationLayerWeight()
+    {
+        if (weaponAnimationLayerIndex != -1) // Ensuring that the layer exists
+        {
+            float currentWeight = animator.GetLayerWeight(weaponAnimationLayerIndex);
+            float targetWeight = Mathf.Lerp(currentWeight, weaponAnimationLayerWeight,
+                Time.deltaTime * weaponLayerWeightChangeFactor);
+            animator.SetLayerWeight(weaponAnimationLayerIndex, targetWeight);
         }
     }
     private void UpdateAnimationParameters()
@@ -260,7 +339,6 @@ public class PlayerController : MonoBehaviour
         // Updating the "speed" parameter to smoothly blend between idle, walk, and run in the Animator.
         animator.SetFloat("speed", normalizedSpeed, 0.1f, Time.deltaTime);
     }
-
     #endregion
 }
 
@@ -271,4 +349,11 @@ public enum PlayerMovementState
     WALK,
     RUN,
     FALL,
+}
+
+public enum PlayerActionState
+{
+    NONE,
+    AIM,
+    FIRE,
 }
