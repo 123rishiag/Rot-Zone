@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -23,10 +24,12 @@ public class PlayerController : MonoBehaviour
 
     [Header("Weapon Settings")]
     [SerializeField] private float weaponLayerWeightChangeFactor = 10f;
-    [SerializeField] private WeaponTransform[] weaponTransforms;
+    [SerializeField] private Transform weaponHolderTransform;
+    [SerializeField] private WeaponType[] weaponTypes;
 
     [Header("Aim Settings")]
     [SerializeField] private Transform aimTransform;
+    [SerializeField] private Vector3 aimTransformDefaultPosition = new Vector3(1f, 1.5f, 1f);
     [SerializeField] private LayerMask aimLayer;
     [SerializeField] private float aimMaxDistance = 10f;
 
@@ -49,8 +52,7 @@ public class PlayerController : MonoBehaviour
 
     private int weaponAnimationLayerIndex;
     private float weaponAnimationLayerWeight;
-    private List<WeaponType> weaponTypes;
-    private List<GameObject> weapons;
+    private List<GameObject> weaponPrefabs;
 
     private Vector2 aimPosition;
 
@@ -64,8 +66,7 @@ public class PlayerController : MonoBehaviour
         // Setting Variables
         characterController = GetComponent<CharacterController>();
         animator = GetComponentInChildren<Animator>();
-        weaponTypes = new List<WeaponType>();
-        weapons = new List<GameObject>();
+        weaponPrefabs = new List<GameObject>();
     }
 
     private void Start()
@@ -371,14 +372,12 @@ public class PlayerController : MonoBehaviour
     #region Weapon
     private void CreateWeapons()
     {
-        foreach (WeaponTransform weaponTransform in weaponTransforms)
+        foreach (WeaponType weaponType in weaponTypes)
         {
-            GameObject weapon =
-                weaponController.CreateWeapon(weaponTransform.weaponType, weaponTransform.weaponParentTransform);
-
-            weaponTypes.Add(weaponTransform.weaponType);
-            weapons.Add(weapon);
+            GameObject weaponPrefab = weaponController.CreateWeapon(weaponType, weaponHolderTransform);
+            weaponPrefabs.Add(weaponPrefab);
         }
+        SwitchOffWeapons();
     }
 
     private void EquipWeapon(WeaponType _weaponType)
@@ -387,20 +386,20 @@ public class PlayerController : MonoBehaviour
 
         if (_weaponType == WeaponType.NONE) return;
 
-        foreach (WeaponTransform weaponTransform in weaponTransforms)
-        {
-            if (weaponTransform.weaponType == _weaponType)
-                weaponTransform.weaponParentTransform.gameObject.SetActive(true);
-        }
+        int weaponIndex = GetWeaponIndex(_weaponType);
+        weaponPrefabs[weaponIndex].gameObject.SetActive(true);
 
     }
     private void SwitchOffWeapons()
     {
-        foreach (WeaponTransform weaponTransform in weaponTransforms)
+        foreach (WeaponType weaponType in weaponTypes)
         {
-            weaponTransform.weaponParentTransform.gameObject.SetActive(false);
+            int weaponIndex = GetWeaponIndex(weaponType);
+            weaponPrefabs[weaponIndex].gameObject.SetActive(false);
         }
     }
+
+    private int GetWeaponIndex(WeaponType _weaponType) => Array.IndexOf(weaponTypes, _weaponType);
     private void AimTowardsMouse()
     {
         if (playerActionState == PlayerActionState.AIM || playerActionState == PlayerActionState.FIRE)
@@ -429,6 +428,7 @@ public class PlayerController : MonoBehaviour
         else
         {
             aimTransform.gameObject.SetActive(false);
+            aimTransform.localPosition = aimTransformDefaultPosition;
         }
     }
     #endregion
