@@ -12,7 +12,13 @@ public class WeaponController : MonoBehaviour
     public GameObject CreateWeapon(WeaponType _weaponType, Transform _parentTransform)
     {
         GameObject weaponPrefab = GetWeaponData(_weaponType).weaponPrefab;
-        return Instantiate(weaponPrefab, _parentTransform);
+        GameObject weapon = Instantiate(weaponPrefab, _parentTransform);
+        Transform rightHand_TargetTransform = weapon.transform.Find("RightHand_Target");
+
+        weapon.transform.position = rightHand_TargetTransform.position;
+        weapon.transform.rotation = rightHand_TargetTransform.rotation;
+        weapon.transform.localScale = rightHand_TargetTransform.localScale;
+        return weapon;
     }
 
     public WeaponData GetWeaponData(WeaponType _weaponType) =>
@@ -32,11 +38,4 @@ public struct WeaponData
 {
     public WeaponType weaponType;
     public GameObject weaponPrefab;
-}
-
-[Serializable]
-public struct WeaponTransform
-{
-    public WeaponType weaponType;
-    public Transform weaponParentTransform;
 }

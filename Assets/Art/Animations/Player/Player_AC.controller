@@ -57,10 +57,10 @@ AnimatorStateMachine:
   m_Name: Weapon Layer
   m_ChildStates:
   - serializedVersion: 1
-    m_State: {fileID: 6768930790060880380}
-    m_Position: {x: 260, y: 120, z: 0}
+    m_State: {fileID: 1378749417434505972}
+    m_Position: {x: 260, y: 110, z: 0}
   - serializedVersion: 1
-    m_State: {fileID: 1179229993972421333}
+    m_State: {fileID: 5218904734828458769}
     m_Position: {x: 260, y: 50, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
@@ -71,7 +71,7 @@ AnimatorStateMachine:
   m_EntryPosition: {x: 50, y: 120, z: 0}
   m_ExitPosition: {x: 800, y: 120, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
-  m_DefaultState: {fileID: 6768930790060880380}
+  m_DefaultState: {fileID: 1378749417434505972}
 --- !u!206 &-4733565829931806290
 BlendTree:
   m_ObjectHideFlags: 1
@@ -199,15 +199,15 @@ AnimatorController:
     m_IKPass: 0
     m_SyncedLayerAffectsTiming: 0
     m_Controller: {fileID: 9100000}
---- !u!1102 &1179229993972421333
+--- !u!1102 &1378749417434505972
 AnimatorState:
   serializedVersion: 6
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Rifle_Fire
-  m_Speed: 10
+  m_Name: Rifle_Idle
+  m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
   m_StateMachineBehaviours: []
@@ -219,7 +219,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: -203655887218126122, guid: 8dbc22a17a72d964e85f8c97766370fc, type: 3}
+  m_Motion: {fileID: -203655887218126122, guid: 5cb351bd67bcd0045a53f8e9811673ff, type: 3}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -298,15 +298,15 @@ BlendTree:
   m_UseAutomaticThresholds: 1
   m_NormalizedBlendValues: 0
   m_BlendType: 1
---- !u!1102 &6768930790060880380
+--- !u!1102 &5218904734828458769
 AnimatorState:
   serializedVersion: 6
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Rifle_Idle
-  m_Speed: 1
+  m_Name: Rifle_Fire
+  m_Speed: 10
   m_CycleOffset: 0
   m_Transitions: []
   m_StateMachineBehaviours: []
@@ -318,7 +318,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: -203655887218126122, guid: 5cb351bd67bcd0045a53f8e9811673ff, type: 3}
+  m_Motion: {fileID: -203655887218126122, guid: 8dbc22a17a72d964e85f8c97766370fc, type: 3}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
