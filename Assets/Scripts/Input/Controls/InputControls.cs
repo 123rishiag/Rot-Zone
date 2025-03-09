@@ -62,6 +62,42 @@ public partial class @InputControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""WeaponOne"",
+                    ""type"": ""Button"",
+                    ""id"": ""798b865f-55eb-4cca-8eb3-7bf3c1dd6dce"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""WeaponTwo"",
+                    ""type"": ""Button"",
+                    ""id"": ""2fc99631-4735-4fa3-a9cf-891e4588afe8"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""WeaponThree"",
+                    ""type"": ""Button"",
+                    ""id"": ""6bb2fe59-4977-41fa-917e-fc101e632287"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""WeaponStow"",
+                    ""type"": ""Button"",
+                    ""id"": ""d4a8d5ea-6877-4685-82da-19895be0e0d2"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -207,6 +243,50 @@ public partial class @InputControls: IInputActionCollection2, IDisposable
                     ""action"": ""Aim"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""03ae3e4a-5a82-4673-b29b-941bbef5d1d3"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""WeaponOne"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7bad8625-6472-4f99-a801-204631652875"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""WeaponTwo"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4935e5be-55a4-4b3c-83de-f83f30755a1b"",
+                    ""path"": ""<Keyboard>/3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""WeaponThree"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""37c98942-25d5-46fb-ae74-7ff1d1305527"",
+                    ""path"": ""<Keyboard>/4"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""WeaponStow"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -237,6 +317,34 @@ public partial class @InputControls: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Game"",
+            ""id"": ""3bd6a5b5-7763-4399-b3b6-3ecbccc88386"",
+            ""actions"": [
+                {
+                    ""name"": ""Pause"",
+                    ""type"": ""Button"",
+                    ""id"": ""ca5e8245-b6ca-4d06-aabc-422f3eb3d741"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""86a2227a-e03d-4b96-bd04-85b985404f65"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -247,15 +355,23 @@ public partial class @InputControls: IInputActionCollection2, IDisposable
         m_Player_Run = m_Player.FindAction("Run", throwIfNotFound: true);
         m_Player_Aim = m_Player.FindAction("Aim", throwIfNotFound: true);
         m_Player_Fire = m_Player.FindAction("Fire", throwIfNotFound: true);
+        m_Player_WeaponOne = m_Player.FindAction("WeaponOne", throwIfNotFound: true);
+        m_Player_WeaponTwo = m_Player.FindAction("WeaponTwo", throwIfNotFound: true);
+        m_Player_WeaponThree = m_Player.FindAction("WeaponThree", throwIfNotFound: true);
+        m_Player_WeaponStow = m_Player.FindAction("WeaponStow", throwIfNotFound: true);
         // Camera
         m_Camera = asset.FindActionMap("Camera", throwIfNotFound: true);
         m_Camera_MouseDelta = m_Camera.FindAction("MouseDelta", throwIfNotFound: true);
+        // Game
+        m_Game = asset.FindActionMap("Game", throwIfNotFound: true);
+        m_Game_Pause = m_Game.FindAction("Pause", throwIfNotFound: true);
     }
 
     ~@InputControls()
     {
         UnityEngine.Debug.Assert(!m_Player.enabled, "This will cause a leak and performance issues, InputControls.Player.Disable() has not been called.");
         UnityEngine.Debug.Assert(!m_Camera.enabled, "This will cause a leak and performance issues, InputControls.Camera.Disable() has not been called.");
+        UnityEngine.Debug.Assert(!m_Game.enabled, "This will cause a leak and performance issues, InputControls.Game.Disable() has not been called.");
     }
 
     public void Dispose()
@@ -321,6 +437,10 @@ public partial class @InputControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Run;
     private readonly InputAction m_Player_Aim;
     private readonly InputAction m_Player_Fire;
+    private readonly InputAction m_Player_WeaponOne;
+    private readonly InputAction m_Player_WeaponTwo;
+    private readonly InputAction m_Player_WeaponThree;
+    private readonly InputAction m_Player_WeaponStow;
     public struct PlayerActions
     {
         private @InputControls m_Wrapper;
@@ -329,6 +449,10 @@ public partial class @InputControls: IInputActionCollection2, IDisposable
         public InputAction @Run => m_Wrapper.m_Player_Run;
         public InputAction @Aim => m_Wrapper.m_Player_Aim;
         public InputAction @Fire => m_Wrapper.m_Player_Fire;
+        public InputAction @WeaponOne => m_Wrapper.m_Player_WeaponOne;
+        public InputAction @WeaponTwo => m_Wrapper.m_Player_WeaponTwo;
+        public InputAction @WeaponThree => m_Wrapper.m_Player_WeaponThree;
+        public InputAction @WeaponStow => m_Wrapper.m_Player_WeaponStow;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -350,6 +474,18 @@ public partial class @InputControls: IInputActionCollection2, IDisposable
             @Fire.started += instance.OnFire;
             @Fire.performed += instance.OnFire;
             @Fire.canceled += instance.OnFire;
+            @WeaponOne.started += instance.OnWeaponOne;
+            @WeaponOne.performed += instance.OnWeaponOne;
+            @WeaponOne.canceled += instance.OnWeaponOne;
+            @WeaponTwo.started += instance.OnWeaponTwo;
+            @WeaponTwo.performed += instance.OnWeaponTwo;
+            @WeaponTwo.canceled += instance.OnWeaponTwo;
+            @WeaponThree.started += instance.OnWeaponThree;
+            @WeaponThree.performed += instance.OnWeaponThree;
+            @WeaponThree.canceled += instance.OnWeaponThree;
+            @WeaponStow.started += instance.OnWeaponStow;
+            @WeaponStow.performed += instance.OnWeaponStow;
+            @WeaponStow.canceled += instance.OnWeaponStow;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -366,6 +502,18 @@ public partial class @InputControls: IInputActionCollection2, IDisposable
             @Fire.started -= instance.OnFire;
             @Fire.performed -= instance.OnFire;
             @Fire.canceled -= instance.OnFire;
+            @WeaponOne.started -= instance.OnWeaponOne;
+            @WeaponOne.performed -= instance.OnWeaponOne;
+            @WeaponOne.canceled -= instance.OnWeaponOne;
+            @WeaponTwo.started -= instance.OnWeaponTwo;
+            @WeaponTwo.performed -= instance.OnWeaponTwo;
+            @WeaponTwo.canceled -= instance.OnWeaponTwo;
+            @WeaponThree.started -= instance.OnWeaponThree;
+            @WeaponThree.performed -= instance.OnWeaponThree;
+            @WeaponThree.canceled -= instance.OnWeaponThree;
+            @WeaponStow.started -= instance.OnWeaponStow;
+            @WeaponStow.performed -= instance.OnWeaponStow;
+            @WeaponStow.canceled -= instance.OnWeaponStow;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -429,15 +577,69 @@ public partial class @InputControls: IInputActionCollection2, IDisposable
         }
     }
     public CameraActions @Camera => new CameraActions(this);
+
+    // Game
+    private readonly InputActionMap m_Game;
+    private List<IGameActions> m_GameActionsCallbackInterfaces = new List<IGameActions>();
+    private readonly InputAction m_Game_Pause;
+    public struct GameActions
+    {
+        private @InputControls m_Wrapper;
+        public GameActions(@InputControls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Pause => m_Wrapper.m_Game_Pause;
+        public InputActionMap Get() { return m_Wrapper.m_Game; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(GameActions set) { return set.Get(); }
+        public void AddCallbacks(IGameActions instance)
+        {
+            if (instance == null || m_Wrapper.m_GameActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_GameActionsCallbackInterfaces.Add(instance);
+            @Pause.started += instance.OnPause;
+            @Pause.performed += instance.OnPause;
+            @Pause.canceled += instance.OnPause;
+        }
+
+        private void UnregisterCallbacks(IGameActions instance)
+        {
+            @Pause.started -= instance.OnPause;
+            @Pause.performed -= instance.OnPause;
+            @Pause.canceled -= instance.OnPause;
+        }
+
+        public void RemoveCallbacks(IGameActions instance)
+        {
+            if (m_Wrapper.m_GameActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IGameActions instance)
+        {
+            foreach (var item in m_Wrapper.m_GameActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_GameActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public GameActions @Game => new GameActions(this);
     public interface IPlayerActions
     {
         void OnMovement(InputAction.CallbackContext context);
         void OnRun(InputAction.CallbackContext context);
         void OnAim(InputAction.CallbackContext context);
         void OnFire(InputAction.CallbackContext context);
+        void OnWeaponOne(InputAction.CallbackContext context);
+        void OnWeaponTwo(InputAction.CallbackContext context);
+        void OnWeaponThree(InputAction.CallbackContext context);
+        void OnWeaponStow(InputAction.CallbackContext context);
     }
     public interface ICameraActions
     {
         void OnMouseDelta(InputAction.CallbackContext context);
+    }
+    public interface IGameActions
+    {
+        void OnPause(InputAction.CallbackContext context);
     }
 }

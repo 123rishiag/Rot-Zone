@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -5,6 +6,7 @@ public class PlayerController : MonoBehaviour
     [Header("Controllers")]
     [SerializeField] private InputController inputController;
     [SerializeField] private CameraController cameraController;
+    [SerializeField] private WeaponController weaponController;
 
     [Header("Movement Settings")]
     [SerializeField] private float walkSpeed = 1.5f;
@@ -21,6 +23,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("Weapon Settings")]
     [SerializeField] private float weaponLayerWeightChangeFactor = 10f;
+    [SerializeField] private WeaponTransform[] weaponTransforms;
 
     // Private Variables
     private CharacterController characterController;
@@ -41,6 +44,8 @@ public class PlayerController : MonoBehaviour
 
     private int weaponAnimationLayerIndex;
     private float weaponAnimationLayerWeight;
+    private List<WeaponType> weaponTypes;
+    private List<GameObject> weapons;
 
     private Vector3 inputDirection;
     private bool isRunning;
@@ -52,6 +57,8 @@ public class PlayerController : MonoBehaviour
         // Setting Variables
         characterController = GetComponent<CharacterController>();
         animator = GetComponentInChildren<Animator>();
+        weaponTypes = new List<WeaponType>();
+        weapons = new List<GameObject>();
     }
 
     private void Start()
@@ -70,6 +77,7 @@ public class PlayerController : MonoBehaviour
 
         weaponAnimationLayerIndex = 1;
         weaponAnimationLayerWeight = 0f;
+        CreateWeapons();
 
         AssignInputs();
     }
@@ -102,6 +110,13 @@ public class PlayerController : MonoBehaviour
 
         inputControls.Player.Fire.performed += ctx => isFiring = true;
         inputControls.Player.Fire.canceled += ctx => isFiring = false;
+
+        inputControls.Player.WeaponOne.started += ctx => EquipWeapon(WeaponType.PISTOL);
+        inputControls.Player.WeaponTwo.started += ctx => EquipWeapon(WeaponType.RIFLE);
+        inputControls.Player.WeaponThree.started += ctx => EquipWeapon(WeaponType.SHOTGUN);
+        inputControls.Player.WeaponStow.started += ctx => EquipWeapon(WeaponType.NONE);
+
+        inputControls.Game.Pause.started += ctx => Time.timeScale = 0f;
     }
     #endregion
 
@@ -143,10 +158,10 @@ public class PlayerController : MonoBehaviour
         {
             ChangeActionState(PlayerActionState.FIRE);
         }
-        else if(isAiming)
+        else if (isAiming)
         {
             ChangeActionState(PlayerActionState.AIM);
-        }    
+        }
         else
         {
             ChangeActionState(PlayerActionState.NONE);
@@ -338,6 +353,41 @@ public class PlayerController : MonoBehaviour
 
         // Updating the "speed" parameter to smoothly blend between idle, walk, and run in the Animator.
         animator.SetFloat("speed", normalizedSpeed, 0.1f, Time.deltaTime);
+    }
+    #endregion
+
+    #region Weapon
+    private void CreateWeapons()
+    {
+        foreach (WeaponTransform weaponTransform in weaponTransforms)
+        {
+            GameObject weapon =
+                weaponController.CreateWeapon(weaponTransform.weaponType, weaponTransform.weaponParentTransform);
+
+            weaponTypes.Add(weaponTransform.weaponType);
+            weapons.Add(weapon);
+        }
+    }
+
+    private void EquipWeapon(WeaponType _weaponType)
+    {
+        SwitchOffWeapons();
+
+        if (_weaponType == WeaponType.NONE) return;
+
+        foreach (WeaponTransform weaponTransform in weaponTransforms)
+        {
+            if (weaponTransform.weaponType == _weaponType)
+                weaponTransform.weaponParentTransform.gameObject.SetActive(true);
+        }
+
+    }
+    private void SwitchOffWeapons()
+    {
+        foreach (WeaponTransform weaponTransform in weaponTransforms)
+        {
+            weaponTransform.weaponParentTransform.gameObject.SetActive(false);
+        }
     }
     #endregion
 }
