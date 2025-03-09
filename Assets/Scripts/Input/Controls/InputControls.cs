@@ -31,7 +31,7 @@ public partial class @InputControls: IInputActionCollection2, IDisposable
                     ""name"": ""Movement"",
                     ""type"": ""Value"",
                     ""id"": ""1a419e67-080f-4268-8da8-b3b41fb3f0a9"",
-                    ""expectedControlType"": ""Vector2"",
+                    ""expectedControlType"": ""Vector3"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
@@ -98,6 +98,15 @@ public partial class @InputControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""MousePosition"",
+                    ""type"": ""Value"",
+                    ""id"": ""e27f0620-0e74-475f-a9dc-a1f6cce95070"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -287,6 +296,17 @@ public partial class @InputControls: IInputActionCollection2, IDisposable
                     ""action"": ""WeaponStow"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""417e2e91-bdf4-471a-abff-97d233421063"",
+                    ""path"": ""<Mouse>/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MousePosition"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -298,7 +318,7 @@ public partial class @InputControls: IInputActionCollection2, IDisposable
                     ""name"": ""MouseDelta"",
                     ""type"": ""Value"",
                     ""id"": ""18216bb1-186b-4370-afb7-ad155fcced18"",
-                    ""expectedControlType"": """",
+                    ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
@@ -359,6 +379,7 @@ public partial class @InputControls: IInputActionCollection2, IDisposable
         m_Player_WeaponTwo = m_Player.FindAction("WeaponTwo", throwIfNotFound: true);
         m_Player_WeaponThree = m_Player.FindAction("WeaponThree", throwIfNotFound: true);
         m_Player_WeaponStow = m_Player.FindAction("WeaponStow", throwIfNotFound: true);
+        m_Player_MousePosition = m_Player.FindAction("MousePosition", throwIfNotFound: true);
         // Camera
         m_Camera = asset.FindActionMap("Camera", throwIfNotFound: true);
         m_Camera_MouseDelta = m_Camera.FindAction("MouseDelta", throwIfNotFound: true);
@@ -441,6 +462,7 @@ public partial class @InputControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_WeaponTwo;
     private readonly InputAction m_Player_WeaponThree;
     private readonly InputAction m_Player_WeaponStow;
+    private readonly InputAction m_Player_MousePosition;
     public struct PlayerActions
     {
         private @InputControls m_Wrapper;
@@ -453,6 +475,7 @@ public partial class @InputControls: IInputActionCollection2, IDisposable
         public InputAction @WeaponTwo => m_Wrapper.m_Player_WeaponTwo;
         public InputAction @WeaponThree => m_Wrapper.m_Player_WeaponThree;
         public InputAction @WeaponStow => m_Wrapper.m_Player_WeaponStow;
+        public InputAction @MousePosition => m_Wrapper.m_Player_MousePosition;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -486,6 +509,9 @@ public partial class @InputControls: IInputActionCollection2, IDisposable
             @WeaponStow.started += instance.OnWeaponStow;
             @WeaponStow.performed += instance.OnWeaponStow;
             @WeaponStow.canceled += instance.OnWeaponStow;
+            @MousePosition.started += instance.OnMousePosition;
+            @MousePosition.performed += instance.OnMousePosition;
+            @MousePosition.canceled += instance.OnMousePosition;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -514,6 +540,9 @@ public partial class @InputControls: IInputActionCollection2, IDisposable
             @WeaponStow.started -= instance.OnWeaponStow;
             @WeaponStow.performed -= instance.OnWeaponStow;
             @WeaponStow.canceled -= instance.OnWeaponStow;
+            @MousePosition.started -= instance.OnMousePosition;
+            @MousePosition.performed -= instance.OnMousePosition;
+            @MousePosition.canceled -= instance.OnMousePosition;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -633,6 +662,7 @@ public partial class @InputControls: IInputActionCollection2, IDisposable
         void OnWeaponTwo(InputAction.CallbackContext context);
         void OnWeaponThree(InputAction.CallbackContext context);
         void OnWeaponStow(InputAction.CallbackContext context);
+        void OnMousePosition(InputAction.CallbackContext context);
     }
     public interface ICameraActions
     {

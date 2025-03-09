@@ -25,6 +25,11 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float weaponLayerWeightChangeFactor = 10f;
     [SerializeField] private WeaponTransform[] weaponTransforms;
 
+    [Header("Aim Settings")]
+    [SerializeField] private Transform aimTransform;
+    [SerializeField] private LayerMask aimLayer;
+    [SerializeField] private float aimMaxDistance = 10f;
+
     // Private Variables
     private CharacterController characterController;
     private Animator animator;
@@ -46,6 +51,8 @@ public class PlayerController : MonoBehaviour
     private float weaponAnimationLayerWeight;
     private List<WeaponType> weaponTypes;
     private List<GameObject> weapons;
+
+    private Vector2 aimPosition;
 
     private Vector3 inputDirection;
     private bool isRunning;
@@ -117,6 +124,9 @@ public class PlayerController : MonoBehaviour
         inputControls.Player.WeaponStow.started += ctx => EquipWeapon(WeaponType.NONE);
 
         inputControls.Game.Pause.started += ctx => Time.timeScale = 0f;
+
+        inputControls.Player.MousePosition.performed += ctx => aimPosition = ctx.ReadValue<Vector2>();
+        inputControls.Player.MousePosition.canceled += ctx => aimPosition = Vector2.zero;
     }
     #endregion
 
@@ -130,6 +140,8 @@ public class PlayerController : MonoBehaviour
         UpdateAnimationParameters();
         UpdateMovementAnimation();
         UpdateActionAnimation();
+
+        AimTowardsMouse();
     }
 
     #region Player Movement State
@@ -198,7 +210,7 @@ public class PlayerController : MonoBehaviour
             targetDirection = (cameraController.GetCameraForwardXZNormalized() * inputDirection.z +
                 cameraController.GetCameraRightXZNormalized() * inputDirection.x).normalized;
 
-            RotatePlayerTowardsCamera();
+            RotatePlayerTowards(cameraController.GetCameraForwardXZNormalized());
             lastMoveDirection = moveDirection;
         }
         else if (currentSpeed > 0.1f)
@@ -209,13 +221,13 @@ public class PlayerController : MonoBehaviour
         //  Smoothly changing move Direction towards target Direction
         moveDirection = Vector3.Lerp(moveDirection, targetDirection, Time.deltaTime * directionSmoothSpeed);
     }
-    private void RotatePlayerTowardsCamera()
+    private void RotatePlayerTowards(Vector3 _direction)
     {
         // Rotate Player Towards Camera, when player is not falling
         if (playerMovementState == PlayerMovementState.FALL)
             return;
 
-        Quaternion targetRotation = Quaternion.LookRotation(cameraController.GetCameraForwardXZNormalized());
+        Quaternion targetRotation = Quaternion.LookRotation(_direction);
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
     }
     private void ApplyGravity()
@@ -387,6 +399,36 @@ public class PlayerController : MonoBehaviour
         foreach (WeaponTransform weaponTransform in weaponTransforms)
         {
             weaponTransform.weaponParentTransform.gameObject.SetActive(false);
+        }
+    }
+    private void AimTowardsMouse()
+    {
+        if (playerActionState == PlayerActionState.AIM || playerActionState == PlayerActionState.FIRE)
+        {
+            aimTransform.gameObject.SetActive(true);
+
+            Ray ray = Camera.main.ScreenPointToRay(aimPosition);
+            Vector3 aimTarget;
+            if (Physics.Raycast(ray, out var hitInfo, aimMaxDistance, aimLayer))
+            {
+                aimTarget = hitInfo.point;
+            }
+            else
+            {
+                aimTarget = ray.GetPoint(aimMaxDistance);
+            }
+
+            aimTransform.position = aimTarget;
+
+            Vector3 direction = (aimTarget - transform.position).normalized;
+            direction.y = 0f;
+
+            if (direction != Vector3.zero)
+                RotatePlayerTowards(direction);
+        }
+        else
+        {
+            aimTransform.gameObject.SetActive(false);
         }
     }
     #endregion
