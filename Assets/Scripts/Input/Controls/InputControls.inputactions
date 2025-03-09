@@ -15,9 +15,27 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "IsRunning",
+                    "name": "Run",
                     "type": "Button",
                     "id": "b7e8c82f-f812-4384-bf1a-94b50a366992",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Aim",
+                    "type": "Button",
+                    "id": "659bdc80-0dff-4114-8d87-03e2084bfc06",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Fire",
+                    "type": "Button",
+                    "id": "5d5eef59-6642-4536-956a-ce5c0492553f",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -142,7 +160,29 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "IsRunning",
+                    "action": "Run",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "08f92e6b-1137-44ce-8bdb-5ede90082bd8",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Fire",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "62f29a4c-5770-46e1-94b2-c97bc1f0f51e",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Aim",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
