@@ -245,6 +245,50 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6435304552766777602, guid: b3be32f90d47f8e48ac4d1630b45d456, type: 3}
   m_PrefabInstance: {fileID: 4160769066363564752}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &795662104
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 795662105}
+  - component: {fileID: 795662106}
+  m_Layer: 0
+  m_Name: Input
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &795662105
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 795662104}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &795662106
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 795662104}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f536b0a6b3b919f4a8abc5af0a3be824, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0
@@ -496,6 +540,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 412605806165008903, guid: b3be32f90d47f8e48ac4d1630b45d456, type: 3}
+      propertyPath: inputController
+      value: 
+      objectReference: {fileID: 795662106}
+    - target: {fileID: 412605806165008903, guid: b3be32f90d47f8e48ac4d1630b45d456, type: 3}
       propertyPath: cameraController
       value: 
       objectReference: {fileID: 9199063788929511427}
@@ -647,8 +695,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 769c4c221ed7f55459f6ddd8e33816e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inputController: {fileID: 795662106}
   cameraPivot: {fileID: 771288666}
-  mouseSensitivity: 3
+  mouseSensitivity: 0.5
   minPitch: 30
   maxPitch: 60
   defaultDistance: 2.5
@@ -662,6 +711,7 @@ MonoBehaviour:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
+  - {fileID: 795662105}
   - {fileID: 9166199259500346505}
   - {fileID: 1139164505}
   - {fileID: 840796090}
