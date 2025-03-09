@@ -576,6 +576,11 @@ MonoBehaviour:
     weaponParentTransform: {fileID: 3628973969484276650}
   - weaponType: 3
     weaponParentTransform: {fileID: 430906556443882140}
+  aimTransform: {fileID: 0}
+  aimLayer:
+    serializedVersion: 2
+    m_Bits: 128
+  aimMaxDistance: 10
 --- !u!1 &1915527914439269040
 GameObject:
   m_ObjectHideFlags: 0
