@@ -1,5 +1,24 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1107 &-7101221773948758284
+AnimatorStateMachine:
+  serializedVersion: 6
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Shotgun Layer
+  m_ChildStates: []
+  m_ChildStateMachines: []
+  m_AnyStateTransitions: []
+  m_EntryTransitions: []
+  m_StateMachineTransitions: {}
+  m_StateMachineBehaviours: []
+  m_AnyStatePosition: {x: 50, y: 20, z: 0}
+  m_EntryPosition: {x: 50, y: 120, z: 0}
+  m_ExitPosition: {x: 800, y: 120, z: 0}
+  m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
+  m_DefaultState: {fileID: 0}
 --- !u!206 &-6946891799923282928
 BlendTree:
   m_ObjectHideFlags: 1
@@ -54,7 +73,7 @@ AnimatorStateMachine:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Weapon Layer
+  m_Name: Pistol Layer
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: 1378749417434505972}
@@ -113,6 +132,25 @@ AnimatorState:
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
+--- !u!1107 &-1973248542706077037
+AnimatorStateMachine:
+  serializedVersion: 6
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Rifle Layer
+  m_ChildStates: []
+  m_ChildStateMachines: []
+  m_AnyStateTransitions: []
+  m_EntryTransitions: []
+  m_StateMachineTransitions: {}
+  m_StateMachineBehaviours: []
+  m_AnyStatePosition: {x: 50, y: 20, z: 0}
+  m_EntryPosition: {x: 50, y: 120, z: 0}
+  m_ExitPosition: {x: 800, y: 120, z: 0}
+  m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
+  m_DefaultState: {fileID: 0}
 --- !u!1107 &-238192648959572557
 AnimatorStateMachine:
   serializedVersion: 6
@@ -188,13 +226,49 @@ AnimatorController:
     m_SyncedLayerAffectsTiming: 0
     m_Controller: {fileID: 9100000}
   - serializedVersion: 5
-    m_Name: Weapon Layer
+    m_Name: Pistol Layer
     m_StateMachine: {fileID: -5728058281069404370}
     m_Mask: {fileID: 31900000, guid: 3b3826f7039c0b5438209e14bbc5f284, type: 2}
     m_Motions: []
     m_Behaviours: []
     m_BlendingMode: 0
     m_SyncedLayerIndex: -1
+    m_DefaultWeight: 0
+    m_IKPass: 0
+    m_SyncedLayerAffectsTiming: 0
+    m_Controller: {fileID: 9100000}
+  - serializedVersion: 5
+    m_Name: Rifle Layer
+    m_StateMachine: {fileID: -1973248542706077037}
+    m_Mask: {fileID: 31900000, guid: 3b3826f7039c0b5438209e14bbc5f284, type: 2}
+    m_Motions:
+    - serializedVersion: 2
+      m_State: {fileID: 5218904734828458769}
+      m_Motion: {fileID: -203655887218126122, guid: 8dbc22a17a72d964e85f8c97766370fc, type: 3}
+    - serializedVersion: 2
+      m_State: {fileID: 1378749417434505972}
+      m_Motion: {fileID: -203655887218126122, guid: 5cb351bd67bcd0045a53f8e9811673ff, type: 3}
+    m_Behaviours: []
+    m_BlendingMode: 0
+    m_SyncedLayerIndex: 1
+    m_DefaultWeight: 0
+    m_IKPass: 0
+    m_SyncedLayerAffectsTiming: 0
+    m_Controller: {fileID: 9100000}
+  - serializedVersion: 5
+    m_Name: Shotgun Layer
+    m_StateMachine: {fileID: -7101221773948758284}
+    m_Mask: {fileID: 31900000, guid: 3b3826f7039c0b5438209e14bbc5f284, type: 2}
+    m_Motions:
+    - serializedVersion: 2
+      m_State: {fileID: 5218904734828458769}
+      m_Motion: {fileID: -203655887218126122, guid: 95f62e2d34abc544c8dff5c347b8a74c, type: 3}
+    - serializedVersion: 2
+      m_State: {fileID: 1378749417434505972}
+      m_Motion: {fileID: -203655887218126122, guid: 0bd65e85d89b85548b0f0c16d185f717, type: 3}
+    m_Behaviours: []
+    m_BlendingMode: 0
+    m_SyncedLayerIndex: 1
     m_DefaultWeight: 0
     m_IKPass: 0
     m_SyncedLayerAffectsTiming: 0
@@ -206,7 +280,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Rifle_Idle
+  m_Name: Weapon_Idle
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -219,7 +293,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: -203655887218126122, guid: 5cb351bd67bcd0045a53f8e9811673ff, type: 3}
+  m_Motion: {fileID: -203655887218126122, guid: d31bb3ec90df63a4fa9fa9cf00edf051, type: 3}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -305,7 +379,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Rifle_Fire
+  m_Name: Weapon_Fire
   m_Speed: 10
   m_CycleOffset: 0
   m_Transitions: []
@@ -318,7 +392,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: -203655887218126122, guid: 8dbc22a17a72d964e85f8c97766370fc, type: 3}
+  m_Motion: {fileID: -203655887218126122, guid: a4bfbd47c47313e4fa3a24389068c139, type: 3}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 

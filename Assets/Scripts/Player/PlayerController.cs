@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Animations.Rigging;
 
 public class PlayerController : MonoBehaviour
 {
@@ -24,8 +25,9 @@ public class PlayerController : MonoBehaviour
 
     [Header("Weapon Settings")]
     [SerializeField] private float weaponLayerWeightChangeFactor = 10f;
-    [SerializeField] private Transform weaponHolderTransform;
-    [SerializeField] private WeaponType[] weaponTypes;
+    [SerializeField] private WeaponIKData[] weaponIKDatas;
+    [SerializeField] private MultiAimConstraint rightHandAimConstraint;
+    [SerializeField] private TwoBoneIKConstraint leftHandIK;
 
     [Header("Aim Settings")]
     [SerializeField] private Transform aimTransform;
@@ -52,7 +54,8 @@ public class PlayerController : MonoBehaviour
 
     private int weaponAnimationLayerIndex;
     private float weaponAnimationLayerWeight;
-    private List<GameObject> weaponPrefabs;
+    private Dictionary<WeaponType, GameObject> weaponPrefabs;
+    private Transform currentWeaponHolder;
 
     private Vector2 aimPosition;
 
@@ -66,7 +69,7 @@ public class PlayerController : MonoBehaviour
         // Setting Variables
         characterController = GetComponent<CharacterController>();
         animator = GetComponentInChildren<Animator>();
-        weaponPrefabs = new List<GameObject>();
+        weaponPrefabs = new Dictionary<WeaponType, GameObject>();
     }
 
     private void Start()
@@ -135,6 +138,7 @@ public class PlayerController : MonoBehaviour
     {
         UpdateMovementState();
         UpdateActionState();
+        //playerActionState = PlayerActionState.AIM;
         MovePlayer();
 
         UpdateAnimationLayerWeight();
@@ -304,24 +308,14 @@ public class PlayerController : MonoBehaviour
         switch (playerActionState)
         {
             case PlayerActionState.FIRE:
-                animator.Play("Rifle_Fire");
+                animator.Play("Weapon_Fire");
                 break;
             case PlayerActionState.AIM:
-                animator.Play("Rifle_Idle");
+                animator.Play("Weapon_Idle");
                 break;
             default:
                 weaponAnimationLayerWeight = 0f;
                 break;
-        }
-    }
-    private void UpdateAnimationLayerWeight()
-    {
-        if (weaponAnimationLayerIndex != -1) // Ensuring that the layer exists
-        {
-            float currentWeight = animator.GetLayerWeight(weaponAnimationLayerIndex);
-            float targetWeight = Mathf.Lerp(currentWeight, weaponAnimationLayerWeight,
-                Time.deltaTime * weaponLayerWeightChangeFactor);
-            animator.SetLayerWeight(weaponAnimationLayerIndex, targetWeight);
         }
     }
     private void UpdateAnimationParameters()
@@ -372,34 +366,114 @@ public class PlayerController : MonoBehaviour
     #region Weapon
     private void CreateWeapons()
     {
-        foreach (WeaponType weaponType in weaponTypes)
+        foreach (WeaponIKData weaponIKData in weaponIKDatas)
         {
-            GameObject weaponPrefab = weaponController.CreateWeapon(weaponType, weaponHolderTransform);
-            weaponPrefabs.Add(weaponPrefab);
+            GameObject weaponPrefab = weaponController.CreateWeapon(weaponIKData.weaponType);
+            weaponPrefabs[weaponIKData.weaponType] = weaponPrefab;
+
+            Transform parentTransform = GetWeaponIKData(weaponIKData.weaponType).weaponTypeHolder;
+            weaponPrefab.transform.SetParent(parentTransform);
+
+            AttachWeaponToRightHand(weaponIKData.weaponType);
         }
         SwitchOffWeapons();
     }
+    private void AttachWeaponToRightHand(WeaponType _weaponType)
+    {
+        WeaponIKData weaponIKData = GetWeaponIKData(_weaponType);
+        Transform rightHand_TargetTransform = weaponIKData.weaponTypeHolder.transform.Find("RightHand_Target");
 
+        weaponPrefabs[_weaponType].transform.position = rightHand_TargetTransform.position;
+        weaponPrefabs[_weaponType].transform.rotation = rightHand_TargetTransform.rotation;
+        weaponPrefabs[_weaponType].transform.localScale = rightHand_TargetTransform.localScale;
+    }
     private void EquipWeapon(WeaponType _weaponType)
     {
         SwitchOffWeapons();
 
         if (_weaponType == WeaponType.NONE) return;
 
-        int weaponIndex = GetWeaponIndex(_weaponType);
-        weaponPrefabs[weaponIndex].gameObject.SetActive(true);
+        weaponPrefabs[_weaponType].gameObject.SetActive(true);
 
+        WeaponIKData weaponIKData = GetWeaponIKData(_weaponType);
+        currentWeaponHolder = weaponIKData.weaponTypeHolder;
+
+        AttachLeftHandToWeapon(_weaponType);
+
+        SetWeaponType(_weaponType);
     }
     private void SwitchOffWeapons()
     {
-        foreach (WeaponType weaponType in weaponTypes)
+        foreach (WeaponIKData weaponIKData in weaponIKDatas)
         {
-            int weaponIndex = GetWeaponIndex(weaponType);
-            weaponPrefabs[weaponIndex].gameObject.SetActive(false);
+            weaponPrefabs[weaponIKData.weaponType].gameObject.SetActive(false);
         }
+        SetWeaponType(WeaponType.NONE);
     }
 
-    private int GetWeaponIndex(WeaponType _weaponType) => Array.IndexOf(weaponTypes, _weaponType);
+    private void AttachLeftHandToWeapon(WeaponType _weaponType)
+    {
+        Transform currentLeftHand_Target = currentWeaponHolder.transform.Find("LeftHand_Target");
+        Transform currentLeftHand_Hint = currentWeaponHolder.transform.Find("LeftHand_Hint");
+
+        leftHandIK.data.target.localPosition = currentLeftHand_Target.localPosition;
+        leftHandIK.data.target.localRotation = currentLeftHand_Target.localRotation;
+        leftHandIK.data.target.localScale = currentLeftHand_Target.localScale;
+
+        leftHandIK.data.hint.localPosition = currentLeftHand_Hint.localPosition;
+        leftHandIK.data.hint.localRotation = currentLeftHand_Hint.localRotation;
+        leftHandIK.data.hint.localScale = currentLeftHand_Hint.localScale;
+    }
+    private void SetWeaponType(WeaponType _weaponType)
+    {
+        switch (_weaponType)
+        {
+            case WeaponType.PISTOL:
+                SetAnimationLayer(1);
+                SetIKWeight(1f);
+                break;
+            case WeaponType.RIFLE:
+                SetAnimationLayer(2);
+                SetIKWeight(1f);
+                break;
+            case WeaponType.SHOTGUN:
+                SetAnimationLayer(3);
+                SetIKWeight(1f);
+                break;
+            case WeaponType.NONE:
+            default:
+                SetAnimationLayer(0);
+                SetIKWeight(0f);
+                break;
+        }
+    }
+    private void SetIKWeight(float _weight)
+    {
+        leftHandIK.weight = _weight;
+        rightHandAimConstraint.weight = _weight;
+    }
+    private void UpdateAnimationLayerWeight()
+    {
+        if (weaponAnimationLayerIndex != -1) // Ensuring that the layer exists
+        {
+            float currentWeight = animator.GetLayerWeight(weaponAnimationLayerIndex);
+            float targetWeight = Mathf.Lerp(currentWeight, weaponAnimationLayerWeight,
+                Time.deltaTime * weaponLayerWeightChangeFactor);
+            animator.SetLayerWeight(weaponAnimationLayerIndex, targetWeight);
+        }
+    }
+    private void SetAnimationLayer(int _layerIndex)
+    {
+        for (int i = 1; i < animator.layerCount; ++i)
+        {
+            animator.SetLayerWeight(i, 0f);
+        }
+        weaponAnimationLayerIndex = _layerIndex;
+        weaponAnimationLayerWeight = 1f;
+    }
+    private WeaponIKData GetWeaponIKData(WeaponType _weaponType) =>
+        Array.Find(weaponIKDatas, w => w.weaponType == _weaponType);
+
     private void AimTowardsMouse()
     {
         if (playerActionState == PlayerActionState.AIM || playerActionState == PlayerActionState.FIRE)
