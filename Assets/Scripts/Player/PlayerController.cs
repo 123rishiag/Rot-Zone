@@ -52,6 +52,7 @@ public class PlayerController : MonoBehaviour
     private float yawRotation;
     private bool isGrounded;
 
+    private WeaponType currentWeaponType;
     private int weaponAnimationLayerIndex;
     private float weaponAnimationLayerWeight;
     private Dictionary<WeaponType, GameObject> weaponPrefabs;
@@ -86,6 +87,7 @@ public class PlayerController : MonoBehaviour
         yawRotation = 0f;
         isGrounded = false;
 
+        currentWeaponType = WeaponType.NONE;
         weaponAnimationLayerIndex = 1;
         weaponAnimationLayerWeight = 0f;
         CreateWeapons();
@@ -138,7 +140,7 @@ public class PlayerController : MonoBehaviour
     {
         UpdateMovementState();
         UpdateActionState();
-        //playerActionState = PlayerActionState.AIM;
+        // playerActionState = PlayerActionState.AIM;
         MovePlayer();
 
         UpdateAnimationLayerWeight();
@@ -390,8 +392,9 @@ public class PlayerController : MonoBehaviour
     private void EquipWeapon(WeaponType _weaponType)
     {
         SwitchOffWeapons();
+        currentWeaponType = _weaponType;
 
-        if (_weaponType == WeaponType.NONE) return;
+        if (currentWeaponType == WeaponType.NONE) return;
 
         weaponPrefabs[_weaponType].gameObject.SetActive(true);
 
@@ -400,7 +403,7 @@ public class PlayerController : MonoBehaviour
 
         AttachLeftHandToWeapon(_weaponType);
 
-        SetWeaponType(_weaponType);
+        SetWeaponType();
     }
     private void SwitchOffWeapons()
     {
@@ -408,7 +411,7 @@ public class PlayerController : MonoBehaviour
         {
             weaponPrefabs[weaponIKData.weaponType].gameObject.SetActive(false);
         }
-        SetWeaponType(WeaponType.NONE);
+        SetWeaponType();
     }
 
     private void AttachLeftHandToWeapon(WeaponType _weaponType)
@@ -424,9 +427,9 @@ public class PlayerController : MonoBehaviour
         leftHandIK.data.hint.localRotation = currentLeftHand_Hint.localRotation;
         leftHandIK.data.hint.localScale = currentLeftHand_Hint.localScale;
     }
-    private void SetWeaponType(WeaponType _weaponType)
+    private void SetWeaponType()
     {
-        switch (_weaponType)
+        switch (currentWeaponType)
         {
             case WeaponType.PISTOL:
                 SetAnimationLayer(1);
@@ -482,6 +485,7 @@ public class PlayerController : MonoBehaviour
 
             Ray ray = Camera.main.ScreenPointToRay(aimPosition);
             Vector3 aimTarget;
+
             if (Physics.Raycast(ray, out var hitInfo, aimMaxDistance, aimLayer))
             {
                 aimTarget = hitInfo.point;
