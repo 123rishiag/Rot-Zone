@@ -62,7 +62,6 @@ public class PlayerController : MonoBehaviour
 
     private Vector3 inputDirection;
     private bool isRunning;
-    private bool isAiming;
     private bool isFiring;
 
     private void Awake()
@@ -118,9 +117,6 @@ public class PlayerController : MonoBehaviour
         inputControls.Player.Run.performed += ctx => isRunning = true;
         inputControls.Player.Run.canceled += ctx => isRunning = false;
 
-        inputControls.Player.Aim.performed += ctx => isAiming = true;
-        inputControls.Player.Aim.canceled += ctx => isAiming = false;
-
         inputControls.Player.Fire.performed += ctx => isFiring = true;
         inputControls.Player.Fire.canceled += ctx => isFiring = false;
 
@@ -173,11 +169,11 @@ public class PlayerController : MonoBehaviour
     }
     private void UpdateActionState()
     {
-        if (isFiring)
+        if (currentWeaponType != WeaponType.NONE && isFiring)
         {
             ChangeActionState(PlayerActionState.FIRE);
         }
-        else if (isAiming)
+        else if (currentWeaponType != WeaponType.NONE)
         {
             ChangeActionState(PlayerActionState.AIM);
         }
@@ -394,16 +390,17 @@ public class PlayerController : MonoBehaviour
         SwitchOffWeapons();
         currentWeaponType = _weaponType;
 
-        if (currentWeaponType == WeaponType.NONE) return;
+        if (currentWeaponType != WeaponType.NONE)
+        {
+            weaponPrefabs[_weaponType].gameObject.SetActive(true);
 
-        weaponPrefabs[_weaponType].gameObject.SetActive(true);
+            WeaponIKData weaponIKData = GetWeaponIKData(_weaponType);
+            currentWeaponHolder = weaponIKData.weaponTypeHolder;
 
-        WeaponIKData weaponIKData = GetWeaponIKData(_weaponType);
-        currentWeaponHolder = weaponIKData.weaponTypeHolder;
+            AttachLeftHandToWeapon(_weaponType);
+        }
 
-        AttachLeftHandToWeapon(_weaponType);
-
-        SetWeaponType();
+        SetWeaponSetting();
     }
     private void SwitchOffWeapons()
     {
@@ -411,7 +408,6 @@ public class PlayerController : MonoBehaviour
         {
             weaponPrefabs[weaponIKData.weaponType].gameObject.SetActive(false);
         }
-        SetWeaponType();
     }
 
     private void AttachLeftHandToWeapon(WeaponType _weaponType)
@@ -427,7 +423,7 @@ public class PlayerController : MonoBehaviour
         leftHandIK.data.hint.localRotation = currentLeftHand_Hint.localRotation;
         leftHandIK.data.hint.localScale = currentLeftHand_Hint.localScale;
     }
-    private void SetWeaponType()
+    private void SetWeaponSetting()
     {
         switch (currentWeaponType)
         {
@@ -471,6 +467,7 @@ public class PlayerController : MonoBehaviour
         {
             animator.SetLayerWeight(i, 0f);
         }
+
         weaponAnimationLayerIndex = _layerIndex;
         weaponAnimationLayerWeight = 1f;
     }
