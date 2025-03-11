@@ -31,7 +31,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("Aim Settings")]
     [SerializeField] private Transform aimTransform;
-    [SerializeField] private Vector3 aimTransformDefaultPosition = new Vector3(1f, 1.5f, 1f);
+    [SerializeField] private Vector3 aimTransformDefaultPosition = new Vector3(0f, 1.5f, 1f);
     [SerializeField] private LayerMask aimLayer;
     [SerializeField] private float aimMaxDistance = 10f;
 
@@ -70,6 +70,9 @@ public class PlayerController : MonoBehaviour
         characterController = GetComponent<CharacterController>();
         animator = GetComponentInChildren<Animator>();
         weaponPrefabs = new Dictionary<WeaponType, GameObject>();
+
+        // Ensure animations update in sync with physics
+        animator.updateMode = AnimatorUpdateMode.Fixed;
     }
 
     private void Start()
@@ -87,8 +90,9 @@ public class PlayerController : MonoBehaviour
         isGrounded = false;
 
         currentWeaponType = WeaponType.NONE;
-        weaponAnimationLayerIndex = 1;
+        weaponAnimationLayerIndex = 0;
         weaponAnimationLayerWeight = 0f;
+        SetCurrentWeaponSetting();
         CreateWeapons();
 
         AssignInputs();
@@ -136,7 +140,6 @@ public class PlayerController : MonoBehaviour
     {
         UpdateMovementState();
         UpdateActionState();
-        // playerActionState = PlayerActionState.AIM;
         MovePlayer();
 
         UpdateAnimationLayerWeight();
@@ -147,7 +150,7 @@ public class PlayerController : MonoBehaviour
         AimTowardsMouse();
     }
 
-    #region Player Movement State
+    #region Player State Handling
     private void UpdateMovementState()
     {
         if (!isGrounded)
@@ -194,7 +197,7 @@ public class PlayerController : MonoBehaviour
     }
     #endregion
 
-    #region Movement
+    #region Player Controls
     private void MovePlayer()
     {
         UpdateDirection();
@@ -213,12 +216,25 @@ public class PlayerController : MonoBehaviour
             targetDirection = (cameraController.GetCameraForwardXZNormalized() * inputDirection.z +
                 cameraController.GetCameraRightXZNormalized() * inputDirection.x).normalized;
 
-            RotatePlayerTowards(cameraController.GetCameraForwardXZNormalized());
+            // If player is unarmed, rotate based on camera
+            if (currentWeaponType == WeaponType.NONE)
+            {
+                RotatePlayerTowards(cameraController.GetCameraForwardXZNormalized());
+            }
+
             lastMoveDirection = moveDirection;
         }
         else if (currentSpeed > 0.1f)
         {
-            targetDirection = lastMoveDirection;
+            if (inputDirection.magnitude < 0.1f && currentWeaponType != WeaponType.NONE)
+            {
+                Vector3 cameraForward = cameraController.GetCameraForwardXZNormalized();
+                targetDirection = Quaternion.LookRotation(cameraForward) * Vector3.forward;
+            }
+            else
+            {
+                targetDirection = lastMoveDirection;
+            }
         }
 
         //  Smoothly changing move Direction towards target Direction
@@ -229,6 +245,8 @@ public class PlayerController : MonoBehaviour
         // Rotate Player Towards Camera, when player is not falling
         if (playerMovementState == PlayerMovementState.FALL)
             return;
+
+        if (_direction == Vector3.zero) return;
 
         Quaternion targetRotation = Quaternion.LookRotation(_direction);
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
@@ -271,6 +289,38 @@ public class PlayerController : MonoBehaviour
             // Clamping Current Speed to Target Speed, should not go below target speed while deaccelerating
             if (currentSpeed < targetSpeed)
                 currentSpeed = targetSpeed;
+        }
+    }
+    private void AimTowardsMouse()
+    {
+        if (playerActionState == PlayerActionState.AIM || playerActionState == PlayerActionState.FIRE)
+        {
+            aimTransform.gameObject.SetActive(true);
+
+            Ray ray = Camera.main.ScreenPointToRay(aimPosition);
+            Vector3 aimTarget;
+
+            if (Physics.Raycast(ray, out var hitInfo, aimMaxDistance, aimLayer))
+            {
+                aimTarget = hitInfo.point;
+            }
+            else
+            {
+                aimTarget = ray.GetPoint(aimMaxDistance);
+            }
+
+            aimTransform.position = aimTarget;
+
+            Vector3 direction = (aimTarget - transform.position).normalized;
+            direction.y = 0f;
+
+            if (direction != Vector3.zero)
+                RotatePlayerTowards(direction);
+        }
+        else
+        {
+            aimTransform.gameObject.SetActive(false);
+            aimTransform.localPosition = aimTransformDefaultPosition;
         }
     }
     #endregion
@@ -324,7 +374,17 @@ public class PlayerController : MonoBehaviour
         // which will lead to player's movement animation out of sync with movement direction
         if (inputDirection.magnitude > 0.1f)
         {
-            yawRotation = cameraController.GetTransform().eulerAngles.y;
+            // If player is unarmed, blend movement based on camera, otherwise on player's rotation 
+            if (currentWeaponType == WeaponType.NONE)
+            {
+                // Using camera for rotation when not armed
+                yawRotation = cameraController.GetTransform().eulerAngles.y;
+            }
+            else
+            {
+                // Using player's rotation when armed
+                yawRotation = transform.eulerAngles.y;
+            }
         }
         Quaternion yawOnlyRotation = Quaternion.Euler(0, yawRotation, 0);
 
@@ -400,7 +460,7 @@ public class PlayerController : MonoBehaviour
             AttachLeftHandToWeapon(_weaponType);
         }
 
-        SetWeaponSetting();
+        SetCurrentWeaponSetting();
     }
     private void SwitchOffWeapons()
     {
@@ -423,7 +483,7 @@ public class PlayerController : MonoBehaviour
         leftHandIK.data.hint.localRotation = currentLeftHand_Hint.localRotation;
         leftHandIK.data.hint.localScale = currentLeftHand_Hint.localScale;
     }
-    private void SetWeaponSetting()
+    private void SetCurrentWeaponSetting()
     {
         switch (currentWeaponType)
         {
@@ -474,38 +534,6 @@ public class PlayerController : MonoBehaviour
     private WeaponIKData GetWeaponIKData(WeaponType _weaponType) =>
         Array.Find(weaponIKDatas, w => w.weaponType == _weaponType);
 
-    private void AimTowardsMouse()
-    {
-        if (playerActionState == PlayerActionState.AIM || playerActionState == PlayerActionState.FIRE)
-        {
-            aimTransform.gameObject.SetActive(true);
-
-            Ray ray = Camera.main.ScreenPointToRay(aimPosition);
-            Vector3 aimTarget;
-
-            if (Physics.Raycast(ray, out var hitInfo, aimMaxDistance, aimLayer))
-            {
-                aimTarget = hitInfo.point;
-            }
-            else
-            {
-                aimTarget = ray.GetPoint(aimMaxDistance);
-            }
-
-            aimTransform.position = aimTarget;
-
-            Vector3 direction = (aimTarget - transform.position).normalized;
-            direction.y = 0f;
-
-            if (direction != Vector3.zero)
-                RotatePlayerTowards(direction);
-        }
-        else
-        {
-            aimTransform.gameObject.SetActive(false);
-            aimTransform.localPosition = aimTransformDefaultPosition;
-        }
-    }
     #endregion
 }
 
