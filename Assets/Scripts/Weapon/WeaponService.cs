@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using Object = UnityEngine.Object;
 
 namespace ServiceLocator.Weapon
 {
@@ -15,11 +14,9 @@ namespace ServiceLocator.Weapon
             weaponConfig = _weaponConfig;
         }
 
-        public GameObject CreateWeapon(WeaponType _weaponType)
+        public WeaponController CreateWeapon(WeaponType _weaponType, Transform _parentPanel)
         {
-            GameObject weaponPrefab = GetWeaponData(_weaponType).weaponPrefab;
-            GameObject weapon = Object.Instantiate(weaponPrefab);
-            return weapon;
+            return new WeaponController(GetWeaponData(_weaponType).weaponPrefab, _parentPanel);
         }
 
         private WeaponData GetWeaponData(WeaponType _weaponType) =>
