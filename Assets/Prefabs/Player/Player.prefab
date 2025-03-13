@@ -653,15 +653,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponIKDatas:
   - weaponType: 1
-    weaponTypeHolder: {fileID: 8572400879980588013}
+    weaponTransform:
+      weaponHolder: {fileID: 8572400879980588013}
+      rightHand_TargetTransform: {fileID: 601330751473462148}
+      leftHand_TargetTransform: {fileID: 5018506583136142878}
+      leftHand_HintTransform: {fileID: 9073229748077757751}
   - weaponType: 2
-    weaponTypeHolder: {fileID: 1478926393595562786}
+    weaponTransform:
+      weaponHolder: {fileID: 1478926393595562786}
+      rightHand_TargetTransform: {fileID: 3161840467740064994}
+      leftHand_TargetTransform: {fileID: 834724104272120410}
+      leftHand_HintTransform: {fileID: 8334575163125056902}
   - weaponType: 3
-    weaponTypeHolder: {fileID: 7428284830406645795}
+    weaponTransform:
+      weaponHolder: {fileID: 7428284830406645795}
+      rightHand_TargetTransform: {fileID: 2243566336365966069}
+      leftHand_TargetTransform: {fileID: 732931980772964330}
+      leftHand_HintTransform: {fileID: 15097190717707419}
   rightHandAimConstraint: {fileID: 8310985297325246404}
   leftHandIK: {fileID: 6056014414725304192}
   aimTransform: {fileID: 5103283510018147113}
-  cameraPivot: {fileID: 6435304552766777602}
 --- !u!1 &1805613497281703086
 GameObject:
   m_ObjectHideFlags: 0

@@ -14,13 +14,22 @@ namespace ServiceLocator.Weapon
     public struct WeaponData
     {
         public WeaponType weaponType;
-        public GameObject weaponPrefab;
+        public WeaponView weaponPrefab;
     }
 
     [Serializable]
     public struct WeaponIKData
     {
         public WeaponType weaponType;
-        public Transform weaponTypeHolder;
+        public WeaponTransform weaponTransform;
+    }
+
+    [Serializable]
+    public struct WeaponTransform
+    {
+        public Transform weaponHolder;
+        public Transform rightHand_TargetTransform;
+        public Transform leftHand_TargetTransform;
+        public Transform leftHand_HintTransform;
     }
 }

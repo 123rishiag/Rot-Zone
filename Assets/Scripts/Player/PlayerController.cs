@@ -30,8 +30,8 @@ namespace ServiceLocator.Player
         private WeaponType currentWeaponType;
         private int weaponAnimationLayerIndex;
         private float weaponAnimationLayerWeight;
-        private Dictionary<WeaponType, GameObject> weaponPrefabs;
-        private Transform currentWeaponHolder;
+        private Dictionary<WeaponType, WeaponController> weapons;
+        private WeaponTransform currentWeaponTransform;
 
         private Vector2 aimPosition;
 
@@ -78,7 +78,7 @@ namespace ServiceLocator.Player
             currentWeaponType = WeaponType.NONE;
             weaponAnimationLayerIndex = 0;
             weaponAnimationLayerWeight = 0f;
-            weaponPrefabs = new Dictionary<WeaponType, GameObject>();
+            weapons = new Dictionary<WeaponType, WeaponController>();
             SetCurrentWeaponSetting();
             CreateWeapons();
 
@@ -313,11 +313,10 @@ namespace ServiceLocator.Player
         {
             foreach (WeaponIKData weaponIKData in playerView.GetWeaponIKDatas())
             {
-                GameObject weaponPrefab = weaponService.CreateWeapon(weaponIKData.weaponType);
-                weaponPrefabs[weaponIKData.weaponType] = weaponPrefab;
-
-                Transform parentTransform = GetWeaponIKData(weaponIKData.weaponType).weaponTypeHolder;
-                weaponPrefab.transform.SetParent(parentTransform);
+                Transform parentTransform =
+                    GetWeaponIKData(weaponIKData.weaponType).weaponTransform.weaponHolder;
+                WeaponController weapon = weaponService.CreateWeapon(weaponIKData.weaponType, parentTransform);
+                weapons[weaponIKData.weaponType] = weapon;
 
                 AttachWeaponToRightHand(weaponIKData.weaponType);
             }
@@ -326,11 +325,9 @@ namespace ServiceLocator.Player
         private void AttachWeaponToRightHand(WeaponType _weaponType)
         {
             WeaponIKData weaponIKData = GetWeaponIKData(_weaponType);
-            Transform rightHand_TargetTransform = weaponIKData.weaponTypeHolder.transform.Find("RightHand_Target");
+            Transform rightHand_TargetTransform = weaponIKData.weaponTransform.rightHand_TargetTransform;
 
-            weaponPrefabs[_weaponType].transform.position = rightHand_TargetTransform.position;
-            weaponPrefabs[_weaponType].transform.rotation = rightHand_TargetTransform.rotation;
-            weaponPrefabs[_weaponType].transform.localScale = rightHand_TargetTransform.localScale;
+            weapons[_weaponType].SetTransform(rightHand_TargetTransform);
         }
         private void EquipWeapon(WeaponType _weaponType)
         {
@@ -339,10 +336,10 @@ namespace ServiceLocator.Player
 
             if (currentWeaponType != WeaponType.NONE)
             {
-                weaponPrefabs[_weaponType].gameObject.SetActive(true);
+                weapons[_weaponType].EnableWeapon();
 
                 WeaponIKData weaponIKData = GetWeaponIKData(_weaponType);
-                currentWeaponHolder = weaponIKData.weaponTypeHolder;
+                currentWeaponTransform = weaponIKData.weaponTransform;
 
                 AttachLeftHandToWeapon(_weaponType);
             }
@@ -353,14 +350,14 @@ namespace ServiceLocator.Player
         {
             foreach (WeaponIKData weaponIKData in playerView.GetWeaponIKDatas())
             {
-                weaponPrefabs[weaponIKData.weaponType].gameObject.SetActive(false);
+                weapons[weaponIKData.weaponType].DisableWeapon();
             }
         }
 
         private void AttachLeftHandToWeapon(WeaponType _weaponType)
         {
-            Transform currentLeftHand_Target = currentWeaponHolder.transform.Find("LeftHand_Target");
-            Transform currentLeftHand_Hint = currentWeaponHolder.transform.Find("LeftHand_Hint");
+            Transform currentLeftHand_Target = currentWeaponTransform.leftHand_TargetTransform;
+            Transform currentLeftHand_Hint = currentWeaponTransform.leftHand_HintTransform;
 
             playerView.GetLeftHandIK().data.target.localPosition = currentLeftHand_Target.localPosition;
             playerView.GetLeftHandIK().data.target.localRotation = currentLeftHand_Target.localRotation;
