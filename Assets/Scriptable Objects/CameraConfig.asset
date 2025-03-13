@@ -13,12 +13,9 @@ MonoBehaviour:
   m_Name: CameraConfig
   m_EditorClassIdentifier: 
   mouseSensitivity: 0.5
-  minPitch: 30
+  minPitch: 20
   maxPitch: 60
-  defaultDistance: 2.5
-  cameraCollisionRadius: 0.2
+  cameraDistanceOffset: 2.5
+  cameraHeightOffset: 1
   initialYaw: 0
   initialPitch: 20
-  collisionLayers:
-    serializedVersion: 2
-    m_Bits: 128

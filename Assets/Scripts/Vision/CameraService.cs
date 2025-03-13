@@ -12,8 +12,8 @@ namespace ServiceLocator.Vision
 
         private float yaw;
         private float pitch;
-        private Transform cameraPivot;
         private Vector2 cameraMouseDelta;
+        private Quaternion cameraRotation;
 
         // Private Services
         private InputService inputService;
@@ -36,13 +36,9 @@ namespace ServiceLocator.Vision
             yaw = cameraConfig.initialYaw;
             pitch = cameraConfig.initialPitch;
             cameraMouseDelta = Vector2.zero;
+            cameraRotation = Quaternion.identity;
 
             AssignInputs();
-        }
-
-        public void Init2()
-        {
-            cameraPivot = playerService.GetController().GetCameraPivot();
         }
 
         private void AssignInputs()
@@ -65,28 +61,25 @@ namespace ServiceLocator.Vision
             pitch -= cameraMouseDelta.y * cameraConfig.mouseSensitivity;
             pitch = Mathf.Clamp(pitch, -cameraConfig.minPitch, cameraConfig.maxPitch);
 
-            cameraPivot.rotation = Quaternion.Euler(pitch, yaw, 0f);
+            cameraRotation = Quaternion.Euler(pitch, yaw, 0f);
         }
 
         private void HandleCameraPosition()
         {
-            // Setting Camera Position based on camera pivot on player
-            Vector3 desiredPos = cameraPivot.position - cameraPivot.forward * cameraConfig.defaultDistance;
+            Transform playerTransform = playerService.GetController().transform;
 
-            // If Camera collides with a world object like ground, it will stop there, other wise the desired position
-            if (Physics.SphereCast(cameraPivot.position, cameraConfig.cameraCollisionRadius,
-                -cameraPivot.forward, out RaycastHit hit, cameraConfig.defaultDistance,
-                cameraConfig.collisionLayers))
-            {
-                mainCamera.transform.position = hit.point + cameraPivot.forward * cameraConfig.cameraCollisionRadius;
-            }
-            else
-            {
-                mainCamera.transform.position = desiredPos;
-            }
+            // Calculating player's target position
+            Vector3 playerTargetPosition = playerTransform.position +
+                Vector3.up * cameraConfig.cameraHeightOffset;
 
-            // So that camera look towards the player, not just rotate orbitally
-            mainCamera.transform.LookAt(cameraPivot.position);
+            // Computing the camera's orbiting position
+            Vector3 targetPosition = playerTargetPosition -
+                cameraRotation * Vector3.forward * cameraConfig.cameraDistanceOffset;
+
+            mainCamera.transform.position = targetPosition;
+
+            // So that camera always look at player, not just orbit around without looking at it
+            mainCamera.transform.LookAt(playerTransform.position + Vector3.up * cameraConfig.cameraHeightOffset);
         }
 
         // Getters
