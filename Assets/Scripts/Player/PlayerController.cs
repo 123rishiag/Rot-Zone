@@ -1,8 +1,6 @@
 using ServiceLocator.Controls;
 using ServiceLocator.Vision;
 using ServiceLocator.Weapon;
-using System;
-using System.Collections.Generic;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -14,6 +12,7 @@ namespace ServiceLocator.Player
         private PlayerModel playerModel;
         private PlayerView playerView;
         private PlayerAnimationController playerAnimationController;
+        private PlayerWeaponController playerWeaponController;
 
         private PlayerMovementState playerMovementState;
         private PlayerMovementState playerLastMovementState;
@@ -27,10 +26,6 @@ namespace ServiceLocator.Player
         private float currentSpeed;
         private bool isGrounded;
 
-        private WeaponType currentWeaponType;
-        private Dictionary<WeaponType, WeaponController> weapons;
-        private WeaponTransform currentWeaponTransform;
-
         private Vector2 aimPosition;
 
         private Vector3 inputDirection;
@@ -40,7 +35,6 @@ namespace ServiceLocator.Player
         // Private Services
         private InputService inputService;
         private CameraService cameraService;
-        private WeaponService weaponService;
 
         public PlayerController(PlayerData _playerData, PlayerView _playerPrefab,
             InputService _inputService, CameraService _cameraService, WeaponService _weaponService)
@@ -50,11 +44,11 @@ namespace ServiceLocator.Player
             playerView = Object.Instantiate(_playerPrefab).GetComponent<PlayerView>();
             playerView.Init();
             playerAnimationController = new PlayerAnimationController(playerView.GetAnimator(), this);
+            playerWeaponController = new PlayerWeaponController(this, _weaponService);
 
             // Setting Services
             inputService = _inputService;
             cameraService = _cameraService;
-            weaponService = _weaponService;
 
             // Setting Variables
             SetVariables();
@@ -72,11 +66,6 @@ namespace ServiceLocator.Player
             verticalVelocity = 0f;
             currentSpeed = 0f;
             isGrounded = false;
-
-            currentWeaponType = WeaponType.NONE;
-            weapons = new Dictionary<WeaponType, WeaponController>();
-            SetCurrentWeaponSetting();
-            CreateWeapons();
 
             AssignInputs();
         }
@@ -117,10 +106,10 @@ namespace ServiceLocator.Player
             inputControls.Player.Fire.performed += ctx => isFiring = true;
             inputControls.Player.Fire.canceled += ctx => isFiring = false;
 
-            inputControls.Player.WeaponOne.started += ctx => EquipWeapon(WeaponType.PISTOL);
-            inputControls.Player.WeaponTwo.started += ctx => EquipWeapon(WeaponType.RIFLE);
-            inputControls.Player.WeaponThree.started += ctx => EquipWeapon(WeaponType.SHOTGUN);
-            inputControls.Player.WeaponStow.started += ctx => EquipWeapon(WeaponType.NONE);
+            inputControls.Player.WeaponOne.started += ctx => playerWeaponController.EquipWeapon(WeaponType.PISTOL);
+            inputControls.Player.WeaponTwo.started += ctx => playerWeaponController.EquipWeapon(WeaponType.RIFLE);
+            inputControls.Player.WeaponThree.started += ctx => playerWeaponController.EquipWeapon(WeaponType.SHOTGUN);
+            inputControls.Player.WeaponStow.started += ctx => playerWeaponController.EquipWeapon(WeaponType.NONE);
 
             inputControls.Game.Pause.started += ctx => Time.timeScale = 0f;
 
@@ -151,11 +140,11 @@ namespace ServiceLocator.Player
         }
         private void UpdateActionState()
         {
-            if (currentWeaponType != WeaponType.NONE && isFiring)
+            if (playerWeaponController.GetCurrentWeapon() != WeaponType.NONE && isFiring)
             {
                 ChangeActionState(PlayerActionState.FIRE);
             }
-            else if (currentWeaponType != WeaponType.NONE)
+            else if (playerWeaponController.GetCurrentWeapon() != WeaponType.NONE)
             {
                 ChangeActionState(PlayerActionState.AIM);
             }
@@ -196,7 +185,7 @@ namespace ServiceLocator.Player
                     cameraService.GetCameraRightXZNormalized() * inputDirection.x).normalized;
 
                 // If player is unarmed, rotate based on camera
-                if (currentWeaponType == WeaponType.NONE)
+                if (playerWeaponController.GetCurrentWeapon() == WeaponType.NONE)
                 {
                     RotatePlayerTowards(cameraService.GetCameraForwardXZNormalized());
                 }
@@ -300,100 +289,10 @@ namespace ServiceLocator.Player
         }
         #endregion
 
-        #region Weapon
-        private void CreateWeapons()
-        {
-            foreach (WeaponIKData weaponIKData in playerView.GetWeaponIKDatas())
-            {
-                Transform parentTransform =
-                    GetWeaponIKData(weaponIKData.weaponType).weaponTransform.weaponHolder;
-                WeaponController weapon = weaponService.CreateWeapon(weaponIKData.weaponType, parentTransform);
-                weapons[weaponIKData.weaponType] = weapon;
-
-                AttachWeaponToRightHand(weaponIKData.weaponType);
-            }
-            SwitchOffWeapons();
-        }
-        private void AttachWeaponToRightHand(WeaponType _weaponType)
-        {
-            WeaponIKData weaponIKData = GetWeaponIKData(_weaponType);
-            Transform rightHand_TargetTransform = weaponIKData.weaponTransform.rightHand_TargetTransform;
-
-            weapons[_weaponType].SetTransform(rightHand_TargetTransform);
-        }
-        private void EquipWeapon(WeaponType _weaponType)
-        {
-            SwitchOffWeapons();
-            currentWeaponType = _weaponType;
-
-            if (currentWeaponType != WeaponType.NONE)
-            {
-                weapons[_weaponType].EnableWeapon();
-
-                WeaponIKData weaponIKData = GetWeaponIKData(_weaponType);
-                currentWeaponTransform = weaponIKData.weaponTransform;
-
-                AttachLeftHandToWeapon(_weaponType);
-            }
-
-            SetCurrentWeaponSetting();
-        }
-        private void SwitchOffWeapons()
-        {
-            foreach (WeaponIKData weaponIKData in playerView.GetWeaponIKDatas())
-            {
-                weapons[weaponIKData.weaponType].DisableWeapon();
-            }
-        }
-
-        private void AttachLeftHandToWeapon(WeaponType _weaponType)
-        {
-            Transform currentLeftHand_Target = currentWeaponTransform.leftHand_TargetTransform;
-            Transform currentLeftHand_Hint = currentWeaponTransform.leftHand_HintTransform;
-
-            playerView.GetLeftHandIK().data.target.localPosition = currentLeftHand_Target.localPosition;
-            playerView.GetLeftHandIK().data.target.localRotation = currentLeftHand_Target.localRotation;
-            playerView.GetLeftHandIK().data.target.localScale = currentLeftHand_Target.localScale;
-
-            playerView.GetLeftHandIK().data.hint.localPosition = currentLeftHand_Hint.localPosition;
-            playerView.GetLeftHandIK().data.hint.localRotation = currentLeftHand_Hint.localRotation;
-            playerView.GetLeftHandIK().data.hint.localScale = currentLeftHand_Hint.localScale;
-        }
-        private void SetCurrentWeaponSetting()
-        {
-            switch (currentWeaponType)
-            {
-                case WeaponType.PISTOL:
-                    playerAnimationController.SetAnimationLayer(1);
-                    SetIKWeight(1f);
-                    break;
-                case WeaponType.RIFLE:
-                    playerAnimationController.SetAnimationLayer(2);
-                    SetIKWeight(1f);
-                    break;
-                case WeaponType.SHOTGUN:
-                    playerAnimationController.SetAnimationLayer(3);
-                    SetIKWeight(1f);
-                    break;
-                case WeaponType.NONE:
-                default:
-                    playerAnimationController.SetAnimationLayer(0);
-                    SetIKWeight(0f);
-                    break;
-            }
-        }
-        private void SetIKWeight(float _weight)
-        {
-            playerView.GetLeftHandIK().weight = _weight;
-            playerView.GetRightHandAimConstraint().weight = _weight;
-        }
-        private WeaponIKData GetWeaponIKData(WeaponType _weaponType) =>
-            Array.Find(playerView.GetWeaponIKDatas(), w => w.weaponType == _weaponType);
-        #endregion
-
         #region Getters
         public PlayerModel GetModel() => playerModel;
         public PlayerView GetView() => playerView;
+        public PlayerAnimationController GetAnimationController() => playerAnimationController;
         public Transform GetTransform() => playerView.transform;
         public PlayerMovementState GetMovementState() => playerMovementState;
         public PlayerMovementState GetLastMovementState() => playerLastMovementState;
