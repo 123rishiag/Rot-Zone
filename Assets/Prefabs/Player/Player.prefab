@@ -651,21 +651,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca81f96e23c3c6c4c8349834a2dcdb39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inputController: {fileID: 0}
-  cameraController: {fileID: 0}
-  weaponController: {fileID: 0}
-  walkSpeed: 1.5
-  runSpeed: 5
-  accelerationFactor: 5
-  decelerationFactor: 2.5
-  directionSmoothSpeed: 10
-  rotationSpeed: 3
-  gravityFactor: 9.81
-  groundCheckDistance: 0.2
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 128
-  weaponLayerWeightChangeFactor: 10
   weaponIKDatas:
   - weaponType: 1
     weaponTypeHolder: {fileID: 8572400879980588013}
@@ -676,11 +661,7 @@ MonoBehaviour:
   rightHandAimConstraint: {fileID: 8310985297325246404}
   leftHandIK: {fileID: 6056014414725304192}
   aimTransform: {fileID: 5103283510018147113}
-  aimTransformDefaultPosition: {x: 0, y: 1.5, z: 1}
-  aimLayer:
-    serializedVersion: 2
-    m_Bits: 128
-  aimMaxDistance: 10
+  cameraPivot: {fileID: 6435304552766777602}
 --- !u!1 &1805613497281703086
 GameObject:
   m_ObjectHideFlags: 0
