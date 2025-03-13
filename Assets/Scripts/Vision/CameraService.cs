@@ -32,7 +32,7 @@ namespace ServiceLocator.Vision
             inputService = _inputService;
             playerService = _playerService;
 
-            // Setting Elements
+            // Setting Variables
             yaw = cameraConfig.initialYaw;
             pitch = cameraConfig.initialPitch;
             cameraMouseDelta = Vector2.zero;

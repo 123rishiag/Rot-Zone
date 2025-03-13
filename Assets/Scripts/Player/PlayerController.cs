@@ -13,6 +13,7 @@ namespace ServiceLocator.Player
         // Private Variables
         private PlayerModel playerModel;
         private PlayerView playerView;
+        private PlayerAnimationController playerAnimationController;
 
         private PlayerMovementState playerMovementState;
         private PlayerMovementState playerLastMovementState;
@@ -24,12 +25,9 @@ namespace ServiceLocator.Player
         private Vector3 lastMoveDirection;
         private float verticalVelocity;
         private float currentSpeed;
-        private float yawRotation;
         private bool isGrounded;
 
         private WeaponType currentWeaponType;
-        private int weaponAnimationLayerIndex;
-        private float weaponAnimationLayerWeight;
         private Dictionary<WeaponType, WeaponController> weapons;
         private WeaponTransform currentWeaponTransform;
 
@@ -51,13 +49,14 @@ namespace ServiceLocator.Player
             playerModel = new PlayerModel(_playerData);
             playerView = Object.Instantiate(_playerPrefab).GetComponent<PlayerView>();
             playerView.Init();
+            playerAnimationController = new PlayerAnimationController(playerView.GetAnimator(), this);
 
             // Setting Services
             inputService = _inputService;
             cameraService = _cameraService;
             weaponService = _weaponService;
 
-            // Setting Elements
+            // Setting Variables
             SetVariables();
         }
 
@@ -72,12 +71,9 @@ namespace ServiceLocator.Player
             lastMoveDirection = Vector3.zero;
             verticalVelocity = 0f;
             currentSpeed = 0f;
-            yawRotation = 0f;
             isGrounded = false;
 
             currentWeaponType = WeaponType.NONE;
-            weaponAnimationLayerIndex = 0;
-            weaponAnimationLayerWeight = 0f;
             weapons = new Dictionary<WeaponType, WeaponController>();
             SetCurrentWeaponSetting();
             CreateWeapons();
@@ -90,13 +86,9 @@ namespace ServiceLocator.Player
             UpdateMovementState();
             UpdateActionState();
             MovePlayer();
-
-            UpdateAnimationLayerWeight();
-            UpdateAnimationParameters();
-            UpdateMovementAnimation();
-            UpdateActionAnimation();
-
             AimTowardsMouse();
+
+            playerAnimationController.UpdateAnimation();
         }
 
         #region Input
@@ -372,20 +364,20 @@ namespace ServiceLocator.Player
             switch (currentWeaponType)
             {
                 case WeaponType.PISTOL:
-                    SetAnimationLayer(1);
+                    playerAnimationController.SetAnimationLayer(1);
                     SetIKWeight(1f);
                     break;
                 case WeaponType.RIFLE:
-                    SetAnimationLayer(2);
+                    playerAnimationController.SetAnimationLayer(2);
                     SetIKWeight(1f);
                     break;
                 case WeaponType.SHOTGUN:
-                    SetAnimationLayer(3);
+                    playerAnimationController.SetAnimationLayer(3);
                     SetIKWeight(1f);
                     break;
                 case WeaponType.NONE:
                 default:
-                    SetAnimationLayer(0);
+                    playerAnimationController.SetAnimationLayer(0);
                     SetIKWeight(0f);
                     break;
             }
@@ -395,113 +387,20 @@ namespace ServiceLocator.Player
             playerView.GetLeftHandIK().weight = _weight;
             playerView.GetRightHandAimConstraint().weight = _weight;
         }
-        private void UpdateAnimationLayerWeight()
-        {
-            if (weaponAnimationLayerIndex != -1) // Ensuring that the layer exists
-            {
-                float currentWeight = playerView.GetAnimator().GetLayerWeight(weaponAnimationLayerIndex);
-                float targetWeight = Mathf.Lerp(currentWeight, weaponAnimationLayerWeight,
-                    Time.deltaTime * playerModel.WeaponLayerWeightChangeFactor);
-                playerView.GetAnimator().SetLayerWeight(weaponAnimationLayerIndex, targetWeight);
-            }
-        }
-        private void SetAnimationLayer(int _layerIndex)
-        {
-            for (int i = 1; i < playerView.GetAnimator().layerCount; ++i)
-            {
-                playerView.GetAnimator().SetLayerWeight(i, 0f);
-            }
-
-            weaponAnimationLayerIndex = _layerIndex;
-            weaponAnimationLayerWeight = 1f;
-        }
         private WeaponIKData GetWeaponIKData(WeaponType _weaponType) =>
             Array.Find(playerView.GetWeaponIKDatas(), w => w.weaponType == _weaponType);
         #endregion
 
-        #region Animation
-        private void UpdateMovementAnimation()
-        {
-            if (playerLastMovementState == playerMovementState)
-                return;
-
-            switch (playerMovementState)
-            {
-                case PlayerMovementState.IDLE:
-                case PlayerMovementState.WALK:
-                case PlayerMovementState.RUN:
-                    playerView.GetAnimator().Play("Movement Locomotion");
-                    break;
-                case PlayerMovementState.FALL:
-                    playerView.GetAnimator().Play("Fall");
-                    break;
-                default:
-                    playerView.GetAnimator().Play("TPose");
-                    break;
-            }
-        }
-        private void UpdateActionAnimation()
-        {
-            if (playerLastActionState == playerActionState)
-                return;
-
-            weaponAnimationLayerWeight = 1f;
-
-            switch (playerActionState)
-            {
-                case PlayerActionState.FIRE:
-                    playerView.GetAnimator().Play("Weapon_Fire");
-                    break;
-                case PlayerActionState.AIM:
-                    playerView.GetAnimator().Play("Weapon_Idle");
-                    break;
-                default:
-                    weaponAnimationLayerWeight = 0f;
-                    break;
-            }
-        }
-        private void UpdateAnimationParameters()
-        {
-            // We only want the player's horizontal rotation to affect animation, yaw means horizontal
-            yawRotation = playerView.transform.eulerAngles.y;
-            Quaternion yawOnlyRotation = Quaternion.Euler(0, yawRotation, 0);
-
-            // To convert world coordinates into the local coordinates of an object,
-            // we multiply the world coordinates with the inverse of the object's localRotation.
-            // To convert local coordinates of an object into world coordinates,
-            // we multiply the local coordinates with the object's localRotation.
-            Vector3 cameraRelativeMoveDir = Quaternion.Inverse(yawOnlyRotation) * moveDirection;
-
-            // Updating the "moveX" and "moveY" parameter to smoothly blend between
-            // forward, backward, left, right and diagonal movement in the Animator.
-            playerView.GetAnimator().SetFloat("moveX", cameraRelativeMoveDir.x, 0.1f, Time.deltaTime);
-            playerView.GetAnimator().SetFloat("moveZ", cameraRelativeMoveDir.z, 0.1f, Time.deltaTime);
-
-            float normalizedSpeed = 0f;
-
-            //Mathf.InverseLerp(minRange, maxRange, value) means what percentage does values lies between 0 and 1.
-            // Ex - minRange = 10, maxRange = 20, value = 15, result = .5;
-            if (currentSpeed > 0f && currentSpeed <= playerModel.WalkSpeed)
-            {
-                // Ex - minRange = 0, maxRange = walkSpeed = 5, currentSpeed = 2.5, result = 0.5
-                // Normalized Speed = 50% of result = 0.25 + base start for walkSpeed (which is 0) 
-                normalizedSpeed = Mathf.InverseLerp(0f, playerModel.WalkSpeed, currentSpeed) * 0.5f + 0f;
-            }
-            else if (currentSpeed > playerModel.WalkSpeed)
-            {
-                // Ex - minRange = 5, maxRange = walkSpeed = 10, currentSpeed = 7.5, result = 0.5
-                // Normalized Speed = 50% of result = 0.25 + base start for walkSpeed (which is 0.5) 
-                normalizedSpeed = Mathf.InverseLerp(playerModel.WalkSpeed, playerModel.RunSpeed, currentSpeed)
-                    * 0.5f + 0.5f;
-            }
-
-            // Updating the "speed" parameter to smoothly blend between idle, walk, and run in the Animator.
-            playerView.GetAnimator().SetFloat("speed", normalizedSpeed, 0.1f, Time.deltaTime);
-        }
-        #endregion
-
-        #region
+        #region Getters
+        public PlayerModel GetModel() => playerModel;
+        public PlayerView GetView() => playerView;
         public Transform GetTransform() => playerView.transform;
+        public PlayerMovementState GetMovementState() => playerMovementState;
+        public PlayerMovementState GetLastMovementState() => playerLastMovementState;
+        public PlayerActionState GetActionState() => playerActionState;
+        public PlayerActionState GetLastActionState() => playerLastActionState;
+        public Vector3 GetMoveDirection() => moveDirection;
+        public float GetCurrentSpeed() => currentSpeed;
         #endregion
     }
 }

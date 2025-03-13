@@ -18,7 +18,7 @@ namespace ServiceLocator.Player
 
         public void Init(InputService _inputService, CameraService _cameraService, WeaponService _weaponService)
         {
-            // Setting Elements
+            // Setting Variables
             playerController = new PlayerController(playerConfig.playerData, playerConfig.playerPrefab,
                 _inputService, _cameraService, _weaponService);
         }
