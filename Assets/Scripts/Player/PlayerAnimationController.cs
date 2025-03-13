@@ -1,3 +1,4 @@
+using ServiceLocator.Weapon;
 using UnityEngine;
 
 namespace ServiceLocator.Player
@@ -15,6 +16,10 @@ namespace ServiceLocator.Player
         private int moveZHash = Animator.StringToHash("moveZ");
         private int speedHash = Animator.StringToHash("speed");
 
+        private int movementLayerIndex = 0;
+        private int pistolLayerIndex = 1;
+        private int rifleLayerIndex = 2;
+        private int shotgunLayerIndex = 3;
 
         // Private Variables
         private Animator playerAnimator;
@@ -139,15 +144,33 @@ namespace ServiceLocator.Player
                 playerAnimator.SetLayerWeight(weaponAnimationLayerIndex, targetWeight);
             }
         }
-        public void SetAnimationLayer(int _layerIndex)
+        public void SetAnimationLayer(WeaponType _weaponType)
         {
+            int layerIndex = GetAnimationLayerIndex(_weaponType);
             for (int i = 1; i < playerAnimator.layerCount; ++i)
             {
                 playerAnimator.SetLayerWeight(i, 0f);
             }
 
-            weaponAnimationLayerIndex = _layerIndex;
+            weaponAnimationLayerIndex = layerIndex;
             weaponAnimationLayerWeight = 1f;
+        }
+
+        // Getters
+        private int GetAnimationLayerIndex(WeaponType _weaponType)
+        {
+            switch (_weaponType)
+            {
+                case WeaponType.PISTOL:
+                    return pistolLayerIndex;
+                case WeaponType.RIFLE:
+                    return rifleLayerIndex;
+                case WeaponType.SHOTGUN:
+                    return shotgunLayerIndex;
+                case WeaponType.NONE:
+                default:
+                    return movementLayerIndex;
+            }
         }
     }
 }

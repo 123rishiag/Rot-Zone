@@ -25,13 +25,12 @@ namespace ServiceLocator.Player
             animator = GetComponentInChildren<Animator>();
         }
 
-        #region Getters
+        // Getters
         public CharacterController GetCharacterController() => characterController;
         public Animator GetAnimator() => animator;
         public Transform GetAimTransform() => aimTransform;
         public WeaponIKData[] GetWeaponIKDatas() => weaponIKDatas;
         public MultiAimConstraint GetRightHandAimConstraint() => rightHandAimConstraint;
         public TwoBoneIKConstraint GetLeftHandIK() => leftHandIK;
-        #endregion
     }
 }
