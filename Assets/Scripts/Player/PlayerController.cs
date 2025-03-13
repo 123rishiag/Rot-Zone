@@ -224,15 +224,7 @@ namespace ServiceLocator.Player
             }
             else if (currentSpeed > 0.1f)
             {
-                if (inputDirection.magnitude < 0.1f && currentWeaponType != WeaponType.NONE)
-                {
-                    Vector3 cameraForward = cameraService.GetCameraForwardXZNormalized();
-                    targetDirection = Quaternion.LookRotation(cameraForward) * Vector3.forward;
-                }
-                else
-                {
-                    targetDirection = lastMoveDirection;
-                }
+                targetDirection = lastMoveDirection;
             }
 
             //  Smoothly changing move Direction towards target Direction
@@ -370,24 +362,8 @@ namespace ServiceLocator.Player
         }
         private void UpdateAnimationParameters()
         {
-            // We only want the camera's horizontal rotation to affect animation, yaw means horizontal
-            // but we want camera rotation of last point where movement input was given as we dont want
-            // camera local rotation to keep changing animation parameters while deacceleration
-            // which will lead to player's movement animation out of sync with movement direction
-            if (inputDirection.magnitude > 0.1f)
-            {
-                // If player is unarmed, blend movement based on camera, otherwise on player's rotation 
-                if (currentWeaponType == WeaponType.NONE)
-                {
-                    // Using camera for rotation when not armed
-                    yawRotation = cameraService.GetTransform().eulerAngles.y;
-                }
-                else
-                {
-                    // Using player's rotation when armed
-                    yawRotation = transform.eulerAngles.y;
-                }
-            }
+            // We only want the player's horizontal rotation to affect animation, yaw means horizontal
+            yawRotation = transform.eulerAngles.y;
             Quaternion yawOnlyRotation = Quaternion.Euler(0, yawRotation, 0);
 
             // To convert world coordinates into the local coordinates of an object,

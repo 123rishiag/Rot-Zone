@@ -40,7 +40,6 @@ namespace ServiceLocator.Main
             cameraService.Init(inputService, playerService);
             // Weapon Service
             playerService.Init(inputService, cameraService, weaponService);
-            cameraService.Init2();
         }
 
         public void Destroy()
