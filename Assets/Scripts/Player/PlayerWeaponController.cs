@@ -7,6 +7,12 @@ namespace ServiceLocator.Player
 {
     public class PlayerWeaponController
     {
+        // IK Parameters
+        private float defaultIKWeight = 0.0f;
+        private float pistolIKWeight = 1.0f;
+        private float rifleIKWeight = 1.0f;
+        private float shotgunIKWeight = 1.0f;
+
         // Private Variables
         private PlayerController playerController;
 
@@ -116,14 +122,14 @@ namespace ServiceLocator.Player
             switch (currentWeaponType)
             {
                 case WeaponType.PISTOL:
-                    return 1f;
+                    return pistolIKWeight;
                 case WeaponType.RIFLE:
-                    return 1f;
+                    return rifleIKWeight;
                 case WeaponType.SHOTGUN:
-                    return 1f;
+                    return shotgunIKWeight;
                 case WeaponType.NONE:
                 default:
-                    return 0f;
+                    return defaultIKWeight;
             }
         }
     }
