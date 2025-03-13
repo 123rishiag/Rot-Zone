@@ -6,7 +6,7 @@ namespace ServiceLocator.Weapon
     [CreateAssetMenu(fileName = "WeaponConfig", menuName = "Scriptable Objects/WeaponConfig")]
     public class WeaponConfig : ScriptableObject
     {
-        [Header("Weapon Prefabs")]
+        [Header("Weapon Settings")]
         public WeaponData[] weaponData;
     }
 
