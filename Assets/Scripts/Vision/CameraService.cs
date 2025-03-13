@@ -66,7 +66,7 @@ namespace ServiceLocator.Vision
 
         private void HandleCameraPosition()
         {
-            Transform playerTransform = playerService.GetController().transform;
+            Transform playerTransform = playerService.GetController().GetTransform();
 
             // Calculating player's target position
             Vector3 playerTargetPosition = playerTransform.position +

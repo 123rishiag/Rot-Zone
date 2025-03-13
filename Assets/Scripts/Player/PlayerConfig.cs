@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace ServiceLocator.Player
@@ -5,9 +6,13 @@ namespace ServiceLocator.Player
     [CreateAssetMenu(fileName = "PlayerConfig", menuName = "Scriptable Objects/PlayerConfig")]
     public class PlayerConfig : ScriptableObject
     {
-        [Header("Player Prefab")]
-        public PlayerController playerPrefab;
+        public PlayerView playerPrefab;
+        public PlayerData playerData;
+    }
 
+    [Serializable]
+    public class PlayerData
+    {
         [Header("Movement Settings")]
         public float walkSpeed = 1.5f;
         public float runSpeed = 5f;
