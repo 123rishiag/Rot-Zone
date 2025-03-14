@@ -80,17 +80,46 @@ AnimatorStateMachine:
     m_Position: {x: 260, y: 110, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 5218904734828458769}
-    m_Position: {x: 260, y: 50, z: 0}
+    m_Position: {x: 260, y: 150, z: 0}
+  - serializedVersion: 1
+    m_State: {fileID: -5041704608740784758}
+    m_Position: {x: 260, y: 190, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions: []
   m_StateMachineTransitions: {}
   m_StateMachineBehaviours: []
-  m_AnyStatePosition: {x: 50, y: 50, z: 0}
+  m_AnyStatePosition: {x: 50, y: 60, z: 0}
   m_EntryPosition: {x: 50, y: 120, z: 0}
-  m_ExitPosition: {x: 800, y: 120, z: 0}
+  m_ExitPosition: {x: 50, y: 90, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
   m_DefaultState: {fileID: 1378749417434505972}
+--- !u!1102 &-5041704608740784758
+AnimatorState:
+  serializedVersion: 6
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Weapon_Reload
+  m_Speed: 1
+  m_CycleOffset: 0
+  m_Transitions: []
+  m_StateMachineBehaviours: []
+  m_Position: {x: 50, y: 50, z: 0}
+  m_IKOnFeet: 0
+  m_WriteDefaultValues: 1
+  m_Mirror: 0
+  m_SpeedParameterActive: 0
+  m_MirrorParameterActive: 0
+  m_CycleOffsetParameterActive: 0
+  m_TimeParameterActive: 0
+  m_Motion: {fileID: -203655887218126122, guid: c25460b15b96d414c9060b9b6c5d3f21, type: 3}
+  m_Tag: 
+  m_SpeedParameter: 
+  m_MirrorParameter: 
+  m_CycleOffsetParameter: 
+  m_TimeParameter: 
 --- !u!206 &-4733565829931806290
 BlendTree:
   m_ObjectHideFlags: 1
@@ -219,6 +248,9 @@ AnimatorController:
     - serializedVersion: 2
       m_State: {fileID: 1378749417434505972}
       m_Motion: {fileID: -203655887218126122, guid: 5cb351bd67bcd0045a53f8e9811673ff, type: 3}
+    - serializedVersion: 2
+      m_State: {fileID: -5041704608740784758}
+      m_Motion: {fileID: -203655887218126122, guid: e52900180001c974089629f7cb4e5201, type: 3}
     m_Behaviours: []
     m_BlendingMode: 0
     m_SyncedLayerIndex: 1
@@ -237,6 +269,9 @@ AnimatorController:
     - serializedVersion: 2
       m_State: {fileID: 1378749417434505972}
       m_Motion: {fileID: -203655887218126122, guid: 0bd65e85d89b85548b0f0c16d185f717, type: 3}
+    - serializedVersion: 2
+      m_State: {fileID: -5041704608740784758}
+      m_Motion: {fileID: -203655887218126122, guid: 05a6378f0cd0cb2468ca37cdbaeb5861, type: 3}
     m_Behaviours: []
     m_BlendingMode: 0
     m_SyncedLayerIndex: 1

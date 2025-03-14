@@ -56,8 +56,11 @@ namespace ServiceLocator.Player
         }
         public void EquipWeapon(WeaponType _weaponType)
         {
-            SwitchOffWeapons();
             currentWeaponType = _weaponType;
+
+            playerController.GetActionStateMachine().ChangeState(PlayerActionState.NONE);
+
+            SwitchOffWeapons();
 
             if (currentWeaponType != WeaponType.NONE)
             {
@@ -88,6 +91,13 @@ namespace ServiceLocator.Player
                 currentLeftHand_Target);
             SetLocalTransform(playerController.GetView().GetLeftHandIK().data.hint,
                 currentLeftHand_Hint);
+        }
+        public void ReloadWeapon()
+        {
+            if (currentWeaponType != WeaponType.NONE)
+            {
+                playerController.GetActionStateMachine().ChangeState(PlayerActionState.RELOAD);
+            }
         }
 
         // Setters

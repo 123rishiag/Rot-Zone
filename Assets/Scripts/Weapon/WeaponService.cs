@@ -16,7 +16,7 @@ namespace ServiceLocator.Weapon
 
         public WeaponController CreateWeapon(WeaponType _weaponType, Transform _parentPanel)
         {
-            return new WeaponController(GetWeaponData(_weaponType).weaponPrefab, _parentPanel);
+            return new WeaponController(GetWeaponData(_weaponType), _parentPanel);
         }
 
         private WeaponData GetWeaponData(WeaponType _weaponType) =>

@@ -69,6 +69,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "WeaponReload",
+                    "type": "Button",
+                    "id": "59a046df-ab8a-4df4-8909-c597d1a08176",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "MousePosition",
                     "type": "Value",
                     "id": "e27f0620-0e74-475f-a9dc-a1f6cce95070",
@@ -263,6 +272,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "MousePosition",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "fcc17c46-44df-4400-be54-59befb075613",
+                    "path": "<Keyboard>/r",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "WeaponReload",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

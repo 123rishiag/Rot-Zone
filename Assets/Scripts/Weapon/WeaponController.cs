@@ -8,10 +8,10 @@ namespace ServiceLocator.Weapon
         private WeaponModel weaponModel;
         private WeaponView weaponView;
 
-        public WeaponController(WeaponView _weaponPrefab, Transform _parentPanel)
+        public WeaponController(WeaponData _weaponData, Transform _parentPanel)
         {
-            weaponModel = new WeaponModel();
-            weaponView = Object.Instantiate(_weaponPrefab, _parentPanel).GetComponent<WeaponView>();
+            weaponModel = new WeaponModel(_weaponData);
+            weaponView = Object.Instantiate(_weaponData.weaponPrefab, _parentPanel).GetComponent<WeaponView>();
         }
 
         public void EnableWeapon() => weaponView.gameObject.SetActive(true);
@@ -24,5 +24,8 @@ namespace ServiceLocator.Weapon
             weaponView.transform.rotation = _transform.rotation;
             weaponView.transform.localScale = _transform.localScale;
         }
+
+        // Getters
+        public WeaponModel GetModel() => weaponModel;
     }
 }
