@@ -56,7 +56,15 @@ namespace ServiceLocator.Player
         }
         public void EquipWeapon(WeaponType _weaponType)
         {
-            currentWeaponType = _weaponType;
+            if (playerController.GetMovementStateMachine().GetCurrentState() == PlayerMovementState.FALL ||
+                currentWeaponType == _weaponType)
+            {
+                currentWeaponType = WeaponType.NONE;
+            }
+            else
+            {
+                currentWeaponType = _weaponType;
+            }
 
             playerController.GetActionStateMachine().ChangeState(PlayerActionState.NONE);
 
