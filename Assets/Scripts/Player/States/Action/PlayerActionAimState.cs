@@ -1,4 +1,5 @@
 using ServiceLocator.Utility;
+using ServiceLocator.Weapon;
 
 namespace ServiceLocator.Player
 {
@@ -9,9 +10,30 @@ namespace ServiceLocator.Player
 
         public PlayerActionAimState(PlayerActionStateMachine _stateMachine) => stateMachine = _stateMachine;
 
-        public void OnStateEnter() { }
-        public void Update() { }
+        public void OnStateEnter()
+        {
+            Owner.GetView().GetAnimator().Play(Owner.GetAnimationController().weaponIdleHash);
+        }
+        public void Update()
+        {
+            CheckTransitionConditions();
+
+            Owner.UpdateActionVariables();
+        }
+
         public void FixedUpdate() { }
         public void OnStateExit() { }
+
+        private void CheckTransitionConditions()
+        {
+            if (Owner.GetWeaponVisualController().GetCurrentWeapon() != WeaponType.NONE && Owner.IsFiring)
+            {
+                stateMachine.ChangeState(PlayerActionState.FIRE);
+            }
+            else if (Owner.GetWeaponVisualController().GetCurrentWeapon() == WeaponType.NONE)
+            {
+                stateMachine.ChangeState(PlayerActionState.NONE);
+            }
+        }
     }
 }

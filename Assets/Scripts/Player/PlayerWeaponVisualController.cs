@@ -5,13 +5,8 @@ using UnityEngine;
 
 namespace ServiceLocator.Player
 {
-    public class PlayerWeaponController
+    public class PlayerWeaponVisualController
     {
-        // IK Parameters
-        private float defaultIKWeight = 0.0f;
-        private float pistolIKWeight = 1.0f;
-        private float rifleIKWeight = 1.0f;
-        private float shotgunIKWeight = 1.0f;
 
         // Private Variables
         private PlayerController playerController;
@@ -23,7 +18,7 @@ namespace ServiceLocator.Player
         // Private Services
         private WeaponService weaponService;
 
-        public PlayerWeaponController(PlayerController _playerController,
+        public PlayerWeaponVisualController(PlayerController _playerController,
             WeaponService _weaponService)
         {
             // Setting Variables
@@ -99,13 +94,7 @@ namespace ServiceLocator.Player
         private void SetCurrentWeaponSetting()
         {
             playerController.GetAnimationController().SetAnimationLayer(currentWeaponType);
-            SetIKWeight();
-        }
-        private void SetIKWeight()
-        {
-            float weight = GetIKWeight();
-            playerController.GetView().GetLeftHandIK().weight = weight;
-            playerController.GetView().GetRightHandAimConstraint().weight = weight;
+            playerController.GetAnimationController().SetIKWeight(currentWeaponType);
         }
         private void SetLocalTransform(Transform _targetTransform, Transform _sourceTransform)
         {
@@ -117,20 +106,5 @@ namespace ServiceLocator.Player
         public WeaponType GetCurrentWeapon() => currentWeaponType;
         private WeaponIKData GetWeaponIKData(WeaponType _weaponType) =>
             Array.Find(playerController.GetView().GetWeaponIKDatas(), w => w.weaponType == _weaponType);
-        private float GetIKWeight()
-        {
-            switch (currentWeaponType)
-            {
-                case WeaponType.PISTOL:
-                    return pistolIKWeight;
-                case WeaponType.RIFLE:
-                    return rifleIKWeight;
-                case WeaponType.SHOTGUN:
-                    return shotgunIKWeight;
-                case WeaponType.NONE:
-                default:
-                    return defaultIKWeight;
-            }
-        }
     }
 }

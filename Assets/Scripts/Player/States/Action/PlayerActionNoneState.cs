@@ -1,4 +1,5 @@
 using ServiceLocator.Utility;
+using ServiceLocator.Weapon;
 
 namespace ServiceLocator.Player
 {
@@ -10,8 +11,22 @@ namespace ServiceLocator.Player
         public PlayerActionNoneState(PlayerActionStateMachine _stateMachine) => stateMachine = _stateMachine;
 
         public void OnStateEnter() { }
-        public void Update() { }
+        public void Update()
+        {
+            CheckTransitionConditions();
+
+            Owner.UpdateActionVariables();
+        }
+
         public void FixedUpdate() { }
         public void OnStateExit() { }
+
+        private void CheckTransitionConditions()
+        {
+            if (Owner.GetWeaponVisualController().GetCurrentWeapon() != WeaponType.NONE)
+            {
+                stateMachine.ChangeState(PlayerActionState.AIM);
+            }
+        }
     }
 }
