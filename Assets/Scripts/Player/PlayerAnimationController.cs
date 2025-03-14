@@ -21,6 +21,11 @@ namespace ServiceLocator.Player
         private int rifleLayerIndex = 2;
         private int shotgunLayerIndex = 3;
 
+        private float defaultIKWeight = 0.0f;
+        private float pistolIKWeight = 1.0f;
+        private float rifleIKWeight = 1.0f;
+        private float shotgunIKWeight = 1.0f;
+
         // Private Variables
         private Animator playerAnimator;
         private PlayerController playerController;
@@ -46,27 +51,6 @@ namespace ServiceLocator.Player
         {
             UpdateAnimationLayerWeight();
             UpdateAnimationParameters();
-            UpdateActionAnimation();
-        }
-        private void UpdateActionAnimation()
-        {
-            if (playerController.GetLastActionState() == playerController.GetActionState())
-                return;
-
-            weaponAnimationLayerWeight = 1f;
-
-            switch (playerController.GetActionState())
-            {
-                case PlayerActionState.FIRE:
-                    playerAnimator.Play(weaponFireHash);
-                    break;
-                case PlayerActionState.AIM:
-                    playerAnimator.Play(weaponIdleHash);
-                    break;
-                default:
-                    weaponAnimationLayerWeight = 0f;
-                    break;
-            }
         }
         private void UpdateAnimationParameters()
         {
@@ -111,7 +95,6 @@ namespace ServiceLocator.Player
             playerAnimator.SetFloat(speedHash, normalizedSpeed, 0.1f, Time.deltaTime);
         }
 
-        // Setters
         public void UpdateAnimationLayerWeight()
         {
             if (weaponAnimationLayerIndex != -1) // Ensuring that the layer exists
@@ -122,6 +105,8 @@ namespace ServiceLocator.Player
                 playerAnimator.SetLayerWeight(weaponAnimationLayerIndex, targetWeight);
             }
         }
+
+        // Setters
         public void SetAnimationLayer(WeaponType _weaponType)
         {
             int layerIndex = GetAnimationLayerIndex(_weaponType);
@@ -132,6 +117,12 @@ namespace ServiceLocator.Player
 
             weaponAnimationLayerIndex = layerIndex;
             weaponAnimationLayerWeight = 1f;
+        }
+        public void SetIKWeight(WeaponType _weaponType)
+        {
+            float weight = GetIKWeight(_weaponType);
+            playerController.GetView().GetLeftHandIK().weight = weight;
+            playerController.GetView().GetRightHandAimConstraint().weight = weight;
         }
 
         // Getters
@@ -148,6 +139,21 @@ namespace ServiceLocator.Player
                 case WeaponType.NONE:
                 default:
                     return movementLayerIndex;
+            }
+        }
+        private float GetIKWeight(WeaponType _weaponType)
+        {
+            switch (_weaponType)
+            {
+                case WeaponType.PISTOL:
+                    return pistolIKWeight;
+                case WeaponType.RIFLE:
+                    return rifleIKWeight;
+                case WeaponType.SHOTGUN:
+                    return shotgunIKWeight;
+                case WeaponType.NONE:
+                default:
+                    return defaultIKWeight;
             }
         }
     }
