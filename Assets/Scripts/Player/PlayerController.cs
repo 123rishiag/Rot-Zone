@@ -109,6 +109,7 @@ namespace ServiceLocator.Player
             inputControls.Player.WeaponTwo.started += ctx => playerWeaponVisualController.EquipWeapon(WeaponType.RIFLE);
             inputControls.Player.WeaponThree.started += ctx => playerWeaponVisualController.EquipWeapon(WeaponType.SHOTGUN);
             inputControls.Player.WeaponStow.started += ctx => playerWeaponVisualController.EquipWeapon(WeaponType.NONE);
+            inputControls.Player.WeaponReload.started += ctx => playerWeaponVisualController.ReloadWeapon();
 
             inputControls.Game.Pause.started += ctx => Time.timeScale = 0f;
 
@@ -250,6 +251,8 @@ namespace ServiceLocator.Player
         public PlayerView GetView() => playerView;
         public PlayerAnimationController GetAnimationController() => playerAnimationController;
         public PlayerWeaponVisualController GetWeaponVisualController() => playerWeaponVisualController;
+        public PlayerMovementStateMachine GetMovementStateMachine() => playerMovementStateMachine;
+        public PlayerActionStateMachine GetActionStateMachine() => playerActionStateMachine;
         public Transform GetTransform() => playerView.transform;
         public Vector3 GetMoveDirection() => moveDirection;
         public float GetCurrentSpeed() => currentSpeed;

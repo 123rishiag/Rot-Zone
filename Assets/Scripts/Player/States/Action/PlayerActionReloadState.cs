@@ -1,20 +1,21 @@
 using ServiceLocator.Utility;
 using ServiceLocator.Weapon;
+using UnityEngine;
 
 namespace ServiceLocator.Player
 {
-    public class PlayerActionAimState<T> : IState<PlayerController, PlayerActionState>
+    public class PlayerActionReloadState<T> : IState<PlayerController, PlayerActionState>
     {
         public PlayerController Owner { get; set; }
         private PlayerActionStateMachine stateMachine;
 
-        public PlayerActionAimState(PlayerActionStateMachine _stateMachine) => stateMachine = _stateMachine;
+        public PlayerActionReloadState(PlayerActionStateMachine _stateMachine) => stateMachine = _stateMachine;
 
         public void OnStateEnter()
         {
             Owner.GetAnimationController().EnableIKWeight(
-                Owner.GetWeaponVisualController().GetCurrentWeapon(), true);
-            Owner.GetView().GetAnimator().Play(Owner.GetAnimationController().weaponIdleHash);
+                Owner.GetWeaponVisualController().GetCurrentWeapon(), false);
+            Owner.GetView().GetAnimator().Play(Owner.GetAnimationController().weaponReloadHash);
         }
         public void Update()
         {
@@ -28,13 +29,18 @@ namespace ServiceLocator.Player
 
         private void CheckTransitionConditions()
         {
+            int weaponLayerIndex = Owner.GetAnimationController().WeaponAnimationLayerIndex;
+            AnimatorStateInfo stateInfo =
+                Owner.GetView().GetAnimator().GetCurrentAnimatorStateInfo(weaponLayerIndex);
+
             if (Owner.GetWeaponVisualController().GetCurrentWeapon() != WeaponType.NONE && Owner.IsFiring)
             {
                 stateMachine.ChangeState(PlayerActionState.FIRE);
             }
-            else if (Owner.GetWeaponVisualController().GetCurrentWeapon() == WeaponType.NONE)
+            else if (stateInfo.shortNameHash == Owner.GetAnimationController().weaponReloadHash &&
+                stateInfo.normalizedTime >= 1f)
             {
-                stateMachine.ChangeState(PlayerActionState.NONE);
+                stateMachine.ChangeState(PlayerActionState.AIM);
             }
         }
     }

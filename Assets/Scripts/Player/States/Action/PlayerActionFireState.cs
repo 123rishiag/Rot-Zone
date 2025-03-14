@@ -12,6 +12,8 @@ namespace ServiceLocator.Player
 
         public void OnStateEnter()
         {
+            Owner.GetAnimationController().EnableIKWeight(
+                Owner.GetWeaponVisualController().GetCurrentWeapon(), true);
             Owner.GetView().GetAnimator().Play(Owner.GetAnimationController().weaponFireHash);
         }
         public void Update()

@@ -15,6 +15,7 @@ namespace ServiceLocator.Player
         NONE,
         AIM,
         FIRE,
+        RELOAD,
     }
 
     public class PlayerMovementStateMachine : GenericStateMachine<PlayerController, PlayerMovementState>
@@ -49,6 +50,7 @@ namespace ServiceLocator.Player
             States.Add(PlayerActionState.NONE, new PlayerActionNoneState<PlayerController>(this));
             States.Add(PlayerActionState.AIM, new PlayerActionAimState<PlayerController>(this));
             States.Add(PlayerActionState.FIRE, new PlayerActionFireState<PlayerController>(this));
+            States.Add(PlayerActionState.RELOAD, new PlayerActionReloadState<PlayerController>(this));
         }
     }
 }

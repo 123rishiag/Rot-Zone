@@ -91,6 +91,15 @@ public partial class @InputControls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""WeaponReload"",
+                    ""type"": ""Button"",
+                    ""id"": ""59a046df-ab8a-4df4-8909-c597d1a08176"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""MousePosition"",
                     ""type"": ""Value"",
                     ""id"": ""e27f0620-0e74-475f-a9dc-a1f6cce95070"",
@@ -287,6 +296,17 @@ public partial class @InputControls: IInputActionCollection2, IDisposable
                     ""action"": ""MousePosition"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""fcc17c46-44df-4400-be54-59befb075613"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""WeaponReload"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -358,6 +378,7 @@ public partial class @InputControls: IInputActionCollection2, IDisposable
         m_Player_WeaponTwo = m_Player.FindAction("WeaponTwo", throwIfNotFound: true);
         m_Player_WeaponThree = m_Player.FindAction("WeaponThree", throwIfNotFound: true);
         m_Player_WeaponStow = m_Player.FindAction("WeaponStow", throwIfNotFound: true);
+        m_Player_WeaponReload = m_Player.FindAction("WeaponReload", throwIfNotFound: true);
         m_Player_MousePosition = m_Player.FindAction("MousePosition", throwIfNotFound: true);
         // Camera
         m_Camera = asset.FindActionMap("Camera", throwIfNotFound: true);
@@ -440,6 +461,7 @@ public partial class @InputControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_WeaponTwo;
     private readonly InputAction m_Player_WeaponThree;
     private readonly InputAction m_Player_WeaponStow;
+    private readonly InputAction m_Player_WeaponReload;
     private readonly InputAction m_Player_MousePosition;
     public struct PlayerActions
     {
@@ -452,6 +474,7 @@ public partial class @InputControls: IInputActionCollection2, IDisposable
         public InputAction @WeaponTwo => m_Wrapper.m_Player_WeaponTwo;
         public InputAction @WeaponThree => m_Wrapper.m_Player_WeaponThree;
         public InputAction @WeaponStow => m_Wrapper.m_Player_WeaponStow;
+        public InputAction @WeaponReload => m_Wrapper.m_Player_WeaponReload;
         public InputAction @MousePosition => m_Wrapper.m_Player_MousePosition;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
@@ -483,6 +506,9 @@ public partial class @InputControls: IInputActionCollection2, IDisposable
             @WeaponStow.started += instance.OnWeaponStow;
             @WeaponStow.performed += instance.OnWeaponStow;
             @WeaponStow.canceled += instance.OnWeaponStow;
+            @WeaponReload.started += instance.OnWeaponReload;
+            @WeaponReload.performed += instance.OnWeaponReload;
+            @WeaponReload.canceled += instance.OnWeaponReload;
             @MousePosition.started += instance.OnMousePosition;
             @MousePosition.performed += instance.OnMousePosition;
             @MousePosition.canceled += instance.OnMousePosition;
@@ -511,6 +537,9 @@ public partial class @InputControls: IInputActionCollection2, IDisposable
             @WeaponStow.started -= instance.OnWeaponStow;
             @WeaponStow.performed -= instance.OnWeaponStow;
             @WeaponStow.canceled -= instance.OnWeaponStow;
+            @WeaponReload.started -= instance.OnWeaponReload;
+            @WeaponReload.performed -= instance.OnWeaponReload;
+            @WeaponReload.canceled -= instance.OnWeaponReload;
             @MousePosition.started -= instance.OnMousePosition;
             @MousePosition.performed -= instance.OnMousePosition;
             @MousePosition.canceled -= instance.OnMousePosition;
@@ -632,6 +661,7 @@ public partial class @InputControls: IInputActionCollection2, IDisposable
         void OnWeaponTwo(InputAction.CallbackContext context);
         void OnWeaponThree(InputAction.CallbackContext context);
         void OnWeaponStow(InputAction.CallbackContext context);
+        void OnWeaponReload(InputAction.CallbackContext context);
         void OnMousePosition(InputAction.CallbackContext context);
     }
     public interface ICameraActions
