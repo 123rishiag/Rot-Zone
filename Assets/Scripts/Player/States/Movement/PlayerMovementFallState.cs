@@ -9,9 +9,27 @@ namespace ServiceLocator.Player
 
         public PlayerMovementFallState(PlayerMovementStateMachine _stateMachine) => stateMachine = _stateMachine;
 
-        public void OnStateEnter() { }
-        public void Update() { }
+        public void OnStateEnter()
+        {
+            Owner.GetView().GetAnimator().Play(Owner.GetAnimationController().fallHash);
+        }
+        public void Update()
+        {
+            CheckTransitionConditions();
+
+            Owner.UpdateMovementVariables();
+            Owner.MovePlayer();
+        }
+
         public void FixedUpdate() { }
         public void OnStateExit() { }
+
+        private void CheckTransitionConditions()
+        {
+            if (Owner.IsGrounded())
+            {
+                stateMachine.ChangeState(PlayerMovementState.IDLE);
+            }
+        }
     }
 }
