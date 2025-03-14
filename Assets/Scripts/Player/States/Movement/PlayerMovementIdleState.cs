@@ -9,9 +9,36 @@ namespace ServiceLocator.Player
 
         public PlayerMovementIdleState(PlayerMovementStateMachine _stateMachine) => stateMachine = _stateMachine;
 
-        public void OnStateEnter() { }
-        public void Update() { }
+        public void OnStateEnter()
+        {
+            Owner.GetView().GetAnimator().Play(Owner.GetAnimationController().movementLocomotionHash);
+        }
+        public void Update()
+        {
+            CheckTransitionConditions();
+
+            Owner.UpdateMovementVariables();
+            Owner.MovePlayer();
+        }
+
         public void FixedUpdate() { }
         public void OnStateExit() { }
+
+        private void CheckTransitionConditions()
+        {
+            if (!Owner.IsGrounded())
+            {
+                stateMachine.ChangeState(PlayerMovementState.FALL);
+            }
+            else if (Owner.GetCurrentSpeed() > 0f && Owner.GetCurrentSpeed() <= Owner.GetModel().WalkSpeed)
+            {
+                stateMachine.ChangeState(PlayerMovementState.WALK);
+            }
+            else if (Owner.GetCurrentSpeed() > Owner.GetModel().WalkSpeed &&
+                Owner.GetCurrentSpeed() <= Owner.GetModel().RunSpeed)
+            {
+                stateMachine.ChangeState(PlayerMovementState.RUN);
+            }
+        }
     }
 }

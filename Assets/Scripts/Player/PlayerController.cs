@@ -19,9 +19,6 @@ namespace ServiceLocator.Player
         private PlayerMovementStateMachine playerMovementStateMachine;
         private PlayerActionStateMachine playerActionStateMachine;
 
-        private PlayerMovementState playerMovementState;
-        private PlayerMovementState playerLastMovementState;
-
         private PlayerActionState playerActionState;
         private PlayerActionState playerLastActionState;
 
@@ -29,13 +26,12 @@ namespace ServiceLocator.Player
         private Vector3 lastMoveDirection;
         private float verticalVelocity;
         private float currentSpeed;
-        private bool isGrounded;
-
-        private Vector2 aimPosition;
 
         private Vector3 inputDirection;
         private bool isRunning;
         private bool isFiring;
+
+        private Vector2 aimPosition;
 
         // Private Services
         private InputService inputService;
@@ -70,24 +66,21 @@ namespace ServiceLocator.Player
         private void SetVariables()
         {
             // Setting Variables
-            playerMovementState = PlayerMovementState.NONE;
-            playerActionState = PlayerActionState.NONE;
-            ChangeMovementState(PlayerMovementState.IDLE);
+            playerMovementStateMachine.ChangeState(PlayerMovementState.IDLE);
             ChangeActionState(PlayerActionState.NONE);
 
             lastMoveDirection = Vector3.zero;
             verticalVelocity = 0f;
             currentSpeed = 0f;
-            isGrounded = false;
 
             AssignInputs();
         }
 
         public void Update()
         {
-            UpdateMovementState();
+            playerMovementStateMachine.Update();
             UpdateActionState();
-            MovePlayer();
+
             AimTowardsMouse();
 
             playerAnimationController.UpdateAnimation();
@@ -97,7 +90,7 @@ namespace ServiceLocator.Player
         private void AssignInputs()
         {
             // Not taking inputs if Player is Falling
-            if (playerMovementState == PlayerMovementState.FALL)
+            if (playerMovementStateMachine.GetCurrentState() == PlayerMovementState.FALL)
                 return;
 
             // Camera Inputs
@@ -132,25 +125,6 @@ namespace ServiceLocator.Player
         #endregion
 
         #region Player State Handling
-        private void UpdateMovementState()
-        {
-            if (!isGrounded)
-            {
-                ChangeMovementState(PlayerMovementState.FALL);
-            }
-            else if (currentSpeed == 0)
-            {
-                ChangeMovementState(PlayerMovementState.IDLE);
-            }
-            else if (currentSpeed <= playerModel.WalkSpeed)
-            {
-                ChangeMovementState(PlayerMovementState.WALK);
-            }
-            else
-            {
-                ChangeMovementState(PlayerMovementState.RUN);
-            }
-        }
         private void UpdateActionState()
         {
             if (playerWeaponController.GetCurrentWeapon() != WeaponType.NONE && isFiring)
@@ -166,11 +140,6 @@ namespace ServiceLocator.Player
                 ChangeActionState(PlayerActionState.NONE);
             }
         }
-        private void ChangeMovementState(PlayerMovementState _playerMovementState)
-        {
-            playerLastMovementState = playerMovementState;
-            playerMovementState = _playerMovementState;
-        }
         private void ChangeActionState(PlayerActionState _playerActionState)
         {
             playerLastActionState = playerActionState;
@@ -179,11 +148,15 @@ namespace ServiceLocator.Player
         #endregion
 
         #region Player Movement & Action
-        private void MovePlayer()
+        public void UpdateMovementVariables()
         {
-            UpdateDirection();
-            ApplyGravity();
-            UpdateSpeed();
+            Owner.UpdateDirection();
+            Owner.ApplyGravity();
+            Owner.UpdateSpeed();
+        }
+
+        public void MovePlayer()
+        {
             playerView.GetCharacterController().Move(moveDirection * currentSpeed * Time.deltaTime);
         }
         private void UpdateDirection()
@@ -217,7 +190,7 @@ namespace ServiceLocator.Player
         private void RotatePlayerTowards(Vector3 _direction)
         {
             // Rotate Player Towards Camera, when player is not falling
-            if (playerMovementState == PlayerMovementState.FALL)
+            if (playerMovementStateMachine.GetCurrentState() == PlayerMovementState.FALL)
                 return;
 
             if (_direction == Vector3.zero) return;
@@ -228,12 +201,9 @@ namespace ServiceLocator.Player
         }
         private void ApplyGravity()
         {
-            isGrounded = Physics.CheckSphere(playerView.transform.position, playerModel.GroundCheckDistance,
-                playerModel.GroundLayer);
-
             // If Player is on Ground, give some velocity to keep the player grounded,
             // else reduce velocity by gravity Scale Factor
-            if (isGrounded && verticalVelocity < 0)
+            if (IsGrounded() && verticalVelocity < 0)
             {
                 verticalVelocity = -2f;
             }
@@ -307,12 +277,12 @@ namespace ServiceLocator.Player
         public PlayerView GetView() => playerView;
         public PlayerAnimationController GetAnimationController() => playerAnimationController;
         public Transform GetTransform() => playerView.transform;
-        public PlayerMovementState GetMovementState() => playerMovementState;
-        public PlayerMovementState GetLastMovementState() => playerLastMovementState;
         public PlayerActionState GetActionState() => playerActionState;
         public PlayerActionState GetLastActionState() => playerLastActionState;
         public Vector3 GetMoveDirection() => moveDirection;
         public float GetCurrentSpeed() => currentSpeed;
+        public bool IsGrounded() => Physics.CheckSphere(playerView.transform.position,
+            playerModel.GroundCheckDistance, playerModel.GroundLayer);
         #endregion
     }
 }

@@ -6,11 +6,11 @@ namespace ServiceLocator.Player
     public class PlayerAnimationController
     {
         // Animation Parameters
-        private int movementLocomotionHash = Animator.StringToHash("Movement Locomotion");
-        private int fallHash = Animator.StringToHash("Fall");
-        private int tPoseHash = Animator.StringToHash("TPose");
-        private int weaponFireHash = Animator.StringToHash("Weapon_Fire");
-        private int weaponIdleHash = Animator.StringToHash("Weapon_Idle");
+        public int movementLocomotionHash = Animator.StringToHash("Movement Locomotion");
+        public int fallHash = Animator.StringToHash("Fall");
+
+        public int weaponFireHash = Animator.StringToHash("Weapon_Fire");
+        public int weaponIdleHash = Animator.StringToHash("Weapon_Idle");
 
         private int moveXHash = Animator.StringToHash("moveX");
         private int moveZHash = Animator.StringToHash("moveZ");
@@ -46,29 +46,7 @@ namespace ServiceLocator.Player
         {
             UpdateAnimationLayerWeight();
             UpdateAnimationParameters();
-            UpdateMovementAnimation();
             UpdateActionAnimation();
-        }
-
-        private void UpdateMovementAnimation()
-        {
-            if (playerController.GetLastMovementState() == playerController.GetMovementState())
-                return;
-
-            switch (playerController.GetMovementState())
-            {
-                case PlayerMovementState.IDLE:
-                case PlayerMovementState.WALK:
-                case PlayerMovementState.RUN:
-                    playerAnimator.Play(movementLocomotionHash);
-                    break;
-                case PlayerMovementState.FALL:
-                    playerAnimator.Play(fallHash);
-                    break;
-                default:
-                    playerAnimator.Play(tPoseHash);
-                    break;
-            }
         }
         private void UpdateActionAnimation()
         {

@@ -4,7 +4,6 @@ namespace ServiceLocator.Player
 {
     public enum PlayerMovementState
     {
-        NONE,
         IDLE,
         WALK,
         RUN,
@@ -29,7 +28,6 @@ namespace ServiceLocator.Player
 
         private void CreateStates()
         {
-            States.Add(PlayerMovementState.NONE, new PlayerMovementNoneState<PlayerController>(this));
             States.Add(PlayerMovementState.IDLE, new PlayerMovementIdleState<PlayerController>(this));
             States.Add(PlayerMovementState.WALK, new PlayerMovementWalkState<PlayerController>(this));
             States.Add(PlayerMovementState.RUN, new PlayerMovementRunState<PlayerController>(this));
