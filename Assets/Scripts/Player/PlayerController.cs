@@ -1,4 +1,5 @@
 using ServiceLocator.Controls;
+using ServiceLocator.Utility;
 using ServiceLocator.Vision;
 using ServiceLocator.Weapon;
 using UnityEngine;
@@ -6,13 +7,17 @@ using Object = UnityEngine.Object;
 
 namespace ServiceLocator.Player
 {
-    public class PlayerController
+    public class PlayerController : IStateOwner<PlayerController>
     {
         // Private Variables
         private PlayerModel playerModel;
         private PlayerView playerView;
         private PlayerAnimationController playerAnimationController;
         private PlayerWeaponController playerWeaponController;
+
+        public PlayerController Owner { get; set; }
+        private PlayerMovementStateMachine playerMovementStateMachine;
+        private PlayerActionStateMachine playerActionStateMachine;
 
         private PlayerMovementState playerMovementState;
         private PlayerMovementState playerLastMovementState;
@@ -51,7 +56,15 @@ namespace ServiceLocator.Player
             cameraService = _cameraService;
 
             // Setting Variables
+            CreateStateMachine();
             SetVariables();
+        }
+
+        private void CreateStateMachine()
+        {
+            Owner = this;
+            playerMovementStateMachine = new PlayerMovementStateMachine(this);
+            playerActionStateMachine = new PlayerActionStateMachine(this);
         }
 
         private void SetVariables()
