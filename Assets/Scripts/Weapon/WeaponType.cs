@@ -5,6 +5,6 @@ namespace ServiceLocator.Weapon
         NONE,
         PISTOL,
         RIFLE,
-        SHOTGUN
+        SHOTGUN,
     }
 }
