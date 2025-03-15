@@ -25,10 +25,12 @@ namespace ServiceLocator.Projectile
         private void FireProjectile(Transform _firePoint)
         {
             Rigidbody rigidbody = projectileView.GetRigidbody();
-            projectileView.transform.position = new Vector3(
-                _firePoint.position.x, 
-                _firePoint.position.y,
-                _firePoint.position.z - projectileView.GetSize().z + 0.2f);
+
+            // Making sure, projectile launches after a threshold from firepoint
+            Vector3 newPosition = _firePoint.position + _firePoint.forward * 0.2f;
+            projectileView.transform.position = newPosition;
+            projectileView.transform.rotation = _firePoint.rotation;
+
             rigidbody.AddForce(_firePoint.forward * projectileModel.ProjectileSpeed, ForceMode.Impulse);
         }
     }
