@@ -60,7 +60,7 @@ namespace ServiceLocator.Main
             // Input Service
             cameraService.Update();
             // Projectile Service
-            // Weapon Service
+            weaponService.Update();
             playerService.Update();
         }
 
