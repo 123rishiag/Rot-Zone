@@ -1,3 +1,5 @@
+using ServiceLocator.Projectile;
+
 namespace ServiceLocator.Weapon
 {
     public class WeaponModel
@@ -5,9 +7,11 @@ namespace ServiceLocator.Weapon
         public WeaponModel(WeaponData _weaponData)
         {
             WeaponType = _weaponData.weaponType;
+            WeaponProjectileType = _weaponData.weaponProjectileType;
         }
 
         // Getters
         public WeaponType WeaponType { get; private set; }
+        public ProjectileType WeaponProjectileType { get; private set; }
     }
 }

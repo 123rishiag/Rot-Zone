@@ -116,6 +116,7 @@ namespace ServiceLocator.Player
             if (currentWeaponType != WeaponType.NONE)
             {
                 playerController.IsFiring = true;
+                weapons[currentWeaponType].FireWeapon();
             }
         }
         // Setters
@@ -131,7 +132,7 @@ namespace ServiceLocator.Player
             _targetTransform.localScale = _sourceTransform.localScale;
         }
         // Getters
-        public WeaponType GetCurrentWeapon() => currentWeaponType;
+        public WeaponType GetCurrentWeaponType() => currentWeaponType;
         private WeaponIKData GetWeaponIKData(WeaponType _weaponType) =>
             Array.Find(playerController.GetView().GetWeaponIKDatas(), w => w.weaponType == _weaponType);
     }

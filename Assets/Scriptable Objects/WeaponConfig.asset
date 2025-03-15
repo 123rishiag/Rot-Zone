@@ -15,7 +15,10 @@ MonoBehaviour:
   weaponData:
   - weaponType: 1
     weaponPrefab: {fileID: 1389142212802258589, guid: 748d19574625db444877ca05561b6aea, type: 3}
+    weaponProjectileType: 0
   - weaponType: 2
     weaponPrefab: {fileID: -7221344354335743011, guid: 7444562fe5798e846a4045a93e123308, type: 3}
+    weaponProjectileType: 1
   - weaponType: 3
     weaponPrefab: {fileID: 9203822970734637043, guid: c9841888fa5041d499ada59f73087c6a, type: 3}
+    weaponProjectileType: 2

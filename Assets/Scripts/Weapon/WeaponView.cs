@@ -6,5 +6,8 @@ namespace ServiceLocator.Weapon
     {
         [Header("Weapon Settings")]
         [SerializeField] private Transform firePoint;
+
+        // Getters
+        public Transform GetFirePoint() => firePoint;
     }
 }

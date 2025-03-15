@@ -1,4 +1,5 @@
 using ServiceLocator.Player;
+using ServiceLocator.Projectile;
 using ServiceLocator.Vision;
 using ServiceLocator.Weapon;
 using UnityEngine;
@@ -11,9 +12,13 @@ namespace ServiceLocator.Main
         public CameraConfig cameraConfig;
         public Camera mainCamera;
 
+        [Header("Pool Panels")]
+        public Transform projectilePoolPanel;
+
         [Header("Game Variables")]
-        public PlayerConfig playerConfig;
+        public ProjectileConfig projectileConfig;
         public WeaponConfig weaponConfig;
+        public PlayerConfig playerConfig;
 
         // Private Variables
         private GameController gameController;

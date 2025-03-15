@@ -142,7 +142,7 @@ namespace ServiceLocator.Player
                     cameraService.GetCameraRightXZNormalized() * inputDirection.x).normalized;
 
                 // If player is unarmed, rotate based on camera
-                if (playerWeaponController.GetCurrentWeapon() == WeaponType.NONE)
+                if (playerWeaponController.GetCurrentWeaponType() == WeaponType.NONE)
                 {
                     RotatePlayerTowards(cameraService.GetCameraForwardXZNormalized());
                 }
@@ -218,7 +218,7 @@ namespace ServiceLocator.Player
         }
         private void AimTowardsMouse()
         {
-            if (playerWeaponController.GetCurrentWeapon() != WeaponType.NONE)
+            if (playerWeaponController.GetCurrentWeaponType() != WeaponType.NONE)
             {
                 playerView.GetAimTransform().gameObject.SetActive(true);
 
