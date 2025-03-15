@@ -1,3 +1,4 @@
+using ServiceLocator.Projectile;
 using System;
 using UnityEngine;
 
@@ -15,6 +16,7 @@ namespace ServiceLocator.Weapon
     {
         public WeaponType weaponType;
         public WeaponView weaponPrefab;
+        public ProjectileType weaponProjectileType;
     }
 
     [Serializable]

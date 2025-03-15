@@ -1,3 +1,4 @@
+using ServiceLocator.Projectile;
 using UnityEngine;
 
 namespace ServiceLocator.Weapon
@@ -8,10 +9,23 @@ namespace ServiceLocator.Weapon
         private WeaponModel weaponModel;
         private WeaponView weaponView;
 
-        public WeaponController(WeaponData _weaponData, Transform _parentPanel)
+        // Private Services
+        private ProjectileService projectileService;
+
+        public WeaponController(WeaponData _weaponData, Transform _parentPanel,
+            ProjectileService _projectileService)
         {
+            // Setting Variables
             weaponModel = new WeaponModel(_weaponData);
             weaponView = Object.Instantiate(_weaponData.weaponPrefab, _parentPanel).GetComponent<WeaponView>();
+
+            // Setting Services
+            projectileService = _projectileService;
+        }
+
+        public void FireWeapon()
+        {
+            projectileService.FireProjectile(weaponModel.WeaponProjectileType, weaponView.GetFirePoint());
         }
 
         public void EnableWeapon() => weaponView.gameObject.SetActive(true);

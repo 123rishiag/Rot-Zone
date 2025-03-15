@@ -1,11 +1,11 @@
 fileFormatVersion: 2
-guid: 01237cf3a3022d54a829e75d81f0d5e5
+guid: adda4f97c933a794986cd91b6a761f28
 AssetOrigin:
   serializedVersion: 1
   productId: 302702
   packageName: Weapons Pack - Bullets
   packageVersion: 0.0.1
-  assetPath: Assets/DuNguyn/Bullets Pack/Model/SM_Bullet_07.fbx
+  assetPath: Assets/DuNguyn/Bullets Pack/Model/SM_Bullet_08.fbx
   uploadId: 716450
 ModelImporter:
   serializedVersion: 22200
@@ -14,13 +14,8 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: Bullets_M6
-    second: {fileID: 2100000, guid: f568465613cbb0a459c3c9adfd81351e, type: 2}
-  - first:
-      type: UnityEngine:Texture2D
-      assembly: UnityEngine.CoreModule
-      name: Texture_BaseColor
-    second: {fileID: 2800000, guid: c093b0f000f144546a09b1f962113f7d, type: 3}
+      name: Bullets_M7
+    second: {fileID: 2100000, guid: 3708bd8095503c14c809391f843f0094, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -50,7 +45,7 @@ ModelImporter:
     isReadable: 0
   meshes:
     lODScreenPercentages: []
-    globalScale: 1
+    globalScale: 0.005
     meshCompression: 0
     addColliders: 0
     useSRGBMaterialColor: 1
@@ -82,7 +77,7 @@ ModelImporter:
     secondaryUVMinLightmapResolution: 40
     secondaryUVMinObjectScale: 1
     secondaryUVPackMargin: 4
-    useFileScale: 1
+    useFileScale: 0
     strictVertexDataChecks: 0
   tangentSpace:
     normalSmoothAngle: 60
@@ -105,7 +100,7 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
-    globalScale: 1
+    globalScale: 0.005
     rootMotionBoneName: 
     hasTranslationDoF: 0
     hasExtraRoot: 0

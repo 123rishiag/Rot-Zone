@@ -1,5 +1,6 @@
 using ServiceLocator.Controls;
 using ServiceLocator.Player;
+using ServiceLocator.Projectile;
 using ServiceLocator.Vision;
 using ServiceLocator.Weapon;
 
@@ -13,6 +14,7 @@ namespace ServiceLocator.Main
         // Private Services
         private InputService inputService;
         private CameraService cameraService;
+        private ProjectileService projectileService;
         private WeaponService weaponService;
         private PlayerService playerService;
 
@@ -30,6 +32,7 @@ namespace ServiceLocator.Main
         {
             inputService = new InputService();
             cameraService = new CameraService(gameService.cameraConfig, gameService.mainCamera);
+            projectileService = new ProjectileService(gameService.projectileConfig, gameService.projectilePoolPanel);
             weaponService = new WeaponService(gameService.weaponConfig);
             playerService = new PlayerService(gameService.playerConfig);
         }
@@ -38,7 +41,8 @@ namespace ServiceLocator.Main
         {
             inputService.Init();
             cameraService.Init(inputService, playerService);
-            // Weapon Service
+            // Projectile Service
+            weaponService.Init(projectileService);
             playerService.Init(inputService, cameraService, weaponService);
         }
 
@@ -46,6 +50,7 @@ namespace ServiceLocator.Main
         {
             inputService.Destroy();
             // Camera Service
+            // Projectile Service
             // Weapon Service
             // Player Service
         }
@@ -54,6 +59,7 @@ namespace ServiceLocator.Main
         {
             // Input Service
             cameraService.Update();
+            // Projectile Service
             // Weapon Service
             playerService.Update();
         }
@@ -62,6 +68,7 @@ namespace ServiceLocator.Main
         {
             // Input Service
             cameraService.LateUpdate();
+            // Projectile Service
             // Weapon Service
             // Player Service
         }
