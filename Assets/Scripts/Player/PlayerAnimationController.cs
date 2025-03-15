@@ -22,10 +22,9 @@ namespace ServiceLocator.Player
         private readonly int rifleLayerIndex = 2;
         private readonly int shotgunLayerIndex = 3;
 
-        private readonly float defaultIKWeight = 0.0f;
-        private readonly float pistolIKWeight = 1.0f;
-        private readonly float rifleIKWeight = 1.0f;
-        private readonly float shotgunIKWeight = 1.0f;
+        private readonly float weaponNotInActionIKWeight = 0.15f;
+        private readonly float weaponInActionIKWeight = 1.0f;
+        private readonly float noWeaponIKWeight = 0f;
 
         // Private Variables
         private Animator playerAnimator;
@@ -35,6 +34,8 @@ namespace ServiceLocator.Player
 
         public int WeaponAnimationLayerIndex { get; private set; }
         private float weaponAnimationLayerWeight;
+
+        private float targetIKWeight;
 
         private bool isActionStateIKAllowed;
 
@@ -49,12 +50,15 @@ namespace ServiceLocator.Player
             WeaponAnimationLayerIndex = 0;
             weaponAnimationLayerWeight = 0f;
 
+            targetIKWeight = 0f;
+
             isActionStateIKAllowed = false;
         }
 
         public void UpdateAnimation()
         {
             UpdateAnimationLayerWeight();
+            UpdateIKWeight();
             UpdateAnimationParameters();
         }
         private void UpdateAnimationParameters()
@@ -100,7 +104,7 @@ namespace ServiceLocator.Player
             playerAnimator.SetFloat(speedHash, normalizedSpeed, 0.1f, Time.deltaTime);
         }
 
-        public void UpdateAnimationLayerWeight()
+        private void UpdateAnimationLayerWeight()
         {
             if (WeaponAnimationLayerIndex != -1) // Ensuring that the layer exists
             {
@@ -109,6 +113,17 @@ namespace ServiceLocator.Player
                     Time.deltaTime * playerController.GetModel().WeaponLayerWeightChangeFactor);
                 playerAnimator.SetLayerWeight(WeaponAnimationLayerIndex, targetWeight);
             }
+        }
+
+        private void UpdateIKWeight()
+        {
+            float currentLeftHandIKWeight = playerController.GetView().GetLeftHandIK().weight;
+            float currentRightHandConstraintWeight = playerController.GetView().GetRightHandAimConstraint().weight;
+
+            playerController.GetView().GetLeftHandIK().weight =
+                Mathf.Lerp(currentLeftHandIKWeight, targetIKWeight, Time.deltaTime * 10f);
+            playerController.GetView().GetRightHandAimConstraint().weight =
+                Mathf.Lerp(currentRightHandConstraintWeight, targetIKWeight, Time.deltaTime * 10f);
         }
 
         // Setters
@@ -126,8 +141,7 @@ namespace ServiceLocator.Player
         public void SetIKWeight(WeaponType _weaponType)
         {
             float weight = GetIKWeight(_weaponType);
-            playerController.GetView().GetLeftHandIK().weight = weight;
-            playerController.GetView().GetRightHandAimConstraint().weight = weight;
+            targetIKWeight = weight;
         }
 
         public void EnableIKWeight(WeaponType _weaponType, bool _flag)
@@ -154,21 +168,12 @@ namespace ServiceLocator.Player
         }
         private float GetIKWeight(WeaponType _weaponType)
         {
-            if (!isActionStateIKAllowed)
-                return defaultIKWeight;
-
-            switch (_weaponType)
-            {
-                case WeaponType.PISTOL:
-                    return pistolIKWeight;
-                case WeaponType.RIFLE:
-                    return rifleIKWeight;
-                case WeaponType.SHOTGUN:
-                    return shotgunIKWeight;
-                case WeaponType.NONE:
-                default:
-                    return defaultIKWeight;
-            }
+            if (_weaponType == WeaponType.NONE)
+                return noWeaponIKWeight;
+            else if (_weaponType != WeaponType.NONE && !isActionStateIKAllowed)
+                return weaponNotInActionIKWeight;
+            else
+                return weaponInActionIKWeight;
         }
     }
 }
