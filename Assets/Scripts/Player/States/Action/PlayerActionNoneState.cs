@@ -13,7 +13,7 @@ namespace ServiceLocator.Player
         public void OnStateEnter() 
         { 
             Owner.GetAnimationController().EnableIKWeight(
-                Owner.GetWeaponVisualController().GetCurrentWeapon(), false);
+                Owner.GetWeaponVisualController().GetCurrentWeapon(), true);
         }
         public void Update()
         {

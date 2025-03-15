@@ -38,7 +38,7 @@ namespace ServiceLocator.Player
                 stateMachine.ChangeState(PlayerActionState.FIRE);
             }
             else if (stateInfo.shortNameHash == Owner.GetAnimationController().weaponReloadHash &&
-                stateInfo.normalizedTime >= 1f)
+                stateInfo.normalizedTime >= 0.9f)
             {
                 stateMachine.ChangeState(PlayerActionState.AIM);
             }
