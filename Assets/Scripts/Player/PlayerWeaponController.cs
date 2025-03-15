@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace ServiceLocator.Player
 {
-    public class PlayerWeaponVisualController
+    public class PlayerWeaponController
     {
 
         // Private Variables
@@ -18,7 +18,7 @@ namespace ServiceLocator.Player
         // Private Services
         private WeaponService weaponService;
 
-        public PlayerWeaponVisualController(PlayerController _playerController,
+        public PlayerWeaponController(PlayerController _playerController,
             WeaponService _weaponService)
         {
             // Setting Variables
@@ -60,7 +60,7 @@ namespace ServiceLocator.Player
             {
                 currentWeaponType = WeaponType.NONE;
             }
-            else if(currentWeaponType == _weaponType)
+            else if (currentWeaponType == _weaponType)
             {
                 return;
             }
@@ -111,6 +111,13 @@ namespace ServiceLocator.Player
             }
         }
 
+        public void FireWeapon()
+        {
+            if (currentWeaponType != WeaponType.NONE)
+            {
+                playerController.IsFiring = true;
+            }
+        }
         // Setters
         private void SetCurrentWeaponSetting()
         {

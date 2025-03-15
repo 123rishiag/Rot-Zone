@@ -13,7 +13,7 @@ namespace ServiceLocator.Player
         private PlayerModel playerModel;
         private PlayerView playerView;
         private PlayerAnimationController playerAnimationController;
-        private PlayerWeaponVisualController playerWeaponVisualController;
+        private PlayerWeaponController playerWeaponController;
 
         public PlayerController Owner { get; set; }
         private PlayerMovementStateMachine playerMovementStateMachine;
@@ -40,7 +40,7 @@ namespace ServiceLocator.Player
             playerView = Object.Instantiate(_playerPrefab).GetComponent<PlayerView>();
             playerView.Init();
             playerAnimationController = new PlayerAnimationController(playerView.GetAnimator(), this);
-            playerWeaponVisualController = new PlayerWeaponVisualController(this, _weaponService);
+            playerWeaponController = new PlayerWeaponController(this, _weaponService);
 
             // Setting Services
             inputService = _inputService;
@@ -102,14 +102,15 @@ namespace ServiceLocator.Player
             inputControls.Player.Run.performed += ctx => IsRunning = true;
             inputControls.Player.Run.canceled += ctx => IsRunning = false;
 
-            inputControls.Player.Fire.performed += ctx => IsFiring = true;
+            inputControls.Player.Fire.started += ctx => playerActionStateMachine.ChangeState(PlayerActionState.FIRE);
+            inputControls.Player.Fire.performed += ctx => playerWeaponController.FireWeapon();
             inputControls.Player.Fire.canceled += ctx => IsFiring = false;
 
-            inputControls.Player.WeaponOne.started += ctx => playerWeaponVisualController.EquipWeapon(WeaponType.PISTOL);
-            inputControls.Player.WeaponTwo.started += ctx => playerWeaponVisualController.EquipWeapon(WeaponType.RIFLE);
-            inputControls.Player.WeaponThree.started += ctx => playerWeaponVisualController.EquipWeapon(WeaponType.SHOTGUN);
-            inputControls.Player.WeaponStow.started += ctx => playerWeaponVisualController.EquipWeapon(WeaponType.NONE);
-            inputControls.Player.WeaponReload.started += ctx => playerWeaponVisualController.ReloadWeapon();
+            inputControls.Player.WeaponOne.started += ctx => playerWeaponController.EquipWeapon(WeaponType.PISTOL);
+            inputControls.Player.WeaponTwo.started += ctx => playerWeaponController.EquipWeapon(WeaponType.RIFLE);
+            inputControls.Player.WeaponThree.started += ctx => playerWeaponController.EquipWeapon(WeaponType.SHOTGUN);
+            inputControls.Player.WeaponStow.started += ctx => playerWeaponController.EquipWeapon(WeaponType.NONE);
+            inputControls.Player.WeaponReload.started += ctx => playerWeaponController.ReloadWeapon();
 
             inputControls.Game.Pause.started += ctx => Time.timeScale = 0f;
 
@@ -118,16 +119,12 @@ namespace ServiceLocator.Player
         }
         #endregion
 
-        #region Player Movement & Action
+        #region Player Movement
         public void UpdateMovementVariables()
         {
             UpdateDirection();
             ApplyGravity();
             UpdateSpeed();
-        }
-        public void UpdateActionVariables()
-        {
-            AimTowardsMouse();
         }
         public void MovePlayer()
         {
@@ -145,7 +142,7 @@ namespace ServiceLocator.Player
                     cameraService.GetCameraRightXZNormalized() * inputDirection.x).normalized;
 
                 // If player is unarmed, rotate based on camera
-                if (playerWeaponVisualController.GetCurrentWeapon() == WeaponType.NONE)
+                if (playerWeaponController.GetCurrentWeapon() == WeaponType.NONE)
                 {
                     RotatePlayerTowards(cameraService.GetCameraForwardXZNormalized());
                 }
@@ -212,9 +209,16 @@ namespace ServiceLocator.Player
                     currentSpeed = targetSpeed;
             }
         }
+        #endregion
+
+        #region Player Action
+        public void UpdateActionVariables()
+        {
+            AimTowardsMouse();
+        }
         private void AimTowardsMouse()
         {
-            if (playerWeaponVisualController.GetCurrentWeapon() != WeaponType.NONE)
+            if (playerWeaponController.GetCurrentWeapon() != WeaponType.NONE)
             {
                 playerView.GetAimTransform().gameObject.SetActive(true);
 
@@ -250,7 +254,7 @@ namespace ServiceLocator.Player
         public PlayerModel GetModel() => playerModel;
         public PlayerView GetView() => playerView;
         public PlayerAnimationController GetAnimationController() => playerAnimationController;
-        public PlayerWeaponVisualController GetWeaponVisualController() => playerWeaponVisualController;
+        public PlayerWeaponController GetPlayerWeaponController() => playerWeaponController;
         public PlayerMovementStateMachine GetMovementStateMachine() => playerMovementStateMachine;
         public PlayerActionStateMachine GetActionStateMachine() => playerActionStateMachine;
         public Transform GetTransform() => playerView.transform;
@@ -259,7 +263,7 @@ namespace ServiceLocator.Player
         public bool IsGrounded() => Physics.CheckSphere(playerView.transform.position,
             playerModel.GroundCheckDistance, playerModel.GroundLayer);
         public bool IsRunning { get; private set; }
-        public bool IsFiring { get; private set; }
+        public bool IsFiring { get; set; }
         #endregion
     }
 }

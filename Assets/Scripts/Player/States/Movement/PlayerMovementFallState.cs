@@ -12,7 +12,7 @@ namespace ServiceLocator.Player
 
         public void OnStateEnter()
         {
-            Owner.GetWeaponVisualController().EquipWeapon(WeaponType.NONE);
+            Owner.GetPlayerWeaponController().EquipWeapon(WeaponType.NONE);
             Owner.GetView().GetAnimator().Play(Owner.GetAnimationController().fallHash);
         }
         public void Update()
