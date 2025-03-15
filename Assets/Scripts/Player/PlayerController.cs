@@ -220,8 +220,6 @@ namespace ServiceLocator.Player
         {
             if (playerWeaponController.GetCurrentWeaponType() != WeaponType.NONE)
             {
-                playerView.GetAimTransform().gameObject.SetActive(true);
-
                 Ray ray = Camera.main.ScreenPointToRay(aimPosition);
                 Vector3 aimTarget;
 
@@ -244,7 +242,6 @@ namespace ServiceLocator.Player
             }
             else
             {
-                playerView.GetAimTransform().gameObject.SetActive(false);
                 playerView.GetAimTransform().localPosition = playerModel.AimTransformDefaultPosition;
             }
         }

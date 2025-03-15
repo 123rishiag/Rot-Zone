@@ -12,11 +12,12 @@ namespace ServiceLocator.Weapon
     }
 
     [Serializable]
-    public struct WeaponData
+    public class WeaponData
     {
         public WeaponType weaponType;
         public WeaponView weaponPrefab;
         public ProjectileType weaponProjectileType;
+        public float weaponAimLaserMaxDistance = 5f;
     }
 
     [Serializable]

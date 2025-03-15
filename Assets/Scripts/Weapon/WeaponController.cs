@@ -18,10 +18,13 @@ namespace ServiceLocator.Weapon
             // Setting Variables
             weaponModel = new WeaponModel(_weaponData);
             weaponView = Object.Instantiate(_weaponData.weaponPrefab, _parentPanel).GetComponent<WeaponView>();
+            weaponView.Init(this);
 
             // Setting Services
             projectileService = _projectileService;
         }
+
+        public void Update() => weaponView.UpdateAimLaser();
 
         public void FireWeapon()
         {

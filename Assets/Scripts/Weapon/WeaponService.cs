@@ -1,5 +1,6 @@
 using ServiceLocator.Projectile;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace ServiceLocator.Weapon
@@ -9,6 +10,8 @@ namespace ServiceLocator.Weapon
         // Private Variables
         private WeaponConfig weaponConfig;
 
+        private List<WeaponController> weaponControllers;
+
         // Private Services
         private ProjectileService projectileService;
 
@@ -16,6 +19,8 @@ namespace ServiceLocator.Weapon
         {
             // Setting Variables
             weaponConfig = _weaponConfig;
+
+            weaponControllers = new List<WeaponController>();
         }
 
         public void Init(ProjectileService _projectileService)
@@ -24,10 +29,22 @@ namespace ServiceLocator.Weapon
             projectileService = _projectileService;
         }
 
+        public void Update()
+        {
+            foreach (WeaponController weaponController in weaponControllers)
+            {
+                weaponController.Update();
+            }
+        }
+
         public WeaponController CreateWeapon(WeaponType _weaponType, Transform _parentPanel)
         {
-            return new WeaponController(GetWeaponData(_weaponType), _parentPanel,
+            WeaponController weaponController = new WeaponController(GetWeaponData(_weaponType), _parentPanel,
                 projectileService);
+
+            weaponControllers.Add(weaponController);
+
+            return weaponController;
         }
 
         // Getters
