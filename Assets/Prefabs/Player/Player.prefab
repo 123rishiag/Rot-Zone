@@ -626,18 +626,21 @@ MonoBehaviour:
       rightHand_TargetTransform: {fileID: 601330751473462148}
       leftHand_TargetTransform: {fileID: 5018506583136142878}
       leftHand_HintTransform: {fileID: 9073229748077757751}
+      weaponVerticalOffeset: -1
   - weaponType: 2
     weaponTransform:
       weaponHolder: {fileID: 1478926393595562786}
       rightHand_TargetTransform: {fileID: 3161840467740064994}
       leftHand_TargetTransform: {fileID: 834724104272120410}
       leftHand_HintTransform: {fileID: 8334575163125056902}
+      weaponVerticalOffeset: 0
   - weaponType: 3
     weaponTransform:
       weaponHolder: {fileID: 7428284830406645795}
       rightHand_TargetTransform: {fileID: 2243566336365966069}
       leftHand_TargetTransform: {fileID: 732931980772964330}
       leftHand_HintTransform: {fileID: 15097190717707419}
+      weaponVerticalOffeset: -1.5
   rightHandAimConstraint: {fileID: 8310985297325246404}
   leftHandIK: {fileID: 6056014414725304192}
   aimTransform: {fileID: 5103283510018147113}
@@ -1688,6 +1691,7 @@ GameObject:
   - component: {fileID: 5103283510018147113}
   - component: {fileID: 2193887877003908550}
   - component: {fileID: 6003400198657288484}
+  - component: {fileID: 6942175793839739327}
   m_Layer: 6
   m_Name: AimTransform
   m_TagString: Untagged
@@ -1763,6 +1767,27 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!135 &6942175793839739327
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4474420122134745230}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &4486885079756400945
 GameObject:
   m_ObjectHideFlags: 0

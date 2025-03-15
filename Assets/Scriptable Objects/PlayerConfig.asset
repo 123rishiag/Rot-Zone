@@ -24,10 +24,6 @@ MonoBehaviour:
     groundCheckDistance: 0.2
     groundLayer:
       serializedVersion: 2
-      m_Bits: 128
+      m_Bits: 384
     weaponLayerWeightChangeFactor: 10
     aimTransformDefaultPosition: {x: 0, y: 1.5, z: 1}
-    aimMaxDistance: 10
-    aimLayer:
-      serializedVersion: 2
-      m_Bits: 128

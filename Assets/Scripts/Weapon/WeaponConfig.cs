@@ -18,7 +18,6 @@ namespace ServiceLocator.Weapon
         public WeaponView weaponPrefab;
         public ProjectileType weaponProjectileType;
         public float weaponAimLaserMaxDistance = 5f;
-        public LayerMask weaponAimLayer;
     }
 
     [Serializable]
@@ -29,11 +28,12 @@ namespace ServiceLocator.Weapon
     }
 
     [Serializable]
-    public struct WeaponTransform
+    public class WeaponTransform
     {
         public Transform weaponHolder;
         public Transform rightHand_TargetTransform;
         public Transform leftHand_TargetTransform;
         public Transform leftHand_HintTransform;
+        public float weaponVerticalOffeset = 0f;
     }
 }
