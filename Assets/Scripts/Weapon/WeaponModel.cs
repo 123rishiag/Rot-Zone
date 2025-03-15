@@ -10,7 +10,6 @@ namespace ServiceLocator.Weapon
             WeaponType = _weaponData.weaponType;
             WeaponProjectileType = _weaponData.weaponProjectileType;
             WeaponAimLaserMaxDistance = _weaponData.weaponAimLaserMaxDistance;
-            WeaponAimLayer = _weaponData.weaponAimLayer;
         }
 
         // Getters

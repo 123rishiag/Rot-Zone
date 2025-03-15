@@ -19,20 +19,12 @@ namespace ServiceLocator.Weapon
 
         public void UpdateAimLaser()
         {
-            WeaponModel weaponModel = weaponController.GetModel();
-
-            Vector3 aimTarget = firePoint.position + firePoint.forward * weaponModel.WeaponAimLaserMaxDistance;
-
-            Ray ray = Camera.main.ScreenPointToRay(aimTarget);
-            if (Physics.Raycast(ray, out var hitInfo, weaponModel.WeaponAimLaserMaxDistance,
-                weaponModel.WeaponAimLayer))
-            {
-                aimTarget = hitInfo.point;
-            }
-
+            Vector3 aimTarget = firePoint.position +
+                firePoint.forward * weaponController.GetModel().WeaponAimLaserMaxDistance;
             aimLaser.SetPosition(0, firePoint.position);
             aimLaser.SetPosition(1, aimTarget);
         }
+
 
         // Getters
         public Transform GetFirePoint() => firePoint;

@@ -141,12 +141,6 @@ namespace ServiceLocator.Player
                 targetDirection = (cameraService.GetCameraForwardXZNormalized() * inputDirection.z +
                     cameraService.GetCameraRightXZNormalized() * inputDirection.x).normalized;
 
-                // If player is unarmed, rotate based on camera
-                if (playerWeaponController.GetCurrentWeaponType() == WeaponType.NONE)
-                {
-                    RotatePlayerTowards(cameraService.GetCameraForwardXZNormalized());
-                }
-
                 lastMoveDirection = moveDirection;
             }
             else if (currentSpeed > 0.1f)
@@ -167,6 +161,7 @@ namespace ServiceLocator.Player
             if (_direction == Vector3.zero) return;
 
             Quaternion targetRotation = Quaternion.LookRotation(_direction);
+
             playerView.transform.rotation = Quaternion.Slerp(playerView.transform.rotation, targetRotation,
                 Time.deltaTime * playerModel.RotationSpeed);
         }
@@ -214,9 +209,9 @@ namespace ServiceLocator.Player
         #region Player Action
         public void UpdateActionVariables()
         {
-            AimTowardsMouse();
+            AimPlayer();
         }
-        private void AimTowardsMouse()
+        private void AimPlayer()
         {
             if (playerWeaponController.GetCurrentWeaponType() != WeaponType.NONE)
             {
@@ -226,16 +221,22 @@ namespace ServiceLocator.Player
                 Vector3 aimTarget =
                     ray.GetPoint(playerWeaponController.GetCurrentWeapon().GetView().GetAimDistance());
 
+                // Setting Offsets for Weapons
+                aimTarget = new Vector3(
+                    aimTarget.x,
+                    aimTarget.y + playerWeaponController.GetCurrentWeaponTransform().weaponVerticalOffeset,
+                    aimTarget.z);
+
                 playerView.GetAimTransform().position = aimTarget;
 
                 Vector3 direction = (aimTarget - playerView.transform.position).normalized;
                 direction.y = 0f;
-
-                if (direction != Vector3.zero) RotatePlayerTowards(direction);
+                RotatePlayerTowards(direction);
             }
             else
             {
                 playerView.GetAimTransform().localPosition = playerModel.AimTransformDefaultPosition;
+                RotatePlayerTowards(cameraService.GetCameraForwardXZNormalized());
             }
         }
         #endregion
