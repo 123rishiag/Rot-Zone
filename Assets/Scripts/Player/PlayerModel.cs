@@ -20,8 +20,6 @@ namespace ServiceLocator.Player
             WeaponLayerWeightChangeFactor = _playerData.weaponLayerWeightChangeFactor;
 
             AimTransformDefaultPosition = _playerData.aimTransformDefaultPosition;
-            AimMaxDistance = _playerData.aimMaxDistance;
-            AimLayer = _playerData.aimLayer;
         }
 
         // Getters
@@ -39,7 +37,5 @@ namespace ServiceLocator.Player
         public float WeaponLayerWeightChangeFactor { get; private set; }
 
         public Vector3 AimTransformDefaultPosition { get; private set; }
-        public float AimMaxDistance { get; private set; }
-        public LayerMask AimLayer { get; private set; }
     }
 }

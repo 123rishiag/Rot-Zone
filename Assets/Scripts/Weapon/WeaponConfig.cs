@@ -18,6 +18,7 @@ namespace ServiceLocator.Weapon
         public WeaponView weaponPrefab;
         public ProjectileType weaponProjectileType;
         public float weaponAimLaserMaxDistance = 5f;
+        public LayerMask weaponAimLayer;
     }
 
     [Serializable]

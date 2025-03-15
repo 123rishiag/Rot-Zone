@@ -133,6 +133,7 @@ namespace ServiceLocator.Player
         }
         // Getters
         public WeaponType GetCurrentWeaponType() => currentWeaponType;
+        public WeaponController GetCurrentWeapon() => weapons[currentWeaponType];
         private WeaponIKData GetWeaponIKData(WeaponType _weaponType) =>
             Array.Find(playerController.GetView().GetWeaponIKDatas(), w => w.weaponType == _weaponType);
     }

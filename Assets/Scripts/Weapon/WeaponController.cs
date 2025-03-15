@@ -44,5 +44,6 @@ namespace ServiceLocator.Weapon
 
         // Getters
         public WeaponModel GetModel() => weaponModel;
+        public WeaponView GetView() => weaponView;
     }
 }

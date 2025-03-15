@@ -220,25 +220,18 @@ namespace ServiceLocator.Player
         {
             if (playerWeaponController.GetCurrentWeaponType() != WeaponType.NONE)
             {
+                // Setting Aim Based on Mouse Position
                 Ray ray = Camera.main.ScreenPointToRay(aimPosition);
-                Vector3 aimTarget;
 
-                if (Physics.Raycast(ray, out var hitInfo, playerModel.AimMaxDistance, playerModel.AimLayer))
-                {
-                    aimTarget = hitInfo.point;
-                }
-                else
-                {
-                    aimTarget = ray.GetPoint(playerModel.AimMaxDistance);
-                }
+                Vector3 aimTarget =
+                    ray.GetPoint(playerWeaponController.GetCurrentWeapon().GetView().GetAimDistance());
 
                 playerView.GetAimTransform().position = aimTarget;
 
                 Vector3 direction = (aimTarget - playerView.transform.position).normalized;
                 direction.y = 0f;
 
-                if (direction != Vector3.zero)
-                    RotatePlayerTowards(direction);
+                if (direction != Vector3.zero) RotatePlayerTowards(direction);
             }
             else
             {
@@ -254,9 +247,11 @@ namespace ServiceLocator.Player
         public PlayerWeaponController GetWeaponController() => playerWeaponController;
         public PlayerMovementStateMachine GetMovementStateMachine() => playerMovementStateMachine;
         public PlayerActionStateMachine GetActionStateMachine() => playerActionStateMachine;
+
         public Transform GetTransform() => playerView.transform;
         public Vector3 GetMoveDirection() => moveDirection;
         public float GetCurrentSpeed() => currentSpeed;
+
         public bool IsGrounded() => Physics.CheckSphere(playerView.transform.position,
             playerModel.GroundCheckDistance, playerModel.GroundLayer);
         public bool IsRunning { get; private set; }
