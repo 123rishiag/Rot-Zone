@@ -31,7 +31,5 @@ namespace ServiceLocator.Player
 
         [Header("Aim Settings")]
         public Vector3 aimTransformDefaultPosition = new Vector3(0f, 1.5f, 1f);
-        public float aimMaxDistance = 10f;
-        public LayerMask aimLayer;
     }
 }
