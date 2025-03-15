@@ -254,7 +254,7 @@ namespace ServiceLocator.Player
         public PlayerModel GetModel() => playerModel;
         public PlayerView GetView() => playerView;
         public PlayerAnimationController GetAnimationController() => playerAnimationController;
-        public PlayerWeaponController GetPlayerWeaponController() => playerWeaponController;
+        public PlayerWeaponController GetWeaponController() => playerWeaponController;
         public PlayerMovementStateMachine GetMovementStateMachine() => playerMovementStateMachine;
         public PlayerActionStateMachine GetActionStateMachine() => playerActionStateMachine;
         public Transform GetTransform() => playerView.transform;

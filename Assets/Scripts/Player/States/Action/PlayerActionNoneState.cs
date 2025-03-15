@@ -13,7 +13,7 @@ namespace ServiceLocator.Player
         public void OnStateEnter() 
         { 
             Owner.GetAnimationController().EnableIKWeight(
-                Owner.GetPlayerWeaponController().GetCurrentWeapon(), true);
+                Owner.GetWeaponController().GetCurrentWeapon(), true);
         }
         public void Update()
         {
@@ -27,7 +27,7 @@ namespace ServiceLocator.Player
 
         private void CheckTransitionConditions()
         {
-            if (Owner.GetPlayerWeaponController().GetCurrentWeapon() != WeaponType.NONE)
+            if (Owner.GetWeaponController().GetCurrentWeapon() != WeaponType.NONE)
             {
                 stateMachine.ChangeState(PlayerActionState.AIM);
             }
