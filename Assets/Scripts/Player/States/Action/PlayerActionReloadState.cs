@@ -13,6 +13,7 @@ namespace ServiceLocator.Player
 
         public void OnStateEnter()
         {
+            Owner.GetWeaponController().ReloadWeapon();
             Owner.GetAnimationController().EnableIKWeight(
                 Owner.GetWeaponController().GetCurrentWeaponType(), false);
             Owner.GetView().GetAnimator().Play(Owner.GetAnimationController().weaponReloadHash);
@@ -25,7 +26,10 @@ namespace ServiceLocator.Player
         }
 
         public void FixedUpdate() { }
-        public void OnStateExit() { }
+        public void OnStateExit()
+        {
+            Owner.GetWeaponController().ReloadComplete();
+        }
 
         private void CheckTransitionConditions()
         {
@@ -33,7 +37,13 @@ namespace ServiceLocator.Player
             AnimatorStateInfo stateInfo =
                 Owner.GetView().GetAnimator().GetCurrentAnimatorStateInfo(weaponLayerIndex);
 
-            if (stateInfo.shortNameHash == Owner.GetAnimationController().weaponReloadHash &&
+            if (Owner.GetWeaponController().GetCurrentWeaponType() != WeaponType.NONE &&
+               Owner.GetWeaponController().GetCurrentWeapon().CanFireWeapon() &&
+               Owner.IsFiring)
+            {
+                stateMachine.ChangeState(PlayerActionState.FIRE);
+            }
+            else if (stateInfo.shortNameHash == Owner.GetAnimationController().weaponReloadHash &&
                 stateInfo.normalizedTime >= 0.9f)
             {
                 stateMachine.ChangeState(PlayerActionState.AIM);

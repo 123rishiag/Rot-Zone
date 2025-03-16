@@ -10,6 +10,7 @@ namespace ServiceLocator.Weapon
         private WeaponView weaponView;
 
         private int currentAmmo;
+        private float lastFireTime;
 
         // Private Services
         private ProjectileService projectileService;
@@ -23,18 +24,28 @@ namespace ServiceLocator.Weapon
             weaponView.Init(this);
 
             currentAmmo = weaponModel.WeaponInitialAmmo;
+            lastFireTime = Time.time;
 
             // Setting Services
             projectileService = _projectileService;
         }
 
-        public void Update() => weaponView.UpdateAimLaser();
+        public void Update()
+        {
+            weaponView.UpdateAimLaser();
+        }
+
+        public bool CanFireWeapon()
+        {
+            return (Time.time > lastFireTime + 1 / weaponModel.WeaponFireRateInSeconds) ? true : false;
+        }
 
         public void FireWeapon()
         {
             if (currentAmmo > 0)
             {
                 projectileService.FireProjectile(weaponModel.WeaponProjectileType, weaponView.GetFirePoint());
+                lastFireTime = Time.time;
                 --currentAmmo;
             }
         }
