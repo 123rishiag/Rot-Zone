@@ -13,7 +13,9 @@ namespace ServiceLocator.Player
 
         public void OnStateEnter()
         {
-            Owner.GetWeaponController().ReloadWeapon();
+            // Disabling Current Fire Press
+            Owner.IsFiring = false;
+
             Owner.GetAnimationController().EnableIKWeight(
                 Owner.GetWeaponController().GetCurrentWeaponType(), false);
             Owner.GetView().GetAnimator().Play(Owner.GetAnimationController().weaponReloadHash);
@@ -43,6 +45,7 @@ namespace ServiceLocator.Player
             }
             else if (IsReloadAnimationFinished())
             {
+                Owner.GetWeaponController().ReloadWeapon();
                 stateMachine.ChangeState(PlayerActionState.AIM);
             }
         }

@@ -36,7 +36,7 @@ namespace ServiceLocator.Player
             {
                 stateMachine.ChangeState(PlayerActionState.FIRE);
             }
-            else if (Owner.IsReloading)
+            else if (Owner.GetWeaponController().GetCurrentWeapon().CanReloadWeapon() && Owner.IsReloading)
             {
                 stateMachine.ChangeState(PlayerActionState.RELOAD);
             }
