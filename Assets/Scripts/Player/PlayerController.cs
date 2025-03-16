@@ -255,7 +255,7 @@ namespace ServiceLocator.Player
         public bool IsGrounded() => Physics.CheckSphere(playerView.transform.position,
             playerModel.GroundCheckDistance, playerModel.GroundLayer);
         public bool IsRunning { get; private set; }
-        public bool IsFiring { get; private set; }
+        public bool IsFiring { get; set; }
         public bool IsReloading { get; set; }
         #endregion
     }

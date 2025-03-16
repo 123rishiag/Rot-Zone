@@ -68,18 +68,20 @@ namespace ServiceLocator.Player
                 currentWeaponType = _weaponType;
             }
 
+            // Resetting Action State to None while equipment changes,
+            // as to avoid unwanted behaviours
             playerController.GetActionStateMachine().ChangeState(PlayerActionState.NONE);
 
             SwitchOffWeapons();
 
             if (currentWeaponType != WeaponType.NONE)
             {
-                weapons[_weaponType].EnableWeapon();
+                weapons[currentWeaponType].EnableWeapon();
 
-                WeaponIKData weaponIKData = GetWeaponIKData(_weaponType);
+                WeaponIKData weaponIKData = GetWeaponIKData(currentWeaponType);
                 currentWeaponTransform = weaponIKData.weaponTransform;
 
-                AttachLeftHandToWeapon(_weaponType);
+                AttachLeftHandToWeapon(currentWeaponType);
             }
 
             SetCurrentWeaponSetting();
@@ -104,7 +106,7 @@ namespace ServiceLocator.Player
         }
         public void ReloadWeapon()
         {
-
+            playerController.IsFiring = false;
         }
 
         public void ReloadComplete() => playerController.IsReloading = false;
@@ -112,6 +114,12 @@ namespace ServiceLocator.Player
         public void FireWeapon()
         {
             weapons[currentWeaponType].FireWeapon();
+
+            // To Stop Constant Firing if the weapon is Single Type
+            if (weapons[currentWeaponType].GetModel().WeaponFireType == WeaponFireType.SINGLE)
+            {
+                playerController.IsFiring = false;
+            }
         }
         // Setters
         private void SetCurrentWeaponSetting()

@@ -10,8 +10,8 @@ namespace ServiceLocator.Player
 
         public PlayerActionNoneState(PlayerActionStateMachine _stateMachine) => stateMachine = _stateMachine;
 
-        public void OnStateEnter() 
-        { 
+        public void OnStateEnter()
+        {
             Owner.GetAnimationController().EnableIKWeight(
                 Owner.GetWeaponController().GetCurrentWeaponType(), true);
         }

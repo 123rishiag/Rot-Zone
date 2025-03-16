@@ -7,4 +7,10 @@ namespace ServiceLocator.Weapon
         RIFLE,
         SHOTGUN,
     }
+
+    public enum WeaponFireType
+    {
+        SINGLE,
+        AUTO,
+    }
 }
