@@ -14,14 +14,22 @@ namespace ServiceLocator.Weapon
     [Serializable]
     public class WeaponData
     {
+        [Header("Weapon Details")]
         public WeaponType weaponType;
         public WeaponView weaponPrefab;
+
+        [Header("Weapon Fire Settings")]
         public ProjectileType weaponProjectileType;
         public WeaponFireType weaponFireType;
-        public float weaponAimLaserMaxDistance = 5f;
-        public int weaponInitialAmmo = 20;
-        public int weaponMaxCapacity = 100;
         public float weaponFireRateInSeconds = 1f;
+
+        [Header("Weapon Aim Settings")]
+        public float weaponAimLaserMaxDistance = 5f;
+
+        [Header("Weapon Ammo Settings")]
+        public int weaponInitialAmmo = 20;
+        public int weaponMaxCapacity = 30;
+        public int weaponTotalAmmo = 100;
     }
 
     [Serializable]

@@ -37,6 +37,10 @@ namespace ServiceLocator.Player
             {
                 stateMachine.ChangeState(PlayerActionState.NONE);
             }
+            else if (Owner.GetWeaponController().GetCurrentWeapon().CanFireWeapon() && Owner.IsReloading)
+            {
+                stateMachine.ChangeState(PlayerActionState.RELOAD);
+            }
             else if (Owner.GetWeaponController().GetCurrentWeapon().CanFireWeapon() && Owner.IsFiring)
             {
                 stateMachine.ChangeState(PlayerActionState.FIRE);
@@ -44,10 +48,6 @@ namespace ServiceLocator.Player
             else if (IsFireAnimationInProgress() && !Owner.IsFiring)
             {
                 stateMachine.ChangeState(PlayerActionState.AIM);
-            }
-            else if (Owner.IsReloading)
-            {
-                stateMachine.ChangeState(PlayerActionState.RELOAD);
             }
         }
 

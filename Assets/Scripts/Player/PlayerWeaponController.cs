@@ -106,7 +106,7 @@ namespace ServiceLocator.Player
         }
         public void ReloadWeapon()
         {
-            playerController.IsFiring = false;
+            weapons[currentWeaponType].ReloadWeapon();
         }
 
         public void ReloadComplete() => playerController.IsReloading = false;

@@ -10,6 +10,7 @@ namespace ServiceLocator.Weapon
         private WeaponView weaponView;
 
         private int currentAmmo;
+        private int totalAmmoLeft;
         private float lastFireTime;
 
         // Private Services
@@ -24,6 +25,7 @@ namespace ServiceLocator.Weapon
             weaponView.Init(this);
 
             currentAmmo = weaponModel.WeaponInitialAmmo;
+            totalAmmoLeft = weaponModel.WeaponTotalAmmo;
             lastFireTime = 0f;
 
             // Setting Services
@@ -35,11 +37,25 @@ namespace ServiceLocator.Weapon
             weaponView.UpdateAimLaser();
         }
 
+        public bool CanReloadWeapon()
+        {
+            return (currentAmmo < weaponModel.WeaponMaxCapacity && totalAmmoLeft > 0) ? true : false;
+        }
+
         public bool CanFireWeapon()
         {
             return (lastFireTime == 0f ||
                 (Time.time > lastFireTime + 1 / weaponModel.WeaponFireRateInSeconds)
                 ) ? true : false;
+        }
+
+        public void ReloadWeapon()
+        {
+            int ammoInsertAvailable = weaponModel.WeaponMaxCapacity - currentAmmo;
+            int ammoToAdd = Mathf.Min(totalAmmoLeft, ammoInsertAvailable);
+
+            currentAmmo += ammoToAdd;
+            totalAmmoLeft -= ammoToAdd;
         }
 
         public void FireWeapon()
