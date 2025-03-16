@@ -19,6 +19,8 @@ namespace ServiceLocator.Weapon
         public ProjectileType weaponProjectileType;
         public float weaponAimLaserMaxDistance = 5f;
         public int weaponInitialAmmo = 20;
+        public int weaponMaxCapacity = 100;
+        public float weaponFireRateInSeconds = 1f;
     }
 
     [Serializable]

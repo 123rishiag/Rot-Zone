@@ -10,6 +10,8 @@ namespace ServiceLocator.Weapon
             WeaponProjectileType = _weaponData.weaponProjectileType;
             WeaponAimLaserMaxDistance = _weaponData.weaponAimLaserMaxDistance;
             WeaponInitialAmmo = _weaponData.weaponInitialAmmo;
+            WeaponMaxCapacity = _weaponData.weaponMaxCapacity;
+            WeaponFireRateInSeconds = _weaponData.weaponFireRateInSeconds;
         }
 
         // Getters
@@ -17,5 +19,7 @@ namespace ServiceLocator.Weapon
         public ProjectileType WeaponProjectileType { get; private set; }
         public float WeaponAimLaserMaxDistance { get; private set; }
         public int WeaponInitialAmmo { get; private set; }
+        public int WeaponMaxCapacity { get; private set; }
+        public float WeaponFireRateInSeconds { get; private set; }
     }
 }

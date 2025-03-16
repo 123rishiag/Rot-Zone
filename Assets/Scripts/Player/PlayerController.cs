@@ -102,15 +102,14 @@ namespace ServiceLocator.Player
             inputControls.Player.Run.performed += ctx => IsRunning = true;
             inputControls.Player.Run.canceled += ctx => IsRunning = false;
 
-            inputControls.Player.Fire.started += ctx => playerActionStateMachine.ChangeState(PlayerActionState.FIRE);
-            inputControls.Player.Fire.performed += ctx => playerWeaponController.FireWeapon();
+            inputControls.Player.Fire.performed += ctx => IsFiring = true;
             inputControls.Player.Fire.canceled += ctx => IsFiring = false;
 
             inputControls.Player.WeaponOne.started += ctx => playerWeaponController.EquipWeapon(WeaponType.PISTOL);
             inputControls.Player.WeaponTwo.started += ctx => playerWeaponController.EquipWeapon(WeaponType.RIFLE);
             inputControls.Player.WeaponThree.started += ctx => playerWeaponController.EquipWeapon(WeaponType.SHOTGUN);
             inputControls.Player.WeaponStow.started += ctx => playerWeaponController.EquipWeapon(WeaponType.NONE);
-            inputControls.Player.WeaponReload.started += ctx => playerWeaponController.ReloadWeapon();
+            inputControls.Player.WeaponReload.started += ctx => IsReloading = true;
 
             inputControls.Game.Pause.started += ctx => Time.timeScale = 0f;
 
@@ -256,7 +255,8 @@ namespace ServiceLocator.Player
         public bool IsGrounded() => Physics.CheckSphere(playerView.transform.position,
             playerModel.GroundCheckDistance, playerModel.GroundLayer);
         public bool IsRunning { get; private set; }
-        public bool IsFiring { get; set; }
+        public bool IsFiring { get; private set; }
+        public bool IsReloading { get; set; }
         #endregion
     }
 }

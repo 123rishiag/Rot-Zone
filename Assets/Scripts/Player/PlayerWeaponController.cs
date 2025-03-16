@@ -7,7 +7,6 @@ namespace ServiceLocator.Player
 {
     public class PlayerWeaponController
     {
-
         // Private Variables
         private PlayerController playerController;
 
@@ -105,19 +104,14 @@ namespace ServiceLocator.Player
         }
         public void ReloadWeapon()
         {
-            if (currentWeaponType != WeaponType.NONE)
-            {
-                playerController.GetActionStateMachine().ChangeState(PlayerActionState.RELOAD);
-            }
+
         }
+
+        public void ReloadComplete() => playerController.IsReloading = false;
 
         public void FireWeapon()
         {
-            if (currentWeaponType != WeaponType.NONE)
-            {
-                playerController.IsFiring = true;
-                weapons[currentWeaponType].FireWeapon();
-            }
+            weapons[currentWeaponType].FireWeapon();
         }
         // Setters
         private void SetCurrentWeaponSetting()

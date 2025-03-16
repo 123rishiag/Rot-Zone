@@ -28,9 +28,16 @@ namespace ServiceLocator.Player
 
         private void CheckTransitionConditions()
         {
-            if (Owner.GetWeaponController().GetCurrentWeaponType() != WeaponType.NONE && Owner.IsFiring)
+            if (Owner.GetWeaponController().GetCurrentWeaponType() != WeaponType.NONE &&
+                Owner.GetWeaponController().GetCurrentWeapon().CanFireWeapon() &&
+                Owner.IsFiring)
             {
                 stateMachine.ChangeState(PlayerActionState.FIRE);
+            }
+            else if(Owner.GetWeaponController().GetCurrentWeaponType() != WeaponType.NONE &&
+                Owner.IsReloading)
+            {
+                stateMachine.ChangeState(PlayerActionState.RELOAD);
             }
             else if (Owner.GetWeaponController().GetCurrentWeaponType() == WeaponType.NONE)
             {
