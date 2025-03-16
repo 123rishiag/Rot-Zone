@@ -9,6 +9,8 @@ namespace ServiceLocator.Weapon
         private WeaponModel weaponModel;
         private WeaponView weaponView;
 
+        private int currentAmmo;
+
         // Private Services
         private ProjectileService projectileService;
 
@@ -20,6 +22,8 @@ namespace ServiceLocator.Weapon
             weaponView = Object.Instantiate(_weaponData.weaponPrefab, _parentPanel).GetComponent<WeaponView>();
             weaponView.Init(this);
 
+            currentAmmo = weaponModel.WeaponInitialAmmo;
+
             // Setting Services
             projectileService = _projectileService;
         }
@@ -28,7 +32,11 @@ namespace ServiceLocator.Weapon
 
         public void FireWeapon()
         {
-            projectileService.FireProjectile(weaponModel.WeaponProjectileType, weaponView.GetFirePoint());
+            if (currentAmmo > 0)
+            {
+                projectileService.FireProjectile(weaponModel.WeaponProjectileType, weaponView.GetFirePoint());
+                --currentAmmo;
+            }
         }
 
         public void EnableWeapon() => weaponView.gameObject.SetActive(true);
