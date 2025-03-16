@@ -33,21 +33,28 @@ namespace ServiceLocator.Player
 
         private void CheckTransitionConditions()
         {
+            if (Owner.GetWeaponController().GetCurrentWeaponType() == WeaponType.NONE)
+            {
+                stateMachine.ChangeState(PlayerActionState.NONE);
+            }
+            else if (Owner.GetWeaponController().GetCurrentWeapon().CanFireWeapon() && Owner.IsFiring)
+            {
+                stateMachine.ChangeState(PlayerActionState.FIRE);
+            }
+            else if (IsReloadAnimationFinished())
+            {
+                stateMachine.ChangeState(PlayerActionState.AIM);
+            }
+        }
+
+        private bool IsReloadAnimationFinished()
+        {
             int weaponLayerIndex = Owner.GetAnimationController().WeaponAnimationLayerIndex;
             AnimatorStateInfo stateInfo =
                 Owner.GetView().GetAnimator().GetCurrentAnimatorStateInfo(weaponLayerIndex);
 
-            if (Owner.GetWeaponController().GetCurrentWeaponType() != WeaponType.NONE &&
-               Owner.GetWeaponController().GetCurrentWeapon().CanFireWeapon() &&
-               Owner.IsFiring)
-            {
-                stateMachine.ChangeState(PlayerActionState.FIRE);
-            }
-            else if (stateInfo.shortNameHash == Owner.GetAnimationController().weaponReloadHash &&
-                stateInfo.normalizedTime >= 0.9f)
-            {
-                stateMachine.ChangeState(PlayerActionState.AIM);
-            }
+            return (stateInfo.shortNameHash == Owner.GetAnimationController().weaponReloadHash &&
+                stateInfo.normalizedTime >= 0.9f);
         }
     }
 }

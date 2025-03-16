@@ -24,7 +24,7 @@ namespace ServiceLocator.Weapon
             weaponView.Init(this);
 
             currentAmmo = weaponModel.WeaponInitialAmmo;
-            lastFireTime = Time.time;
+            lastFireTime = 0f;
 
             // Setting Services
             projectileService = _projectileService;
@@ -37,7 +37,9 @@ namespace ServiceLocator.Weapon
 
         public bool CanFireWeapon()
         {
-            return (Time.time > lastFireTime + 1 / weaponModel.WeaponFireRateInSeconds) ? true : false;
+            return (lastFireTime == 0f ||
+                (Time.time > lastFireTime + 1 / weaponModel.WeaponFireRateInSeconds)
+                ) ? true : false;
         }
 
         public void FireWeapon()

@@ -17,6 +17,7 @@ namespace ServiceLocator.Weapon
         public WeaponType weaponType;
         public WeaponView weaponPrefab;
         public ProjectileType weaponProjectileType;
+        public WeaponFireType weaponFireType;
         public float weaponAimLaserMaxDistance = 5f;
         public int weaponInitialAmmo = 20;
         public int weaponMaxCapacity = 100;

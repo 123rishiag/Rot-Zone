@@ -1,5 +1,6 @@
 using ServiceLocator.Utility;
 using ServiceLocator.Weapon;
+using UnityEngine;
 
 namespace ServiceLocator.Player
 {
@@ -15,7 +16,10 @@ namespace ServiceLocator.Player
             Owner.GetWeaponController().FireWeapon();
             Owner.GetAnimationController().EnableIKWeight(
                 Owner.GetWeaponController().GetCurrentWeaponType(), true);
-            Owner.GetView().GetAnimator().Play(Owner.GetAnimationController().weaponFireHash);
+            if (!IsFireAnimationInProgress())
+            {
+                Owner.GetView().GetAnimator().Play(Owner.GetAnimationController().weaponFireHash);
+            }
         }
         public void Update()
         {
@@ -29,19 +33,32 @@ namespace ServiceLocator.Player
 
         private void CheckTransitionConditions()
         {
-            if (Owner.GetWeaponController().GetCurrentWeaponType() != WeaponType.NONE && !Owner.IsFiring)
-            {
-                stateMachine.ChangeState(PlayerActionState.AIM);
-            }
-            else if (Owner.GetWeaponController().GetCurrentWeaponType() != WeaponType.NONE &&
-                Owner.IsReloading)
-            {
-                stateMachine.ChangeState(PlayerActionState.RELOAD);
-            }
-            else if (Owner.GetWeaponController().GetCurrentWeaponType() == WeaponType.NONE)
+            if (Owner.GetWeaponController().GetCurrentWeaponType() == WeaponType.NONE)
             {
                 stateMachine.ChangeState(PlayerActionState.NONE);
             }
+            else if (Owner.GetWeaponController().GetCurrentWeapon().CanFireWeapon() && Owner.IsFiring)
+            {
+                stateMachine.ChangeState(PlayerActionState.FIRE);
+            }
+            else if (IsFireAnimationInProgress() && !Owner.IsFiring)
+            {
+                stateMachine.ChangeState(PlayerActionState.AIM);
+            }
+            else if (Owner.IsReloading)
+            {
+                stateMachine.ChangeState(PlayerActionState.RELOAD);
+            }
+        }
+
+        private bool IsFireAnimationInProgress()
+        {
+            int weaponLayerIndex = Owner.GetAnimationController().WeaponAnimationLayerIndex;
+            AnimatorStateInfo stateInfo =
+                Owner.GetView().GetAnimator().GetCurrentAnimatorStateInfo(weaponLayerIndex);
+
+            return (stateInfo.shortNameHash == Owner.GetAnimationController().weaponFireHash &&
+                stateInfo.normalizedTime >= 0.5f);
         }
     }
 }
