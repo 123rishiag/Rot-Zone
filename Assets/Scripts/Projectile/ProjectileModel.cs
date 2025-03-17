@@ -4,6 +4,11 @@ namespace ServiceLocator.Projectile
     {
         public ProjectileModel(ProjectileData _projectileData)
         {
+            Reset(_projectileData);
+        }
+
+        public void Reset(ProjectileData _projectileData)
+        {
             ProjectileType = _projectileData.projectileType;
             ProjectileSpeed = _projectileData.projectileSpeed;
         }
