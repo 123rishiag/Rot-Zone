@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace ServiceLocator.Projectile
 {
-    public class ProjectileController
+    public abstract class ProjectileController
     {
         private const float fixedProjectileSpeed = 20f;
 
@@ -16,9 +16,17 @@ namespace ServiceLocator.Projectile
             projectileModel = new ProjectileModel(_projectileData);
             projectileView =
                 Object.Instantiate(_projectileData.projectilePrefab, _parentPanel).GetComponent<ProjectileView>();
-            projectileView.Init();
+            projectileView.Init(this);
 
             // Setting Elements
+            Reset(_projectileData, _firePoint);
+        }
+
+        public void Reset(ProjectileData _projectileData, Transform _firePoint)
+        {
+            projectileModel.Reset(_projectileData);
+            projectileView.ShowView();
+
             FireProjectile(_firePoint);
         }
 
@@ -31,7 +39,14 @@ namespace ServiceLocator.Projectile
             projectileView.transform.position = newPosition;
             projectileView.transform.rotation = _firePoint.rotation;
 
+            // To make impact constant
+            rigidbody.mass = fixedProjectileSpeed / projectileModel.ProjectileSpeed;
             rigidbody.AddForce(_firePoint.forward * projectileModel.ProjectileSpeed, ForceMode.Impulse);
         }
+
+        // Getters
+        public bool IsActive() => projectileView.gameObject.activeInHierarchy;
+        public ProjectileModel GetModel() => projectileModel;
+        public ProjectileView GetView() => projectileView;
     }
 }

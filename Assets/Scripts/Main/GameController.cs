@@ -41,7 +41,7 @@ namespace ServiceLocator.Main
         {
             inputService.Init();
             cameraService.Init(inputService, playerService);
-            // Projectile Service
+            projectileService.Init();
             weaponService.Init(projectileService);
             playerService.Init(inputService, cameraService, weaponService);
         }
@@ -59,7 +59,7 @@ namespace ServiceLocator.Main
         {
             // Input Service
             cameraService.Update();
-            // Projectile Service
+            projectileService.Update();
             weaponService.Update();
             playerService.Update();
         }

@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 namespace ServiceLocator.Projectile
@@ -9,6 +8,8 @@ namespace ServiceLocator.Projectile
         private ProjectileConfig projectileConfig;
         private Transform projectileParentPanel;
 
+        private ProjectilePool projectilePool;
+
         public ProjectileService(ProjectileConfig _projectileConfig, Transform _parentPanel)
         {
             // Setting Variables
@@ -16,12 +17,54 @@ namespace ServiceLocator.Projectile
             projectileParentPanel = _parentPanel;
         }
 
-        public ProjectileController FireProjectile(ProjectileType _projectileType, Transform _firePoint)
+        public void Init()
         {
-            return new ProjectileController(GetProjectileData(_projectileType), projectileParentPanel, _firePoint);
+            // Setting Variables
+            projectilePool = new ProjectilePool(projectileConfig, projectileParentPanel);
         }
 
-        private ProjectileData GetProjectileData(ProjectileType _projectileType) =>
-            Array.Find(projectileConfig.projectileData, w => w.projectileType == _projectileType);
+        public void Update()
+        {
+            DestroyProjectiles();
+        }
+        private void DestroyProjectiles()
+        {
+            for (int i = projectilePool.pooledItems.Count - 1; i >= 0; i--)
+            {
+                // Skipping if the pooled item's isUsed is false
+                if (!projectilePool.pooledItems[i].isUsed)
+                {
+                    continue;
+                }
+
+                var projectileController = projectilePool.pooledItems[i].Item;
+                if (!projectileController.IsActive())
+                {
+                    ReturnProjectileToPool(projectileController);
+                }
+            }
+        }
+
+        public ProjectileController FireProjectile(ProjectileType _projectileType, Transform _firePoint)
+        {
+            switch (_projectileType)
+            {
+                case ProjectileType.PISTOL_PROJECTILE:
+                    return projectilePool.GetProjectile<PistolProjectileController>(_projectileType, _firePoint);
+                case ProjectileType.RIFLE_PROJECTILE:
+                    return projectilePool.GetProjectile<RifleProjectileController>(_projectileType, _firePoint);
+                case ProjectileType.SHOTGUN_PROJECTILE:
+                    return projectilePool.GetProjectile<ShotgunProjectileController>(_projectileType, _firePoint);
+                default:
+                    Debug.LogWarning($"Unhandled ProjectileType: {_projectileType}");
+                    return null;
+            }
+        }
+
+        private void ReturnProjectileToPool(ProjectileController _projectileToReturn)
+        {
+            _projectileToReturn.GetView().HideView();
+            projectilePool.ReturnItem(_projectileToReturn);
+        }
     }
 }
