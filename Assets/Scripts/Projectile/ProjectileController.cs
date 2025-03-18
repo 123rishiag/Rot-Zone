@@ -4,8 +4,6 @@ namespace ServiceLocator.Projectile
 {
     public abstract class ProjectileController
     {
-        private const float fixedProjectileSpeed = 20f;
-
         // Private Variables
         private ProjectileModel projectileModel;
         private ProjectileView projectileView;
@@ -39,9 +37,9 @@ namespace ServiceLocator.Projectile
             projectileView.transform.position = newPosition;
             projectileView.transform.rotation = _firePoint.rotation;
 
-            // To make impact constant
-            rigidbody.mass = fixedProjectileSpeed / projectileModel.ProjectileSpeed;
-            rigidbody.AddForce(_firePoint.forward * projectileModel.ProjectileSpeed, ForceMode.Impulse);
+            rigidbody.linearVelocity = Vector3.zero; // Resetting velocity
+            rigidbody.angularVelocity = Vector3.zero; // Resetting rotation momentum
+            rigidbody.linearVelocity = _firePoint.forward * projectileModel.ProjectileSpeed;
         }
 
         // Getters

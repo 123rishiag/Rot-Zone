@@ -16,5 +16,6 @@ namespace ServiceLocator.Projectile
         public ProjectileType projectileType;
         public ProjectileView projectilePrefab;
         public float projectileSpeed = 10f;
+        public float projectileNoActivityDisableTime = 5f;
     }
 }
