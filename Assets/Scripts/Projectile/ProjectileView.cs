@@ -14,8 +14,8 @@ namespace ServiceLocator.Projectile
         {
             // Setting Variables
             projectileController = _projectileController;
-            projectileRigidBody = GetComponentInChildren<Rigidbody>();
-            trailRenderer = GetComponentInChildren<TrailRenderer>();
+            projectileRigidBody = GetComponent<Rigidbody>();
+            trailRenderer = GetComponent<TrailRenderer>();
 
             StartCoroutine(HideViewCoroutine(projectileController.GetModel().ProjectileNoActivityDisableTime));
         }
