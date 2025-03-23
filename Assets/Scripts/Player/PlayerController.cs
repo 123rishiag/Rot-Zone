@@ -46,7 +46,7 @@ namespace ServiceLocator.Player
             inputService = _inputService;
             cameraService = _cameraService;
 
-            // Setting Variables
+            // Setting Elements
             CreateStateMachine();
             SetVariables();
         }

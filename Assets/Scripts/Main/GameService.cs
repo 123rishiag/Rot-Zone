@@ -1,3 +1,4 @@
+using ServiceLocator.Enemy;
 using ServiceLocator.Player;
 using ServiceLocator.Projectile;
 using ServiceLocator.Vision;
@@ -14,11 +15,13 @@ namespace ServiceLocator.Main
 
         [Header("Pool Panels")]
         public Transform projectilePoolPanel;
+        public Transform enemyPoolPanel;
 
         [Header("Game Variables")]
         public ProjectileConfig projectileConfig;
         public WeaponConfig weaponConfig;
         public PlayerConfig playerConfig;
+        public EnemyConfig enemyConfig;
 
         // Private Variables
         private GameController gameController;

@@ -1,4 +1,5 @@
 using ServiceLocator.Controls;
+using ServiceLocator.Enemy;
 using ServiceLocator.Player;
 using ServiceLocator.Projectile;
 using ServiceLocator.Vision;
@@ -17,6 +18,7 @@ namespace ServiceLocator.Main
         private ProjectileService projectileService;
         private WeaponService weaponService;
         private PlayerService playerService;
+        private EnemyService enemyService;
 
         public GameController(GameService _gameService)
         {
@@ -35,6 +37,7 @@ namespace ServiceLocator.Main
             projectileService = new ProjectileService(gameService.projectileConfig, gameService.projectilePoolPanel);
             weaponService = new WeaponService(gameService.weaponConfig);
             playerService = new PlayerService(gameService.playerConfig);
+            enemyService = new EnemyService(gameService.enemyConfig, gameService.enemyPoolPanel);
         }
 
         private void InjectDependencies()
@@ -44,6 +47,7 @@ namespace ServiceLocator.Main
             projectileService.Init();
             weaponService.Init(projectileService);
             playerService.Init(inputService, cameraService, weaponService);
+            enemyService.Init(playerService);
         }
 
         public void Destroy()
@@ -53,6 +57,7 @@ namespace ServiceLocator.Main
             // Projectile Service
             // Weapon Service
             // Player Service
+            // Enemy Service
         }
 
         public void Update()
@@ -62,6 +67,7 @@ namespace ServiceLocator.Main
             projectileService.Update();
             weaponService.Update();
             playerService.Update();
+            enemyService.Update();
         }
 
         public void LateUpdate()
@@ -71,6 +77,7 @@ namespace ServiceLocator.Main
             // Projectile Service
             // Weapon Service
             // Player Service
+            // Enemy Service
         }
     }
 }

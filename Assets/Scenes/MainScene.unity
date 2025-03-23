@@ -119,6 +119,37 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &243185232
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 243185233}
+  m_Layer: 0
+  m_Name: EnemyPanel
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &243185233
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 243185232}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 435118244}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
@@ -270,6 +301,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 560879121}
+  - {fileID: 243185233}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &509886791
@@ -304,9 +336,11 @@ MonoBehaviour:
   cameraConfig: {fileID: 11400000, guid: 2d6cec9fa34380145863dbce127439e2, type: 2}
   mainCamera: {fileID: 1487306533568874930}
   projectilePoolPanel: {fileID: 560879121}
+  enemyPoolPanel: {fileID: 243185233}
   projectileConfig: {fileID: 11400000, guid: d1ed99912dfd5fe4993c5e30667d291e, type: 2}
   weaponConfig: {fileID: 11400000, guid: 3d3b32c64ccbf2d4dac5e976a9b7d9e0, type: 2}
   playerConfig: {fileID: 11400000, guid: b2ed840bbfc766c41a5b21dd3f28ef28, type: 2}
+  enemyConfig: {fileID: 11400000, guid: 5fab5e724812e9741a82d6a91db18dec, type: 2}
 --- !u!4 &509886793
 Transform:
   m_ObjectHideFlags: 0
@@ -414,6 +448,7 @@ GameObject:
   - component: {fileID: 840796089}
   - component: {fileID: 840796088}
   - component: {fileID: 840796087}
+  - component: {fileID: 840796091}
   m_Layer: 7
   m_Name: Plane
   m_TagString: Untagged
@@ -511,6 +546,38 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1980540250}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &840796091
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 840796086}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a5ac11cc976e418e8d13136b07e1f52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SerializedVersion: 0
+  m_AgentTypeID: 0
+  m_CollectObjects: 0
+  m_Size: {x: 10, y: 10, z: 10}
+  m_Center: {x: 0, y: 2, z: 0}
+  m_LayerMask:
+    serializedVersion: 2
+    m_Bits: 384
+  m_UseGeometry: 0
+  m_DefaultArea: 0
+  m_GenerateLinks: 0
+  m_IgnoreNavMeshAgent: 1
+  m_IgnoreNavMeshObstacle: 1
+  m_OverrideTileSize: 0
+  m_TileSize: 256
+  m_OverrideVoxelSize: 0
+  m_VoxelSize: 0.083333336
+  m_MinRegionArea: 2
+  m_NavMeshData: {fileID: 23800000, guid: 7f7d4f01f3fa4cc458d8f90c363bcd5a, type: 2}
+  m_BuildHeightMesh: 0
 --- !u!1 &1139164504
 GameObject:
   m_ObjectHideFlags: 0

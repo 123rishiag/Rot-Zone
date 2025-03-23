@@ -1,9 +1,26 @@
-using UnityEngine;
+using ServiceLocator.Utility;
 
 namespace ServiceLocator.Enemy
 {
-    public class EnemyStateMachine
+    public enum EnemyState
     {
+        IDLE,
+        PATROL,
+    }
 
+    public class EnemyStateMachine : GenericStateMachine<EnemyController, EnemyState>
+    {
+        public EnemyStateMachine(EnemyController _owner) : base(_owner)
+        {
+            owner = _owner;
+            CreateStates();
+            SetOwner();
+        }
+
+        private void CreateStates()
+        {
+            States.Add(EnemyState.IDLE, new EnemyIdleState<EnemyController>(this));
+            States.Add(EnemyState.PATROL, new EnemyPatrolState<EnemyController>(this));
+        }
     }
 }

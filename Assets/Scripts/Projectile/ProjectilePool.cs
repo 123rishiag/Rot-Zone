@@ -1,3 +1,4 @@
+using ServiceLocator.Player;
 using ServiceLocator.Utility;
 using System;
 using UnityEngine;
@@ -13,11 +14,11 @@ namespace ServiceLocator.Projectile
         private ProjectileType projectileType;
         private Transform firePoint;
 
-        public ProjectilePool(ProjectileConfig _projectileConfig, Transform _projectileParentPanel)
+        public ProjectilePool(ProjectileConfig _projectileConfig, Transform _parentPanel)
         {
             // Setting Variables
             projectileConfig = _projectileConfig;
-            projectileParentPanel = _projectileParentPanel;
+            projectileParentPanel = _parentPanel;
         }
 
         public ProjectileController GetProjectile<T>(ProjectileType _projectileType, Transform _firePoint)
