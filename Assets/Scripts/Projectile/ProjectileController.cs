@@ -1,3 +1,4 @@
+using System.IO.Pipes;
 using UnityEngine;
 
 namespace ServiceLocator.Projectile
@@ -8,7 +9,8 @@ namespace ServiceLocator.Projectile
         private ProjectileModel projectileModel;
         private ProjectileView projectileView;
 
-        public ProjectileController(ProjectileData _projectileData, Transform _parentPanel, Transform _firePoint)
+        public ProjectileController(ProjectileData _projectileData, Transform _parentPanel,
+            Vector3 _firePosition, Vector3 _fireDirection)
         {
             // Setting Variables
             projectileModel = new ProjectileModel(_projectileData);
@@ -17,29 +19,30 @@ namespace ServiceLocator.Projectile
             projectileView.Init(this);
 
             // Setting Elements
-            Reset(_projectileData, _firePoint);
+            Reset(_projectileData, _firePosition, _fireDirection);
         }
 
-        public void Reset(ProjectileData _projectileData, Transform _firePoint)
+        public void Reset(ProjectileData _projectileData, Vector3 _firePosition, Vector3 _fireDirection)
         {
             projectileModel.Reset(_projectileData);
             projectileView.ShowView();
 
-            FireProjectile(_firePoint);
+            FireProjectile(_firePosition, _fireDirection);
         }
 
-        private void FireProjectile(Transform _firePoint)
+        private void FireProjectile(Vector3 _firePosition, Vector3 _fireDirection)
         {
             Rigidbody rigidbody = projectileView.GetRigidbody();
 
             // Making sure, projectile launches after a threshold from firepoint
-            Vector3 newPosition = _firePoint.position + _firePoint.forward * 0.2f;
-            projectileView.transform.position = newPosition;
-            projectileView.transform.rotation = _firePoint.rotation;
+            Vector3 newPosition = _firePosition + _fireDirection * 0.2f;
+            Quaternion newRotation = Quaternion.LookRotation(_fireDirection);
 
-            rigidbody.linearVelocity = Vector3.zero; // Resetting velocity
+            projectileView.transform.position = newPosition;
+            projectileView.transform.rotation = newRotation;
+
+            rigidbody.linearVelocity = _fireDirection * projectileModel.ProjectileSpeed;
             rigidbody.angularVelocity = Vector3.zero; // Resetting rotation momentum
-            rigidbody.linearVelocity = _firePoint.forward * projectileModel.ProjectileSpeed;
         }
 
         // Getters

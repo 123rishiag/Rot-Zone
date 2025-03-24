@@ -13,6 +13,7 @@ namespace ServiceLocator.Enemy
 
         public readonly int idleHash = Animator.StringToHash("Idle");
         public readonly int patrolHash = Animator.StringToHash("Patrol");
+        public readonly int detectHash = Animator.StringToHash("Detect");
 
         public EnemyAnimationController(Animator _enemyAnimator, EnemyController _enemyController)
         {

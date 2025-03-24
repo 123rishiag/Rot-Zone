@@ -151,7 +151,7 @@ namespace ServiceLocator.Player
             moveDirection = Vector3.Lerp(moveDirection, targetDirection,
                 Time.deltaTime * playerModel.DirectionSmoothSpeed);
         }
-        private void RotatePlayerTowards(Vector3 _direction)
+        private void RotateTowards(Vector3 _direction)
         {
             // Rotate Player Towards Camera, when player is not falling
             if (playerMovementStateMachine.GetCurrentState() == PlayerMovementState.FALL)
@@ -230,12 +230,12 @@ namespace ServiceLocator.Player
 
                 Vector3 direction = (aimTarget - playerView.transform.position).normalized;
                 direction.y = 0f;
-                RotatePlayerTowards(direction);
+                RotateTowards(direction);
             }
             else
             {
                 playerView.GetAimTransform().localPosition = playerModel.AimTransformDefaultPosition;
-                RotatePlayerTowards(cameraService.GetCameraForwardXZNormalized());
+                RotateTowards(cameraService.GetCameraForwardXZNormalized());
             }
         }
         #endregion
@@ -251,6 +251,11 @@ namespace ServiceLocator.Player
         public Transform GetTransform() => playerView.transform;
         public Vector3 GetMoveDirection() => moveDirection;
         public float GetCurrentSpeed() => currentSpeed;
+        public LayerMask GetLayerMask()
+        {
+            int layer = playerView.gameObject.layer;
+            return 1 << layer; // Converts layer index to proper LayerMask
+        }
 
         public bool IsGrounded() => Physics.CheckSphere(playerView.transform.position,
             playerModel.GroundCheckDistance, playerModel.GroundLayer);

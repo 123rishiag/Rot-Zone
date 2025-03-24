@@ -14,5 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyData:
   - enemyType: 0
-    enemyPrefab: {fileID: 4621344443641568994, guid: 8a6ab2a5d748bc24f842f68c4f5a4863, type: 3}
-    moveSpeed: 10
+    enemyPrefab: {fileID: 6648080117116390634, guid: 8a6ab2a5d748bc24f842f68c4f5a4863, type: 3}
+    idleDuration: 3
+    patrolSpeed: 2
+    patrolMaxRadius: 20
+    patrolStopDistance: 1
+    accelerationSpeed: 2
+    rotationSpeed: 60
+    detectionDistance: 10
+    detectionAngleDegree: 45

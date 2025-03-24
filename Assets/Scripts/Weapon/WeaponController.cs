@@ -9,6 +9,8 @@ namespace ServiceLocator.Weapon
         private WeaponModel weaponModel;
         private WeaponView weaponView;
 
+        private Vector3 cachedFirePosition;
+        private Vector3 cachedFireDirection;
         private int currentAmmo;
         private int totalAmmoLeft;
         private float lastFireTime;
@@ -32,8 +34,10 @@ namespace ServiceLocator.Weapon
             projectileService = _projectileService;
         }
 
-        public void Update()
+        public void LateUpdate()
         {
+            cachedFirePosition = weaponView.GetFirePoint().position;
+            cachedFireDirection = weaponView.GetFirePoint().forward;
             weaponView.UpdateAimLaser();
         }
 
@@ -62,7 +66,7 @@ namespace ServiceLocator.Weapon
         {
             if (currentAmmo > 0)
             {
-                projectileService.FireProjectile(weaponModel.WeaponProjectileType, weaponView.GetFirePoint());
+                projectileService.FireProjectile(weaponModel.WeaponProjectileType, cachedFirePosition, cachedFireDirection);
                 lastFireTime = Time.time;
                 --currentAmmo;
             }

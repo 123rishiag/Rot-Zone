@@ -14,6 +14,13 @@ namespace ServiceLocator.Enemy
     {
         public EnemyType enemyType;
         public EnemyView enemyPrefab;
-        public float moveSpeed = 10f;
+        public float idleDuration = 3f;
+        public float patrolSpeed = 2f;
+        public float patrolMaxRadius = 20f;
+        public float patrolStopDistance = 1f;
+        public float accelerationSpeed = 2f;
+        public float rotationSpeed = 60f;
+        public float detectionDistance = 10f;
+        public float detectionAngleDegree = 120f;
     }
 }
