@@ -65,7 +65,7 @@ namespace ServiceLocator.Main
             // Input Service
             cameraService.Update();
             projectileService.Update();
-            weaponService.Update();
+            // Weapon Service
             playerService.Update();
             enemyService.Update();
         }
@@ -75,7 +75,7 @@ namespace ServiceLocator.Main
             // Input Service
             cameraService.LateUpdate();
             // Projectile Service
-            // Weapon Service
+            weaponService.LateUpdate();
             // Player Service
             // Enemy Service
         }

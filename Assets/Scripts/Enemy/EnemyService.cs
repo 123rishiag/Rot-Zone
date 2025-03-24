@@ -34,9 +34,24 @@ namespace ServiceLocator.Enemy
 
         public void Update()
         {
-            DestroyEnemys();
+            UpdateEnemies();
+            DestroyEnemies();
         }
-        private void DestroyEnemys()
+        private void UpdateEnemies()
+        {
+            for (int i = enemyPool.pooledItems.Count - 1; i >= 0; i--)
+            {
+                // Skipping if the pooled item's isUsed is false
+                if (!enemyPool.pooledItems[i].isUsed)
+                {
+                    continue;
+                }
+
+                var enemyController = enemyPool.pooledItems[i].Item;
+                enemyController.Update();
+            }
+        }
+        private void DestroyEnemies()
         {
             for (int i = enemyPool.pooledItems.Count - 1; i >= 0; i--)
             {

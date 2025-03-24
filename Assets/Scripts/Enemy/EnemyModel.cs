@@ -10,10 +10,24 @@ namespace ServiceLocator.Enemy
         public void Reset(EnemyData _enemyData)
         {
             EnemyType = _enemyData.enemyType;
-            MoveSpeed = _enemyData.moveSpeed;
+            IdleDuration = _enemyData.idleDuration;
+            PatrolSpeed = _enemyData.patrolSpeed;
+            PatrolMaxRadius = _enemyData.patrolMaxRadius;
+            PatrolStopDistance = _enemyData.patrolStopDistance;
+            AccelerationSpeed = _enemyData.accelerationSpeed;
+            RotationSpeed = _enemyData.rotationSpeed;
+            DetectionDistance = _enemyData.detectionDistance;
+            DetectionAngleDegree = _enemyData.detectionAngleDegree;
         }
 
         public EnemyType EnemyType { get; private set; }
-        public float MoveSpeed { get; private set; }
+        public float IdleDuration { get; private set; }
+        public float PatrolSpeed { get; private set; }
+        public float PatrolMaxRadius { get; private set; }
+        public float PatrolStopDistance { get; private set; }
+        public float AccelerationSpeed { get; private set; }
+        public float RotationSpeed { get; private set; }
+        public float DetectionDistance { get; private set; }
+        public float DetectionAngleDegree { get; private set; }
     }
 }

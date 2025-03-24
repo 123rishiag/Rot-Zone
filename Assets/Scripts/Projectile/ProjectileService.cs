@@ -45,16 +45,16 @@ namespace ServiceLocator.Projectile
             }
         }
 
-        public ProjectileController FireProjectile(ProjectileType _projectileType, Transform _firePoint)
+        public ProjectileController FireProjectile(ProjectileType _projectileType, Vector3 _firePosition, Vector3 _fireDirection)
         {
             switch (_projectileType)
             {
                 case ProjectileType.PISTOL_PROJECTILE:
-                    return projectilePool.GetProjectile<PistolProjectileController>(_projectileType, _firePoint);
+                    return projectilePool.GetProjectile<PistolProjectileController>(_projectileType, _firePosition, _fireDirection);
                 case ProjectileType.RIFLE_PROJECTILE:
-                    return projectilePool.GetProjectile<RifleProjectileController>(_projectileType, _firePoint);
+                    return projectilePool.GetProjectile<RifleProjectileController>(_projectileType, _firePosition, _fireDirection);
                 case ProjectileType.SHOTGUN_PROJECTILE:
-                    return projectilePool.GetProjectile<ShotgunProjectileController>(_projectileType, _firePoint);
+                    return projectilePool.GetProjectile<ShotgunProjectileController>(_projectileType, _firePosition, _fireDirection);
                 default:
                     Debug.LogWarning($"Unhandled ProjectileType: {_projectileType}");
                     return null;

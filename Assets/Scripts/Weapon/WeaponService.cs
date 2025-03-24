@@ -29,11 +29,11 @@ namespace ServiceLocator.Weapon
             projectileService = _projectileService;
         }
 
-        public void Update()
+        public void LateUpdate()
         {
             foreach (WeaponController weaponController in weaponControllers)
             {
-                weaponController.Update();
+                weaponController.LateUpdate();
             }
         }
 
