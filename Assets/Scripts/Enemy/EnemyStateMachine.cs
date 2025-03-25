@@ -7,6 +7,7 @@ namespace ServiceLocator.Enemy
         IDLE,
         PATROL,
         DETECT,
+        CHASE,
     }
 
     public class EnemyStateMachine : GenericStateMachine<EnemyController, EnemyState>
@@ -23,6 +24,7 @@ namespace ServiceLocator.Enemy
             States.Add(EnemyState.IDLE, new EnemyIdleState<EnemyController>(this));
             States.Add(EnemyState.PATROL, new EnemyPatrolState<EnemyController>(this));
             States.Add(EnemyState.DETECT, new EnemyDetectState<EnemyController>(this));
+            States.Add(EnemyState.CHASE, new EnemyChaseState<EnemyController>(this));
         }
     }
 }
