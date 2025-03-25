@@ -11,28 +11,33 @@ namespace ServiceLocator.Enemy
         private Animator animator;
         private NavMeshAgent navMeshAgent;
 
+        private Collider[] ragDollColliders;
+        private Rigidbody[] ragDollRigidbodies;
+
         public void Init(EnemyController _enemyController)
         {
             enemyController = _enemyController;
             characterController = GetComponent<CharacterController>();
             animator = GetComponentInChildren<Animator>();
             navMeshAgent = GetComponent<NavMeshAgent>();
+
+            ragDollColliders = GetComponentsInChildren<Collider>();
+            ragDollRigidbodies = GetComponentsInChildren<Rigidbody>();
+
+            SetRagDollActive(true);
         }
-        public void SetPosition(Vector3 _spawnPosition)
+
+        public void HitImpactCoroutine(Vector3 _impactForce, Collision _hitCollision)
         {
-            transform.position = _spawnPosition;
-        }
-        public void ShowView()
-        {
-            gameObject.SetActive(true);
-        }
-        public void HideView()
-        {
-            gameObject.SetActive(false);
+            StopAllCoroutines();
+            StartCoroutine(enemyController.HitImpact(_impactForce, _hitCollision));
         }
 
         private void OnDrawGizmos()
         {
+            if (enemyController == null || transform == null)
+                return;
+
             if (enemyController.GetModel().IsGizmosEnabled)
             {
                 DetectionGizmos();
@@ -76,6 +81,26 @@ namespace ServiceLocator.Enemy
 
             Gizmos.color = Color.yellow;
             Gizmos.DrawWireSphere(origin, 0.25f);
+        }
+        // Setters
+        public void SetRagDollActive(bool _flag)
+        {
+            foreach (Rigidbody rb in ragDollRigidbodies)
+            {
+                rb.isKinematic = !_flag;
+            }
+        }
+        public void SetPosition(Vector3 _spawnPosition)
+        {
+            transform.position = _spawnPosition;
+        }
+        public void ShowView()
+        {
+            gameObject.SetActive(true);
+        }
+        public void HideView()
+        {
+            gameObject.SetActive(false);
         }
 
         // Getters
