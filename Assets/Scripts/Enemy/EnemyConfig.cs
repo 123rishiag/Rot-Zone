@@ -12,6 +12,7 @@ namespace ServiceLocator.Enemy
     [Serializable]
     public class EnemyData
     {
+        [Header("Enemy Details")]
         public EnemyType enemyType;
         public EnemyView enemyPrefab;
         public float idleDuration = 3f;
@@ -22,6 +23,7 @@ namespace ServiceLocator.Enemy
         public float detectionDistance = 10f;
         public float detectionAngleDegree = 120f;
         public float chaseSpeed = 5f;
-        public float stopDistance = 1.5f;
+        public float stopDistance = 1f;
+        public bool isGizmosEnabled = false;
     }
 }

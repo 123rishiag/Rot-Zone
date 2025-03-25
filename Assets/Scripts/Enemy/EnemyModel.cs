@@ -19,6 +19,7 @@ namespace ServiceLocator.Enemy
             DetectionAngleDegree = _enemyData.detectionAngleDegree;
             ChaseSpeed = _enemyData.chaseSpeed;
             StopDistance = _enemyData.stopDistance;
+            IsGizmosEnabled = _enemyData.isGizmosEnabled;
         }
 
         public EnemyType EnemyType { get; private set; }
@@ -31,5 +32,6 @@ namespace ServiceLocator.Enemy
         public float DetectionAngleDegree { get; private set; }
         public float ChaseSpeed { get; private set; }
         public float StopDistance { get; private set; }
+        public bool IsGizmosEnabled { get; private set; }
     }
 }

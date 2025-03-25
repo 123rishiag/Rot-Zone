@@ -30,9 +30,13 @@ namespace ServiceLocator.Enemy
             chaseTarget = Owner.PlayerService.GetController().GetTransform().position;
 
             float distance = Vector3.Distance(Owner.GetTransform().position, chaseTarget);
-            if (distance > Owner.GetModel().DetectionDistance || distance <= Owner.GetModel().StopDistance)         
+            if (distance > Owner.GetModel().DetectionDistance)         
             {
                 stateMachine.ChangeState(EnemyState.IDLE);
+            }
+            else if (distance <= Owner.GetModel().StopDistance)
+            {
+                stateMachine.ChangeState(EnemyState.ATTACK);
             }
 
             Owner.GetView().GetNavMeshAgent().destination = chaseTarget;
