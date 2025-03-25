@@ -1,3 +1,4 @@
+using ServiceLocator.Enemy;
 using System.Collections;
 using UnityEngine;
 
@@ -30,6 +31,14 @@ namespace ServiceLocator.Projectile
         {
             StopAllCoroutines();
             gameObject.SetActive(false);
+        }
+
+        private void OnCollisionEnter(Collision _collision)
+        {
+            EnemyView enemyView = _collision.collider.GetComponentInParent<EnemyView>();
+            Vector3 impactForce = projectileRigidBody.linearVelocity.normalized *
+                                          projectileController.GetModel().ProjectileForce;
+            enemyView?.HitImpactCoroutine(impactForce, _collision);
         }
 
         // Getters

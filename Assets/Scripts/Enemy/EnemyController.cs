@@ -1,5 +1,6 @@
 using ServiceLocator.Player;
 using ServiceLocator.Utility;
+using System.Collections;
 using UnityEngine;
 
 namespace ServiceLocator.Enemy
@@ -71,6 +72,21 @@ namespace ServiceLocator.Enemy
                     targetRotation,
                     Time.deltaTime * enemyModel.RotationSpeed
                 );
+        }
+
+        public IEnumerator HitImpact(Vector3 _impactForce, Collision _hitCollision)
+        {
+            var hitPoint = _hitCollision.contacts[0].point;
+            enemyStateMachine.ChangeState(EnemyState.DEAD);
+
+            yield return new WaitForSeconds(0.1f);
+
+            Rigidbody impactedRigidbody = _hitCollision.collider.attachedRigidbody;
+            impactedRigidbody.AddForceAtPosition(_impactForce, hitPoint, ForceMode.Impulse);
+
+            // Hide Enemy after 3 seconds of Death
+            yield return new WaitForSeconds(3f);
+            enemyView.HideView();
         }
 
         // Getters
