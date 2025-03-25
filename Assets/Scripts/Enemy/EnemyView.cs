@@ -33,7 +33,10 @@ namespace ServiceLocator.Enemy
 
         private void OnDrawGizmos()
         {
-            DetectionGizmos();
+            if (enemyController.GetModel().IsGizmosEnabled)
+            {
+                DetectionGizmos();
+            }
         }
         private void DetectionGizmos()
         {

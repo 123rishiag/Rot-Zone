@@ -23,4 +23,5 @@ MonoBehaviour:
     detectionDistance: 10
     detectionAngleDegree: 120
     chaseSpeed: 5
-    stopDistance: 1.5
+    stopDistance: 1
+    isGizmosEnabled: 0
