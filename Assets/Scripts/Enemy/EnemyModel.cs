@@ -14,10 +14,11 @@ namespace ServiceLocator.Enemy
             PatrolSpeed = _enemyData.patrolSpeed;
             PatrolMaxRadius = _enemyData.patrolMaxRadius;
             PatrolStopDistance = _enemyData.patrolStopDistance;
-            AccelerationSpeed = _enemyData.accelerationSpeed;
             RotationSpeed = _enemyData.rotationSpeed;
             DetectionDistance = _enemyData.detectionDistance;
             DetectionAngleDegree = _enemyData.detectionAngleDegree;
+            ChaseSpeed = _enemyData.chaseSpeed;
+            StopDistance = _enemyData.stopDistance;
         }
 
         public EnemyType EnemyType { get; private set; }
@@ -25,9 +26,10 @@ namespace ServiceLocator.Enemy
         public float PatrolSpeed { get; private set; }
         public float PatrolMaxRadius { get; private set; }
         public float PatrolStopDistance { get; private set; }
-        public float AccelerationSpeed { get; private set; }
         public float RotationSpeed { get; private set; }
         public float DetectionDistance { get; private set; }
         public float DetectionAngleDegree { get; private set; }
+        public float ChaseSpeed { get; private set; }
+        public float StopDistance { get; private set; }
     }
 }

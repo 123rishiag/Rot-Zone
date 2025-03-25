@@ -19,7 +19,8 @@ MonoBehaviour:
     patrolSpeed: 2
     patrolMaxRadius: 20
     patrolStopDistance: 1
-    accelerationSpeed: 2
-    rotationSpeed: 60
+    rotationSpeed: 180
     detectionDistance: 10
-    detectionAngleDegree: 45
+    detectionAngleDegree: 120
+    chaseSpeed: 5
+    stopDistance: 1.5

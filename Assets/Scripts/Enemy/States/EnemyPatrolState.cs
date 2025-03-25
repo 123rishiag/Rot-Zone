@@ -20,7 +20,7 @@ namespace ServiceLocator.Enemy
             agent.isStopped = false;
 
             agent.speed = enemyModel.PatrolSpeed;
-            agent.acceleration = enemyModel.AccelerationSpeed;
+            agent.acceleration = enemyModel.PatrolSpeed;
 
             SetNewPatrolTarget();
 
@@ -31,7 +31,6 @@ namespace ServiceLocator.Enemy
             if (Owner.IsPlayerDetected())
             {
                 stateMachine.ChangeState(EnemyState.DETECT);
-                return;
             }
             else if (Vector3.Distance(Owner.GetTransform().position, patrolTarget) < Owner.GetModel().PatrolStopDistance)
             {

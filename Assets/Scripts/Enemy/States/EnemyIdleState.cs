@@ -29,7 +29,6 @@ namespace ServiceLocator.Enemy
             if (Owner.IsPlayerDetected())
             {
                 stateMachine.ChangeState(EnemyState.DETECT);
-                return;
             }
             else if (idleTimer > Owner.GetModel().IdleDuration)
             {

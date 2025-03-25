@@ -42,7 +42,7 @@ namespace ServiceLocator.Enemy
 
             Vector3 origin = transform.position + Vector3.up;
 
-            int segments = 30; // Increase for smoother visualization
+            int segments = Mathf.RoundToInt(detectionAngleDegree);
             float angleStep = detectionAngleDegree * 2 / segments;
 
             Gizmos.color = Color.yellow;

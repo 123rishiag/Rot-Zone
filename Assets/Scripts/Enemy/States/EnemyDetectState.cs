@@ -24,7 +24,7 @@ namespace ServiceLocator.Enemy
         {
             if (IsDetectAnimationFinished())
             {
-                stateMachine.ChangeState(EnemyState.IDLE);
+                stateMachine.ChangeState(EnemyState.CHASE);
             }
 
             Owner.RotateTowardsPlayer();

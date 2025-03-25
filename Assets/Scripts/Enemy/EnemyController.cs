@@ -15,7 +15,7 @@ namespace ServiceLocator.Enemy
         private EnemyStateMachine enemyStateMachine;
 
         // Private Services
-        private PlayerService playerService;
+        public PlayerService PlayerService;
 
         public EnemyController(EnemyData _enemyData, Transform _parentPanel, Vector3 _spawnPosition,
             PlayerService _playerService)
@@ -27,7 +27,7 @@ namespace ServiceLocator.Enemy
             enemyAnimationController = new EnemyAnimationController(enemyView.GetAnimator(), this);
 
             // Setting Services
-            playerService = _playerService;
+            PlayerService = _playerService;
 
             // Setting Elements
             CreateStateMachine();
@@ -58,7 +58,7 @@ namespace ServiceLocator.Enemy
         public void RotateTowardsPlayer()
         {
             Transform enemyTransform = Owner.GetTransform();
-            Vector3 direction = (playerService.GetController().GetTransform().position -
+            Vector3 direction = (PlayerService.GetController().GetTransform().position -
                 enemyTransform.position).normalized;
 
             direction.y = 0f;
@@ -79,8 +79,8 @@ namespace ServiceLocator.Enemy
             float detectionDistance = enemyModel.DetectionDistance;
             float detectionAngleDegree = enemyModel.DetectionAngleDegree;
 
-            LayerMask layerMask = playerService.GetController().GetLayerMask();
-            Transform target = playerService.GetController().GetTransform();
+            LayerMask layerMask = PlayerService.GetController().GetLayerMask();
+            Transform target = PlayerService.GetController().GetTransform();
 
             Vector3 origin = enemyView.transform.position + Vector3.up;
             Vector3 toTarget = (target.position + Vector3.up - origin);
