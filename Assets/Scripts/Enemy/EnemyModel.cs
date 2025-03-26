@@ -14,11 +14,11 @@ namespace ServiceLocator.Enemy
             PatrolSpeed = _enemyData.patrolSpeed;
             PatrolMaxRadius = _enemyData.patrolMaxRadius;
             RotationSpeed = _enemyData.rotationSpeed;
+            ChaseSpeed = _enemyData.chaseSpeed;
             DetectionMinDistance = _enemyData.detectionMinDistance;
             DetectionMaxDistance = _enemyData.detectionMaxDistance;
             DetectionAngleDegree = _enemyData.detectionAngleDegree;
             DetectionMinScreamDistance = _enemyData.detectionMinScreamDistance;
-            ChaseSpeed = _enemyData.chaseSpeed;
             StopDistance = _enemyData.stopDistance;
             IsGizmosEnabled = _enemyData.isGizmosEnabled;
         }
@@ -28,11 +28,11 @@ namespace ServiceLocator.Enemy
         public float PatrolSpeed { get; private set; }
         public float PatrolMaxRadius { get; private set; }
         public float RotationSpeed { get; private set; }
+        public float ChaseSpeed { get; private set; }
         public float DetectionMinDistance { get; private set; }
         public float DetectionMaxDistance { get; private set; }
         public float DetectionAngleDegree { get; private set; }
         public float DetectionMinScreamDistance { get; private set; }
-        public float ChaseSpeed { get; private set; }
         public float StopDistance { get; private set; }
         public bool IsGizmosEnabled { get; private set; }
     }
