@@ -25,7 +25,7 @@ MonoBehaviour:
     detectionAngleDegree: 120
     detectionMinScreamDistance: 5
     stopDistance: 1
-    isGizmosEnabled: 1
+    isGizmosEnabled: 0
   - enemyType: 1
     enemyPrefab: {fileID: 8397725917302991160, guid: fbdc5a250866cc542aa85f77b78f1161, type: 3}
     idleDuration: 2
@@ -38,4 +38,4 @@ MonoBehaviour:
     detectionAngleDegree: 240
     detectionMinScreamDistance: 2
     stopDistance: 1
-    isGizmosEnabled: 1
+    isGizmosEnabled: 0
