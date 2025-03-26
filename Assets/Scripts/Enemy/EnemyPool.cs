@@ -50,7 +50,11 @@ namespace ServiceLocator.Enemy
             switch (enemyType)
             {
                 case EnemyType.SLOW_ZOMBIE:
-                    return new EnemyController(
+                    return new SlowEnemyController(
+                        GetEnemyData(enemyType), enemyParentPanel, spawnPosition,
+                        playerService);
+                case EnemyType.FAST_ZOMBIE:
+                    return new FastEnemyController(
                         GetEnemyData(enemyType), enemyParentPanel, spawnPosition,
                         playerService);
                 default:

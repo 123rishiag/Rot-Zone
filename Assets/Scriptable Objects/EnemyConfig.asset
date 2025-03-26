@@ -18,10 +18,24 @@ MonoBehaviour:
     idleDuration: 3
     patrolSpeed: 2
     patrolMaxRadius: 20
-    patrolStopDistance: 1
     rotationSpeed: 180
-    detectionDistance: 10
-    detectionAngleDegree: 120
     chaseSpeed: 5
+    detectionMinDistance: 1
+    detectionMaxDistance: 10
+    detectionAngleDegree: 120
+    detectionMinScreamDistance: 5
     stopDistance: 1
-    isGizmosEnabled: 0
+    isGizmosEnabled: 1
+  - enemyType: 1
+    enemyPrefab: {fileID: 8397725917302991160, guid: fbdc5a250866cc542aa85f77b78f1161, type: 3}
+    idleDuration: 2
+    patrolSpeed: 2
+    patrolMaxRadius: 30
+    rotationSpeed: 360
+    chaseSpeed: 10
+    detectionMinDistance: 1
+    detectionMaxDistance: 5
+    detectionAngleDegree: 240
+    detectionMinScreamDistance: 2
+    stopDistance: 1
+    isGizmosEnabled: 1

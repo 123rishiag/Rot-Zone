@@ -8,7 +8,7 @@ namespace ServiceLocator.Enemy
         public EnemyController Owner { get; set; }
         private EnemyStateMachine stateMachine;
 
-        private Vector3 chaseTarget;
+        private Vector3 detectTarget;
 
         public EnemyChaseState(EnemyStateMachine _stateMachine) => stateMachine = _stateMachine;
 
@@ -27,10 +27,10 @@ namespace ServiceLocator.Enemy
         }
         public void Update()
         {
-            chaseTarget = Owner.PlayerService.GetController().GetTransform().position;
+            detectTarget = Owner.PlayerService.GetController().GetTransform().position;
 
-            float distance = Vector3.Distance(Owner.GetTransform().position, chaseTarget);
-            if (distance > Owner.GetModel().DetectionDistance)         
+            float distance = Vector3.Distance(Owner.GetTransform().position, detectTarget);
+            if (distance > Owner.GetModel().DetectionMaxDistance)         
             {
                 stateMachine.ChangeState(EnemyState.IDLE);
             }
@@ -39,7 +39,7 @@ namespace ServiceLocator.Enemy
                 stateMachine.ChangeState(EnemyState.ATTACK);
             }
 
-            Owner.GetView().GetNavMeshAgent().destination = chaseTarget;
+            Owner.GetView().GetNavMeshAgent().destination = detectTarget;
             Owner.RotateTowardsPlayer();
         }
         public void FixedUpdate() { }
