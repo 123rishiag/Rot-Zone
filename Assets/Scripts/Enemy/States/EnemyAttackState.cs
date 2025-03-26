@@ -18,6 +18,7 @@ namespace ServiceLocator.Enemy
             agent.isStopped = true;
             agent.velocity = Vector3.zero;
 
+            Owner.GetView().SetTrailRenderActive(true);
             Owner.GetView().GetAnimator().Play(Owner.GetAnimationController().attackHash);
         }
         public void Update()
@@ -30,7 +31,10 @@ namespace ServiceLocator.Enemy
             Owner.RotateTowardsPlayer();
         }
         public void FixedUpdate() { }
-        public void OnStateExit() { }
+        public void OnStateExit()
+        {
+            Owner.GetView().SetTrailRenderActive(false);
+        }
 
         private bool IsAttackAnimationFinished()
         {

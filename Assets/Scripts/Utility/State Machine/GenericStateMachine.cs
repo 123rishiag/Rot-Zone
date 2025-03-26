@@ -27,7 +27,13 @@ namespace ServiceLocator.Utility
             currentState?.OnStateEnter();
         }
 
-        public void ChangeState(U _newState) => ChangeState(States[_newState]);
+        public void ChangeState(U _newState)
+        {
+            if (States.ContainsKey(_newState))
+            {
+                ChangeState(States[_newState]);
+            }
+        }
 
         protected void SetOwner()
         {

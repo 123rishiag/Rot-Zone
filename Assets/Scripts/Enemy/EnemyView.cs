@@ -13,6 +13,7 @@ namespace ServiceLocator.Enemy
 
         private Collider[] ragDollColliders;
         private Rigidbody[] ragDollRigidbodies;
+        private TrailRenderer[] trailRenderers;
 
         public void Init(EnemyController _enemyController)
         {
@@ -23,8 +24,10 @@ namespace ServiceLocator.Enemy
 
             ragDollColliders = GetComponentsInChildren<Collider>();
             ragDollRigidbodies = GetComponentsInChildren<Rigidbody>();
+            trailRenderers = GetComponentsInChildren<TrailRenderer>();
 
             SetRagDollActive(true);
+            SetTrailRenderActive(false);
         }
 
         public void HitImpactCoroutine(Vector3 _impactForce, Collision _hitCollision)
@@ -88,6 +91,14 @@ namespace ServiceLocator.Enemy
             foreach (Rigidbody rb in ragDollRigidbodies)
             {
                 rb.isKinematic = !_flag;
+            }
+        }
+        public void SetTrailRenderActive(bool _flag)
+        {
+            foreach (TrailRenderer tr in trailRenderers)
+            {
+                tr.Clear();
+                tr.enabled = _flag;
             }
         }
         public void SetPosition(Vector3 _spawnPosition)
