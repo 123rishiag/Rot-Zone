@@ -30,6 +30,8 @@ namespace ServiceLocator.Enemy
             enemyPool = new EnemyPool(enemyConfig, enemyParentPanel, playerService);
 
             CreateEnemy(EnemyType.SLOW_ZOMBIE, new Vector3(0f, 0f, -5f));
+
+            CreateEnemy(EnemyType.FAST_ZOMBIE, new Vector3(0f, 0f, -50f));
         }
 
         public void Update()
@@ -74,7 +76,9 @@ namespace ServiceLocator.Enemy
             switch (_enemyType)
             {
                 case EnemyType.SLOW_ZOMBIE:
-                    return enemyPool.GetEnemy<EnemyController>(_enemyType, _spawnPosition);
+                    return enemyPool.GetEnemy<SlowEnemyController>(_enemyType, _spawnPosition);
+                case EnemyType.FAST_ZOMBIE:
+                    return enemyPool.GetEnemy<FastEnemyController>(_enemyType, _spawnPosition);
                 default:
                     Debug.LogWarning($"Unhandled EnemyType: {_enemyType}");
                     return null;

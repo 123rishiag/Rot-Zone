@@ -25,13 +25,13 @@ namespace ServiceLocator.Enemy
         public void Update()
         {
             detectTarget = Owner.PlayerService.GetController().GetTransform().position;
-
             float distance = Vector3.Distance(Owner.GetTransform().position, detectTarget);
+
             if (distance <= Owner.GetModel().StopDistance)
             {
                 stateMachine.ChangeState(EnemyState.ATTACK);
             }
-            else if (IsDetectAnimationFinished())
+            else if (IsDetectAnimationFinished() || distance <= Owner.GetModel().DetectionMinScreamDistance)
             {
                 stateMachine.ChangeState(EnemyState.CHASE);
             }

@@ -10,6 +10,7 @@ namespace ServiceLocator.Enemy
         private EnemyStateMachine stateMachine;
 
         private Vector3 patrolTarget;
+        private Vector3 detectTarget;
 
         public EnemyPatrolState(EnemyStateMachine _stateMachine) => stateMachine = _stateMachine;
 
@@ -28,17 +29,19 @@ namespace ServiceLocator.Enemy
         }
         public void Update()
         {
-            if (Owner.IsPlayerDetected())
+            detectTarget = Owner.PlayerService.GetController().GetTransform().position;
+            float distance = Vector3.Distance(Owner.GetTransform().position, detectTarget);
+
+            if (Owner.IsPlayerDetected() || distance <= Owner.GetModel().DetectionMinDistance)
             {
                 stateMachine.ChangeState(EnemyState.DETECT);
             }
-            else if (Vector3.Distance(Owner.GetTransform().position, patrolTarget) < Owner.GetModel().PatrolStopDistance)
+            else if (Vector3.Distance(Owner.GetTransform().position, patrolTarget) < Owner.GetModel().StopDistance)
             {
                 stateMachine.ChangeState(EnemyState.IDLE);
             }
 
             Owner.GetView().GetNavMeshAgent().destination = patrolTarget;
-            Owner.RotateTowardsPlayer();
         }
         public void FixedUpdate() { }
         public void OnStateExit() { }

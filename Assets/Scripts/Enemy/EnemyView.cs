@@ -48,8 +48,8 @@ namespace ServiceLocator.Enemy
         }
         private void DetectionGizmos()
         {
-            float detectionDistance = enemyController.GetModel().DetectionDistance;
-            float detectionAngleDegree = enemyController.GetModel().DetectionAngleDegree;
+            float detectionDistance = enemyController.GetModel().DetectionMaxDistance;
+            float detectionAngleDegree = enemyController.GetModel().DetectionAngleDegree / 2f;
 
             Vector3 origin = transform.position + Vector3.up;
 

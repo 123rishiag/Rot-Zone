@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace ServiceLocator.Enemy
 {
-    public class EnemyController : IStateOwner<EnemyController>
+    public abstract class EnemyController : IStateOwner<EnemyController>
     {
         // Private Variables
         private EnemyModel enemyModel;
@@ -82,7 +82,10 @@ namespace ServiceLocator.Enemy
             yield return new WaitForSeconds(0.1f);
 
             Rigidbody impactedRigidbody = _hitCollision.collider.attachedRigidbody;
-            impactedRigidbody.AddForceAtPosition(_impactForce, hitPoint, ForceMode.Impulse);
+            if (impactedRigidbody != null)
+            {
+                impactedRigidbody.AddForceAtPosition(_impactForce, hitPoint, ForceMode.Impulse);
+            }
 
             // Hide Enemy after 3 seconds of Death
             yield return new WaitForSeconds(3f);
@@ -92,8 +95,8 @@ namespace ServiceLocator.Enemy
         // Getters
         public bool IsPlayerDetected()
         {
-            float detectionDistance = enemyModel.DetectionDistance;
-            float detectionAngleDegree = enemyModel.DetectionAngleDegree;
+            float detectionDistance = enemyModel.DetectionMaxDistance;
+            float detectionAngleDegree = enemyModel.DetectionAngleDegree / 2f;
 
             LayerMask layerMask = PlayerService.GetController().GetLayerMask();
             Transform target = PlayerService.GetController().GetTransform();
