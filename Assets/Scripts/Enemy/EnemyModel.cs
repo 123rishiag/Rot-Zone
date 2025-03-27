@@ -10,6 +10,7 @@ namespace ServiceLocator.Enemy
         public void Reset(EnemyData _enemyData)
         {
             EnemyType = _enemyData.enemyType;
+            MaxHealth = _enemyData.maxHealth;
             IdleDuration = _enemyData.idleDuration;
             PatrolSpeed = _enemyData.patrolSpeed;
             PatrolMaxRadius = _enemyData.patrolMaxRadius;
@@ -24,6 +25,7 @@ namespace ServiceLocator.Enemy
         }
 
         public EnemyType EnemyType { get; private set; }
+        public int MaxHealth { get; private set; }
         public float IdleDuration { get; private set; }
         public float PatrolSpeed { get; private set; }
         public float PatrolMaxRadius { get; private set; }

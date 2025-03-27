@@ -15,6 +15,8 @@ namespace ServiceLocator.Enemy
         public EnemyController Owner { get; set; }
         private EnemyStateMachine enemyStateMachine;
 
+        private int currentHealth;
+
         // Private Services
         public PlayerService PlayerService;
 
@@ -45,7 +47,7 @@ namespace ServiceLocator.Enemy
         {
             // Setting Variables
             enemyStateMachine.ChangeState(EnemyState.IDLE);
-
+            currentHealth = enemyModel.MaxHealth;
             enemyModel.Reset(_enemyData);
             enemyView.SetPosition(_spawnPosition);
             enemyView.ShowView();
@@ -77,19 +79,31 @@ namespace ServiceLocator.Enemy
         public IEnumerator HitImpact(Vector3 _impactForce, Collision _hitCollision)
         {
             var hitPoint = _hitCollision.contacts[0].point;
-            enemyStateMachine.ChangeState(EnemyState.DEAD);
 
-            yield return new WaitForSeconds(0.1f);
+            DecreaseHealth(1);
+            if (currentHealth != 0)
+            {
+                enemyStateMachine.ChangeState(EnemyState.HURT);
+            }
+            else
+            {
+                enemyStateMachine.ChangeState(EnemyState.DEAD);
+            }
+
+            yield return new WaitForEndOfFrame();
 
             Rigidbody impactedRigidbody = _hitCollision.collider.attachedRigidbody;
             if (impactedRigidbody != null)
             {
                 impactedRigidbody.AddForceAtPosition(_impactForce, hitPoint, ForceMode.Impulse);
             }
+        }
 
-            // Hide Enemy after 3 seconds of Death
-            yield return new WaitForSeconds(3f);
-            enemyView.HideView();
+        private void DecreaseHealth(int _damage)
+        {
+            currentHealth -= _damage;
+            if (currentHealth < 0)
+                currentHealth = 0;
         }
 
         // Getters

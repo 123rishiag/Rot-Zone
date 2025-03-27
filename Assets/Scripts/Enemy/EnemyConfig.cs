@@ -15,6 +15,7 @@ namespace ServiceLocator.Enemy
         [Header("Enemy Details")]
         public EnemyType enemyType;
         public EnemyView enemyPrefab;
+        public int maxHealth = 3;
         public float idleDuration = 3f;
         public float patrolSpeed = 2f;
         public float patrolMaxRadius = 20f;
