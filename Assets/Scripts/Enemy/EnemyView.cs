@@ -11,6 +11,7 @@ namespace ServiceLocator.Enemy
         private Animator animator;
         private NavMeshAgent navMeshAgent;
 
+        [Header("Physics Settings")]
         private Collider[] ragDollColliders;
         private Rigidbody[] ragDollRigidbodies;
         private TrailRenderer[] trailRenderers;
@@ -25,20 +26,17 @@ namespace ServiceLocator.Enemy
             ragDollColliders = GetComponentsInChildren<Collider>();
             ragDollRigidbodies = GetComponentsInChildren<Rigidbody>();
             trailRenderers = GetComponentsInChildren<TrailRenderer>();
-
-            SetRagDollActive(true);
-            SetTrailRenderActive(false);
         }
 
-        public void HitImpactCoroutine(Vector3 _impactForce, Collision _hitCollision)
+        public void HitImpactCoroutine(Vector3 _impactForce, int _damage, Collision _hitCollision)
         {
             StopAllCoroutines();
-            StartCoroutine(enemyController.HitImpact(_impactForce, _hitCollision));
+            StartCoroutine(enemyController.HitImpact(_impactForce, _damage, _hitCollision));
         }
 
         private void OnDrawGizmos()
         {
-            if (enemyController == null || transform == null)
+            if (enemyController == null || transform == null || !enemyController.IsActive())
                 return;
 
             if (enemyController.GetModel().IsGizmosEnabled)
@@ -115,6 +113,7 @@ namespace ServiceLocator.Enemy
         }
 
         // Getters
+        public EnemyController GetController() => enemyController;
         public CharacterController GetCharacterController() => characterController;
         public Animator GetAnimator() => animator;
         public NavMeshAgent GetNavMeshAgent() => navMeshAgent;

@@ -18,7 +18,7 @@ namespace ServiceLocator.Enemy
         private int currentHealth;
 
         // Private Services
-        public PlayerService PlayerService;
+        private PlayerService playerService;
 
         public EnemyController(EnemyData _enemyData, Transform _parentPanel, Vector3 _spawnPosition,
             PlayerService _playerService)
@@ -30,7 +30,7 @@ namespace ServiceLocator.Enemy
             enemyAnimationController = new EnemyAnimationController(enemyView.GetAnimator(), this);
 
             // Setting Services
-            PlayerService = _playerService;
+            playerService = _playerService;
 
             // Setting Elements
             CreateStateMachine();
@@ -50,6 +50,8 @@ namespace ServiceLocator.Enemy
             currentHealth = enemyModel.MaxHealth;
             enemyModel.Reset(_enemyData);
             enemyView.SetPosition(_spawnPosition);
+            enemyView.SetRagDollActive(true);
+            enemyView.SetTrailRenderActive(false);
             enemyView.ShowView();
         }
 
@@ -61,7 +63,7 @@ namespace ServiceLocator.Enemy
         public void RotateTowardsPlayer()
         {
             Transform enemyTransform = Owner.GetTransform();
-            Vector3 direction = (PlayerService.GetController().GetTransform().position -
+            Vector3 direction = (playerService.GetController().GetTransform().position -
                 enemyTransform.position).normalized;
 
             direction.y = 0f;
@@ -76,11 +78,12 @@ namespace ServiceLocator.Enemy
                 );
         }
 
-        public IEnumerator HitImpact(Vector3 _impactForce, Collision _hitCollision)
+        public IEnumerator HitImpact(Vector3 _impactForce, int _damage, Collision _hitCollision)
         {
-            var hitPoint = _hitCollision.contacts[0].point;
+            enemyStateMachine.ChangeState(EnemyState.IDLE);
+            DecreaseHealth(_damage);
 
-            DecreaseHealth(1);
+            var hitPoint = _hitCollision.contacts[0].point;
             if (currentHealth != 0)
             {
                 enemyStateMachine.ChangeState(EnemyState.HURT);
@@ -97,7 +100,6 @@ namespace ServiceLocator.Enemy
                 }
             }
         }
-
         private void DecreaseHealth(int _damage)
         {
             currentHealth -= _damage;
@@ -111,8 +113,8 @@ namespace ServiceLocator.Enemy
             float detectionDistance = enemyModel.DetectionMaxDistance;
             float detectionAngleDegree = enemyModel.DetectionAngleDegree / 2f;
 
-            LayerMask layerMask = PlayerService.GetController().GetLayerMask();
-            Transform target = PlayerService.GetController().GetTransform();
+            LayerMask layerMask = playerService.GetController().GetLayerMask();
+            Transform target = playerService.GetController().GetTransform();
 
             Vector3 origin = enemyView.transform.position + Vector3.up;
             Vector3 toTarget = (target.position + Vector3.up - origin);
@@ -139,7 +141,12 @@ namespace ServiceLocator.Enemy
 
             return true;
         }
-
+        public float GetDistanceFromPlayer()
+        {
+            float distance = Vector3.Distance(enemyView.transform.position, GetPlayerPosition());
+            return distance;
+        }
+        public Vector3 GetPlayerPosition() => playerService.GetController().GetTransform().position;
         public bool IsActive() => enemyView.gameObject.activeInHierarchy;
         public EnemyModel GetModel() => enemyModel;
         public EnemyView GetView() => enemyView;

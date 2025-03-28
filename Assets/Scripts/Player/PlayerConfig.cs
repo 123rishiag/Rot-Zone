@@ -13,6 +13,9 @@ namespace ServiceLocator.Player
     [Serializable]
     public class PlayerData
     {
+        [Header("Health Settings")]
+        public int maxHealth = 5;
+
         [Header("Movement Settings")]
         public float walkSpeed = 1.5f;
         public float runSpeed = 5f;
