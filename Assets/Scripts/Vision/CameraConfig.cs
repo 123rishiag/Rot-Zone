@@ -9,8 +9,8 @@ namespace ServiceLocator.Vision
         public float mouseSensitivity = 0.5f;
         public float minPitch = 20f;
         public float maxPitch = 60f;
-        public float cameraDistanceOffset = 2.5f;
-        public float cameraHeightOffset = 1f;
+        public float cameraDistanceOffset = 4f;
+        public float cameraHeightOffset = 2f;
         public float initialYaw = 0f;
         public float initialPitch = 20f;
     }
