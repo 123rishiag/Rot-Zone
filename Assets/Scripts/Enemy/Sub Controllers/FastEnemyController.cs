@@ -9,6 +9,7 @@ namespace ServiceLocator.Enemy
             PlayerService _playerService) : base(_enemyData, _parentPanel, _spawnPosition,
             _playerService)
         {
+            // Using separate subcontrollers for each prefab to keep pooling simple, fast, and easy to manage.
         }
     }
 }
