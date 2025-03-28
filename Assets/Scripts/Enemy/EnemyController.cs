@@ -88,14 +88,13 @@ namespace ServiceLocator.Enemy
             else
             {
                 enemyStateMachine.ChangeState(EnemyState.DEAD);
-            }
+                yield return new WaitForEndOfFrame();
 
-            yield return new WaitForEndOfFrame();
-
-            Rigidbody impactedRigidbody = _hitCollision.collider.attachedRigidbody;
-            if (impactedRigidbody != null)
-            {
-                impactedRigidbody.AddForceAtPosition(_impactForce, hitPoint, ForceMode.Impulse);
+                Rigidbody impactedRigidbody = _hitCollision.collider.attachedRigidbody;
+                if (impactedRigidbody != null)
+                {
+                    impactedRigidbody.AddForceAtPosition(_impactForce, hitPoint, ForceMode.Impulse);
+                }
             }
         }
 

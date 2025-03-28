@@ -8,39 +8,36 @@ namespace ServiceLocator.Enemy
         public EnemyController Owner { get; set; }
         private EnemyStateMachine stateMachine;
 
-        private float hurtTimer;
-        private const float recoveryDuration = 0.1f;
-
         public EnemyHurtState(EnemyStateMachine _stateMachine) => stateMachine = _stateMachine;
 
         public void OnStateEnter()
         {
-            hurtTimer = 0f;
-
             var agent = Owner.GetView().GetNavMeshAgent();
             var enemyModel = Owner.GetModel();
 
             agent.isStopped = true;
             agent.velocity = Vector3.zero;
 
-            Owner.GetView().GetAnimator().enabled = false;
-            Owner.GetView().SetRagDollActive(true);
 
             Owner.GetView().GetAnimator().Play(Owner.GetAnimationController().hurtHash);
         }
         public void Update()
         {
-            hurtTimer += Time.deltaTime;
-            if (hurtTimer >= recoveryDuration)
+            if (IsHurtAnimationFinished())
             {
-                stateMachine.ChangeState(EnemyState.IDLE);
+                stateMachine.ChangeState(EnemyState.STUN);
             }
         }
         public void FixedUpdate() { }
-        public void OnStateExit()
+        public void OnStateExit() { }
+
+        private bool IsHurtAnimationFinished()
         {
-            Owner.GetView().GetAnimator().enabled = true;
-            Owner.GetView().SetRagDollActive(false);
+            AnimatorStateInfo stateInfo =
+                Owner.GetView().GetAnimator().GetCurrentAnimatorStateInfo(0);
+
+            return (stateInfo.shortNameHash == Owner.GetAnimationController().hurtHash &&
+                stateInfo.normalizedTime >= 0.9f);
         }
     }
 }

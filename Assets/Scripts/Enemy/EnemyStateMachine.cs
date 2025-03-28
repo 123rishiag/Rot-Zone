@@ -10,6 +10,7 @@ namespace ServiceLocator.Enemy
         CHASE,
         ATTACK,
         HURT,
+        STUN,
         DEAD,
     }
 
@@ -30,6 +31,7 @@ namespace ServiceLocator.Enemy
             States.Add(EnemyState.CHASE, new EnemyChaseState<EnemyController>(this));
             States.Add(EnemyState.ATTACK, new EnemyAttackState<EnemyController>(this));
             States.Add(EnemyState.HURT, new EnemyHurtState<EnemyController>(this));
+            States.Add(EnemyState.STUN, new EnemyStunState<EnemyController>(this));
             States.Add(EnemyState.DEAD, new EnemyDeadState<EnemyController>(this));
         }
     }
