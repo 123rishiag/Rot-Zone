@@ -9,7 +9,6 @@ namespace ServiceLocator.Enemy
         private EnemyStateMachine stateMachine;
 
         private float idleTimer;
-        private Vector3 detectTarget;
 
         public EnemyIdleState(EnemyStateMachine _stateMachine) => stateMachine = _stateMachine;
 
@@ -27,10 +26,7 @@ namespace ServiceLocator.Enemy
         {
             idleTimer += Time.deltaTime;
 
-            detectTarget = Owner.PlayerService.GetController().GetTransform().position;
-            float distance = Vector3.Distance(Owner.GetTransform().position, detectTarget);
-
-            if (Owner.IsPlayerDetected() || distance <= Owner.GetModel().DetectionMinDistance)
+            if (Owner.IsPlayerDetected() || Owner.GetDistanceFromPlayer() <= Owner.GetModel().DetectionMinDistance)
             {
                 stateMachine.ChangeState(EnemyState.DETECT);
             }

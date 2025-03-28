@@ -6,6 +6,8 @@ namespace ServiceLocator.Player
     {
         public PlayerModel(PlayerData _playerData)
         {
+            MaxHealth = _playerData.maxHealth;
+
             WalkSpeed = _playerData.walkSpeed;
             RunSpeed = _playerData.runSpeed;
             AccelerationFactor = _playerData.accelerationFactor;
@@ -23,6 +25,8 @@ namespace ServiceLocator.Player
         }
 
         // Getters
+        public int MaxHealth { get; private set; }
+
         public float WalkSpeed { get; private set; }
         public float RunSpeed { get; private set; }
         public float AccelerationFactor { get; private set; }

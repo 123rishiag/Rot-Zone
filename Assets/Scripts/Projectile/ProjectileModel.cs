@@ -12,6 +12,7 @@ namespace ServiceLocator.Projectile
             ProjectileType = _projectileData.projectileType;
             ProjectileSpeed = _projectileData.projectileSpeed;
             ProjectileForce = _projectileData.projectileForce;
+            ProjectileDamage = _projectileData.projectileDamage;
             ProjectileNoActivityDisableTime = _projectileData.projectileNoActivityDisableTime;
         }
 
@@ -19,6 +20,7 @@ namespace ServiceLocator.Projectile
         public ProjectileType ProjectileType { get; private set; }
         public float ProjectileSpeed { get; private set; }
         public float ProjectileForce { get; private set; }
+        public int ProjectileDamage { get; private set; }
         public float ProjectileNoActivityDisableTime { get; private set; }
     }
 }

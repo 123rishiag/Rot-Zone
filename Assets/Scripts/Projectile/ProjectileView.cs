@@ -36,9 +36,14 @@ namespace ServiceLocator.Projectile
         private void OnCollisionEnter(Collision _collision)
         {
             EnemyView enemyView = _collision.collider.GetComponentInParent<EnemyView>();
-            Vector3 impactForce = projectileRigidBody.linearVelocity.normalized *
-                                          projectileController.GetModel().ProjectileForce;
-            enemyView?.HitImpactCoroutine(impactForce, _collision);
+            if (enemyView != null)
+            {
+                Vector3 impactForce = projectileRigidBody.linearVelocity.normalized *
+                                              projectileController.GetModel().ProjectileForce;
+                int damage = projectileController.GetModel().ProjectileDamage;
+                enemyView.HitImpactCoroutine(impactForce, damage, _collision);
+                HideView();
+            }
         }
 
         // Getters

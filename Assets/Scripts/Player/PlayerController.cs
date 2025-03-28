@@ -2,6 +2,7 @@ using ServiceLocator.Controls;
 using ServiceLocator.Utility;
 using ServiceLocator.Vision;
 using ServiceLocator.Weapon;
+using System.Collections;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -28,6 +29,10 @@ namespace ServiceLocator.Player
 
         private Vector2 aimPosition;
 
+        private int currentHealth;
+
+        private bool isRecentlyAttacked;
+
         // Private Services
         private InputService inputService;
         private CameraService cameraService;
@@ -38,7 +43,7 @@ namespace ServiceLocator.Player
             // Setting Variables
             playerModel = new PlayerModel(_playerData);
             playerView = Object.Instantiate(_playerPrefab).GetComponent<PlayerView>();
-            playerView.Init();
+            playerView.Init(this);
             playerAnimationController = new PlayerAnimationController(playerView.GetAnimator(), this);
             playerWeaponController = new PlayerWeaponController(this, _weaponService);
 
@@ -48,7 +53,7 @@ namespace ServiceLocator.Player
 
             // Setting Elements
             CreateStateMachine();
-            SetVariables();
+            Reset();
         }
 
         private void CreateStateMachine()
@@ -58,7 +63,7 @@ namespace ServiceLocator.Player
             playerActionStateMachine = new PlayerActionStateMachine(this);
         }
 
-        private void SetVariables()
+        private void Reset()
         {
             // Setting Variables
             playerMovementStateMachine.ChangeState(PlayerMovementState.IDLE);
@@ -67,6 +72,8 @@ namespace ServiceLocator.Player
             lastMoveDirection = Vector3.zero;
             verticalVelocity = 0f;
             currentSpeed = 0f;
+            currentHealth = playerModel.MaxHealth;
+            isRecentlyAttacked = false;
 
             AssignInputs();
         }
@@ -237,6 +244,43 @@ namespace ServiceLocator.Player
                 playerView.GetAimTransform().localPosition = playerModel.AimTransformDefaultPosition;
                 RotateTowards(cameraService.GetCameraForwardXZNormalized());
             }
+        }
+        #endregion
+
+        #region Health & Damage
+        public IEnumerator HitImpact(Vector3 _impactForce, int _damage, Collision _hitCollision)
+        {
+            if (!isRecentlyAttacked)
+            {
+                DecreaseHealth(_damage);
+            }
+            isRecentlyAttacked = true;
+
+            var hitPoint = _hitCollision.contacts[0].point;
+            if (currentHealth != 0)
+            {
+                playerMovementStateMachine.ChangeState(PlayerMovementState.HURT);
+            }
+            else
+            {
+                playerMovementStateMachine.ChangeState(PlayerMovementState.DEAD);
+                yield return new WaitForEndOfFrame();
+
+                Rigidbody impactedRigidbody = _hitCollision.collider.attachedRigidbody;
+                if (impactedRigidbody != null)
+                {
+                    impactedRigidbody.AddForceAtPosition(_impactForce, hitPoint, ForceMode.Impulse);
+                }
+            }
+
+            yield return new WaitForSeconds(1f);
+            isRecentlyAttacked = false;
+        }
+        private void DecreaseHealth(int _damage)
+        {
+            currentHealth -= _damage;
+            if (currentHealth < 0)
+                currentHealth = 0;
         }
         #endregion
 

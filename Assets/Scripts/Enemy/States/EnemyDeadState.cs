@@ -25,6 +25,8 @@ namespace ServiceLocator.Enemy
 
             Owner.GetView().GetAnimator().enabled = false;
             Owner.GetView().SetRagDollActive(true);
+            Owner.GetView().GetCharacterController().enabled = false;
+            Owner.GetView().GetNavMeshAgent().enabled = false;
 
             Owner.GetView().GetAnimator().Play(Owner.GetAnimationController().deadHash);
         }
@@ -41,6 +43,8 @@ namespace ServiceLocator.Enemy
         {
             Owner.GetView().GetAnimator().enabled = true;
             Owner.GetView().SetRagDollActive(false);
+            Owner.GetView().GetCharacterController().enabled = true;
+            Owner.GetView().GetNavMeshAgent().enabled = true;
         }
     }
 }

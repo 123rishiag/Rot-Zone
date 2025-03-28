@@ -8,8 +8,6 @@ namespace ServiceLocator.Enemy
         public EnemyController Owner { get; set; }
         private EnemyStateMachine stateMachine;
 
-        private Vector3 detectTarget;
-
         public EnemyDetectState(EnemyStateMachine _stateMachine) => stateMachine = _stateMachine;
 
         public void OnStateEnter()
@@ -24,14 +22,11 @@ namespace ServiceLocator.Enemy
         }
         public void Update()
         {
-            detectTarget = Owner.PlayerService.GetController().GetTransform().position;
-            float distance = Vector3.Distance(Owner.GetTransform().position, detectTarget);
-
-            if (distance <= Owner.GetModel().StopDistance)
+            if (Owner.GetDistanceFromPlayer() <= Owner.GetModel().StopDistance)
             {
                 stateMachine.ChangeState(EnemyState.ATTACK);
             }
-            else if (IsDetectAnimationFinished() || distance <= Owner.GetModel().DetectionMinScreamDistance)
+            else if (IsDetectAnimationFinished() || Owner.GetDistanceFromPlayer() <= Owner.GetModel().DetectionMinScreamDistance)
             {
                 stateMachine.ChangeState(EnemyState.CHASE);
             }

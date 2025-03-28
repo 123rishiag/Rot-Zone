@@ -18,7 +18,6 @@ namespace ServiceLocator.Enemy
             agent.isStopped = true;
             agent.velocity = Vector3.zero;
 
-
             Owner.GetView().GetAnimator().Play(Owner.GetAnimationController().hurtHash);
         }
         public void Update()
