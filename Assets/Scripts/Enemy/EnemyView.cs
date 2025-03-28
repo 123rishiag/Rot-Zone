@@ -30,13 +30,13 @@ namespace ServiceLocator.Enemy
 
         public void HitImpactCoroutine(Vector3 _impactForce, int _damage, Collision _hitCollision)
         {
-            StopAllCoroutines();
             StartCoroutine(enemyController.HitImpact(_impactForce, _damage, _hitCollision));
         }
 
         private void OnDrawGizmos()
         {
-            if (enemyController == null || transform == null || !enemyController.IsActive())
+            if (enemyController == null || transform == null || 
+                enemyController.GetEnemyStateMachine().GetCurrentState() == EnemyState.DEAD)
                 return;
 
             if (enemyController.GetModel().IsGizmosEnabled)
