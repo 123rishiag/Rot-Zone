@@ -47,8 +47,10 @@ namespace ServiceLocator.Enemy
         {
             // Setting Variables
             enemyStateMachine.ChangeState(EnemyState.IDLE);
-            currentHealth = enemyModel.MaxHealth;
             enemyModel.Reset(_enemyData);
+
+            currentHealth = enemyModel.MaxHealth;
+
             enemyView.SetPosition(_spawnPosition);
             enemyView.SetRagDollActive(true);
             enemyView.SetTrailRenderActive(false);

@@ -56,7 +56,7 @@ namespace ServiceLocator.Projectile
                 case ProjectileType.SHOTGUN_PROJECTILE:
                     return projectilePool.GetProjectile<ShotgunProjectileController>(_projectileType, _firePosition, _fireDirection);
                 default:
-                    Debug.LogWarning($"Unhandled ProjectileType: {_projectileType}");
+                    Debug.LogError($"Unhandled ProjectileType: {_projectileType}");
                     return null;
             }
         }

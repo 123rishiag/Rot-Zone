@@ -37,7 +37,7 @@ namespace ServiceLocator.Player
         private InputService inputService;
         private CameraService cameraService;
 
-        public PlayerController(PlayerData _playerData, PlayerView _playerPrefab,
+        public PlayerController(PlayerData _playerData, PlayerView _playerPrefab, Vector3 _spawnPosition,
             InputService _inputService, CameraService _cameraService, WeaponService _weaponService)
         {
             // Setting Variables
@@ -53,7 +53,7 @@ namespace ServiceLocator.Player
 
             // Setting Elements
             CreateStateMachine();
-            Reset();
+            Reset(_playerData, _spawnPosition);
         }
 
         private void CreateStateMachine()
@@ -63,17 +63,23 @@ namespace ServiceLocator.Player
             playerActionStateMachine = new PlayerActionStateMachine(this);
         }
 
-        private void Reset()
+        public void Reset(PlayerData _playerData, Vector3 _spawnPosition)
         {
             // Setting Variables
             playerMovementStateMachine.ChangeState(PlayerMovementState.IDLE);
             playerActionStateMachine.ChangeState(PlayerActionState.NONE);
+
+            playerModel.Reset(_playerData);
 
             lastMoveDirection = Vector3.zero;
             verticalVelocity = 0f;
             currentSpeed = 0f;
             currentHealth = playerModel.MaxHealth;
             isRecentlyAttacked = false;
+
+            playerView.SetPosition(_spawnPosition);
+            playerView.SetRagDollActive(true);
+            playerView.ShowView();
 
             AssignInputs();
         }

@@ -63,6 +63,18 @@ namespace ServiceLocator.Player
                 rb.isKinematic = !_flag;
             }
         }
+        public void SetPosition(Vector3 _spawnPosition)
+        {
+            transform.position = _spawnPosition;
+        }
+        public void ShowView()
+        {
+            gameObject.SetActive(true);
+        }
+        public void HideView()
+        {
+            gameObject.SetActive(false);
+        }
 
         // Getters
         public CharacterController GetCharacterController() => characterController;
