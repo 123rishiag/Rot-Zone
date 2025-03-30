@@ -17,6 +17,9 @@ namespace ServiceLocator.Main
         public Transform projectilePoolPanel;
         public Transform enemyPoolPanel;
 
+        [Header("Spawn Transform")]
+        public Transform spawnTransformPanel;
+
         [Header("Game Variables")]
         public ProjectileConfig projectileConfig;
         public WeaponConfig weaponConfig;

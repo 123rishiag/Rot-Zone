@@ -1,9 +1,10 @@
 using ServiceLocator.Player;
+using ServiceLocator.Spawn;
 using UnityEngine;
 
 namespace ServiceLocator.Enemy
 {
-    public class EnemyService
+    public class EnemyService : ISpawn
     {
         // Private Variables
         private EnemyConfig enemyConfig;
@@ -28,10 +29,6 @@ namespace ServiceLocator.Enemy
 
             // Setting Elements
             enemyPool = new EnemyPool(enemyConfig, enemyParentPanel, playerService);
-
-            CreateEnemy(EnemyType.SLOW_ZOMBIE, new Vector3(0f, 0f, -5f));
-
-            CreateEnemy(EnemyType.FAST_ZOMBIE, new Vector3(0f, 0f, -50f));
         }
 
         public void Update()
@@ -71,6 +68,13 @@ namespace ServiceLocator.Enemy
             }
         }
 
+        public void OnSpawn(Vector3 _spawnPosition)
+        {
+            int randomIndex = Random.Range(0, enemyConfig.enemyData.Length);
+            EnemyType enemyType = enemyConfig.enemyData[randomIndex].enemyType;
+            CreateEnemy(enemyType, _spawnPosition);
+        }
+
         public EnemyController CreateEnemy(EnemyType _enemyType, Vector3 _spawnPosition)
         {
             switch (_enemyType)
@@ -80,7 +84,7 @@ namespace ServiceLocator.Enemy
                 case EnemyType.FAST_ZOMBIE:
                     return enemyPool.GetEnemy<FastEnemyController>(_enemyType, _spawnPosition);
                 default:
-                    Debug.LogWarning($"Unhandled EnemyType: {_enemyType}");
+                    Debug.LogError($"Unhandled EnemyType: {_enemyType}");
                     return null;
             }
         }

@@ -55,7 +55,7 @@ namespace ServiceLocator.Projectile
                     return new ShotgunProjectileController(
                         GetProjectileData(projectileType), projectileParentPanel, firePosition, fireDirection);
                 default:
-                    Debug.LogWarning($"Unhandled ProjectileType: {projectileType}");
+                    Debug.LogError($"Unhandled ProjectileType: {projectileType}");
                     return null;
             }
         }

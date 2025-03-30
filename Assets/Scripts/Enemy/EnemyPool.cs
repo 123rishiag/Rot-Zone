@@ -58,7 +58,7 @@ namespace ServiceLocator.Enemy
                         GetEnemyData(enemyType), enemyParentPanel, spawnPosition,
                         playerService);
                 default:
-                    Debug.LogWarning($"Unhandled EnemyType: {enemyType}");
+                    Debug.LogError($"Unhandled EnemyType: {enemyType}");
                     return null;
             }
         }

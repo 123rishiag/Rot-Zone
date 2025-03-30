@@ -6,6 +6,11 @@ namespace ServiceLocator.Player
     {
         public PlayerModel(PlayerData _playerData)
         {
+            Reset(_playerData);
+        }
+
+        public void Reset(PlayerData _playerData)
+        {
             MaxHealth = _playerData.maxHealth;
 
             WalkSpeed = _playerData.walkSpeed;
