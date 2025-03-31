@@ -1,10 +1,12 @@
 using ServiceLocator.Player;
 using ServiceLocator.Spawn;
+using ServiceLocator.Wave;
+using System;
 using UnityEngine;
 
 namespace ServiceLocator.Enemy
 {
-    public class EnemyService : ISpawn
+    public class EnemyService : ISpawn<EnemySpawnData>
     {
         // Private Variables
         private EnemyConfig enemyConfig;
@@ -68,14 +70,15 @@ namespace ServiceLocator.Enemy
             }
         }
 
-        public void OnSpawn(Vector3 _spawnPosition)
+        public void OnSpawn(Func<Vector3> _spawnPositionFunc, EnemySpawnData _spawnData)
         {
-            int randomIndex = Random.Range(0, enemyConfig.enemyData.Length);
-            EnemyType enemyType = enemyConfig.enemyData[randomIndex].enemyType;
-            CreateEnemy(enemyType, _spawnPosition);
+            for (int i = 0; i < _spawnData.enemyCount; ++i)
+            {
+                CreateEnemy(_spawnData.enemyType, _spawnPositionFunc());
+            }
         }
 
-        public EnemyController CreateEnemy(EnemyType _enemyType, Vector3 _spawnPosition)
+        private EnemyController CreateEnemy(EnemyType _enemyType, Vector3 _spawnPosition)
         {
             switch (_enemyType)
             {

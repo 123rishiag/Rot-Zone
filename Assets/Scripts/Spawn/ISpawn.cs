@@ -1,9 +1,11 @@
+using System;
 using UnityEngine;
 
 namespace ServiceLocator.Spawn
 {
-    public interface ISpawn
+    public interface ISpawn<T> where T : SpawnData
     {
-        public void OnSpawn(Vector3 _spawnPosition);
+        public void OnSpawn(Func<Vector3> _spawnPositionFunc, T _spawnData);
     }
+    public abstract class SpawnData { }
 }

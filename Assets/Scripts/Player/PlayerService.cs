@@ -1,12 +1,14 @@
 using ServiceLocator.Controls;
 using ServiceLocator.Spawn;
 using ServiceLocator.Vision;
+using ServiceLocator.Wave;
 using ServiceLocator.Weapon;
+using System;
 using UnityEngine;
 
 namespace ServiceLocator.Player
 {
-    public class PlayerService : ISpawn
+    public class PlayerService : ISpawn<PlayerSpawnData>
     {
         // Private Variables
         private PlayerConfig playerConfig;
@@ -27,9 +29,9 @@ namespace ServiceLocator.Player
 
         public void Update() => playerController.Update();
 
-        public void OnSpawn(Vector3 _spawnPosition)
+        public void OnSpawn(Func<Vector3> _spawnPositionFunc, PlayerSpawnData _spawnData)
         {
-            playerController.Reset(playerConfig.playerData, _spawnPosition);
+            playerController.Reset(playerConfig.playerData, _spawnPositionFunc());
         }
 
         // Getters

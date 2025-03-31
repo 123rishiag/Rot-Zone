@@ -4,6 +4,7 @@ using ServiceLocator.Player;
 using ServiceLocator.Projectile;
 using ServiceLocator.Spawn;
 using ServiceLocator.Vision;
+using ServiceLocator.Wave;
 using ServiceLocator.Weapon;
 
 namespace ServiceLocator.Main
@@ -21,6 +22,7 @@ namespace ServiceLocator.Main
         private PlayerService playerService;
         private EnemyService enemyService;
         private SpawnService spawnService;
+        private WaveService waveService;
 
         public GameController(GameService _gameService)
         {
@@ -41,6 +43,7 @@ namespace ServiceLocator.Main
             playerService = new PlayerService(gameService.playerConfig);
             enemyService = new EnemyService(gameService.enemyConfig, gameService.enemyPoolPanel);
             spawnService = new SpawnService(gameService.spawnTransformPanel);
+            waveService = new WaveService(gameService.waveConfig);
         }
 
         private void InjectDependencies()
@@ -52,6 +55,7 @@ namespace ServiceLocator.Main
             playerService.Init(inputService, cameraService, weaponService);
             enemyService.Init(playerService);
             spawnService.Init(playerService, enemyService);
+            waveService.Init(spawnService);
         }
 
         public void Destroy()
@@ -63,6 +67,7 @@ namespace ServiceLocator.Main
             // Player Service
             // Enemy Service
             // Spawn Service
+            // Wave Service
         }
 
         public void Update()
@@ -74,6 +79,7 @@ namespace ServiceLocator.Main
             playerService.Update();
             enemyService.Update();
             // Spawn Service
+            // Wave Service
         }
 
         public void LateUpdate()
@@ -85,6 +91,7 @@ namespace ServiceLocator.Main
             // Player Service
             // Enemy Service
             // Spawn Service
+            // Wave Service
         }
     }
 }
