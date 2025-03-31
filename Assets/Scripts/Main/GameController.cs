@@ -80,6 +80,8 @@ namespace ServiceLocator.Main
             enemyService.Update();
             // Spawn Service
             // Wave Service
+
+            CheckForWave();
         }
 
         public void LateUpdate()
@@ -93,5 +95,33 @@ namespace ServiceLocator.Main
             // Spawn Service
             // Wave Service
         }
+
+        private void CheckForWave()
+        {
+            if (!playerService.IsPlayerActive())
+            {
+                QuitGame();
+            }
+            if (!enemyService.IsAnyEnemyActive())
+            {
+                if (waveService.IsLastWave())
+                {
+                    QuitGame();
+                }
+                else
+                {
+                    waveService.SetNextWave();
+                }
+            }
+        }
+        private void QuitGame()
+        {
+#if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+#else
+    Application.Quit();
+#endif
+        }
+
     }
 }

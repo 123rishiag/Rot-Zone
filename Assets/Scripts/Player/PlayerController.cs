@@ -286,7 +286,10 @@ namespace ServiceLocator.Player
         {
             currentHealth -= _damage;
             if (currentHealth < 0)
+            {
                 currentHealth = 0;
+                playerView.HideView();
+            }
         }
         public void IncreaseHealth(int _healthAmount)
         {
@@ -299,6 +302,7 @@ namespace ServiceLocator.Player
         #endregion
 
         #region Getters
+        public bool IsActive() => playerView.gameObject.activeInHierarchy;
         public PlayerModel GetModel() => playerModel;
         public PlayerView GetView() => playerView;
         public PlayerAnimationController GetAnimationController() => playerAnimationController;
