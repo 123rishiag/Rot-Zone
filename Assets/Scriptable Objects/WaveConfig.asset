@@ -15,16 +15,46 @@ MonoBehaviour:
   waveData:
   - waveType: 0
     playerSpawnData:
-      playerHealth: 5
+      playerHealth: 2
       playerSpawnAmmoDatas:
       - weaponType: 1
-        ammoToAdd: 50
+        ammoToAdd: 5
       - weaponType: 2
-        ammoToAdd: 200
+        ammoToAdd: 25
       - weaponType: 3
-        ammoToAdd: 20
+        ammoToAdd: 2
     enemySpawnDatas:
     - enemyType: 0
       enemyCount: 2
     - enemyType: 1
       enemyCount: 1
+  - waveType: 1
+    playerSpawnData:
+      playerHealth: 4
+      playerSpawnAmmoDatas:
+      - weaponType: 1
+        ammoToAdd: 10
+      - weaponType: 2
+        ammoToAdd: 50
+      - weaponType: 3
+        ammoToAdd: 4
+    enemySpawnDatas:
+    - enemyType: 0
+      enemyCount: 4
+    - enemyType: 1
+      enemyCount: 2
+  - waveType: 2
+    playerSpawnData:
+      playerHealth: 5
+      playerSpawnAmmoDatas:
+      - weaponType: 1
+        ammoToAdd: 20
+      - weaponType: 2
+        ammoToAdd: 100
+      - weaponType: 3
+        ammoToAdd: 8
+    enemySpawnDatas:
+    - enemyType: 0
+      enemyCount: 8
+    - enemyType: 1
+      enemyCount: 4

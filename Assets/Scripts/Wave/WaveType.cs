@@ -5,7 +5,5 @@ namespace ServiceLocator.Wave
         WAVE1,
         WAVE2,
         WAVE3,
-        WAVE4,
-        WAVE5,
     }
 }

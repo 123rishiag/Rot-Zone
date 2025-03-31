@@ -33,11 +33,14 @@ namespace ServiceLocator.Player
         {
             playerController.Reset(playerConfig.playerData, _spawnPositionFunc());
 
+            playerController.IncreaseHealth(_spawnData.playerHealth);
+
             // Adding Ammo for Weapons
             for (int i = 0; i < _spawnData.playerSpawnAmmoDatas.Length; ++i)
             {
                 PlayerSpawnAmmoData playerSpawnAmmoData = _spawnData.playerSpawnAmmoDatas[i];
-                playerController.GetWeaponController().AddAmmo(playerSpawnAmmoData.weaponType, playerSpawnAmmoData.ammoToAdd);
+                playerController.GetWeaponController().SetAmmo(playerSpawnAmmoData.weaponType, 0);
+                playerController.GetWeaponController().SetAmmo(playerSpawnAmmoData.weaponType, playerSpawnAmmoData.ammoToAdd);
             }
         }
 

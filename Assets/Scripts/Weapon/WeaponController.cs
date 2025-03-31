@@ -72,9 +72,9 @@ namespace ServiceLocator.Weapon
             }
         }
 
-        public void AddAmmo(int _ammoToAdd)
+        public void SetAmmo(int _ammoAmount)
         {
-            totalAmmoLeft += _ammoToAdd;
+            totalAmmoLeft = _ammoAmount;
             ReloadWeapon();
         }
 
