@@ -26,8 +26,8 @@ namespace ServiceLocator.Weapon
             weaponView = Object.Instantiate(_weaponData.weaponPrefab, _parentPanel).GetComponent<WeaponView>();
             weaponView.Init(this);
 
-            currentAmmo = weaponModel.WeaponInitialAmmo;
-            totalAmmoLeft = weaponModel.WeaponTotalAmmo;
+            currentAmmo = 0;
+            totalAmmoLeft = 0;
             lastFireTime = 0f;
 
             // Setting Services
@@ -70,6 +70,12 @@ namespace ServiceLocator.Weapon
                 lastFireTime = Time.time;
                 --currentAmmo;
             }
+        }
+
+        public void AddAmmo(int _ammoToAdd)
+        {
+            totalAmmoLeft += _ammoToAdd;
+            ReloadWeapon();
         }
 
         public void EnableWeapon() => weaponView.gameObject.SetActive(true);

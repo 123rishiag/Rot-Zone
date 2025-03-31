@@ -27,9 +27,7 @@ namespace ServiceLocator.Weapon
         public float weaponAimLaserMaxDistance = 5f;
 
         [Header("Weapon Ammo Settings")]
-        public int weaponInitialAmmo = 20;
         public int weaponMaxCapacity = 30;
-        public int weaponTotalAmmo = 100;
     }
 
     [Serializable]

@@ -32,6 +32,13 @@ namespace ServiceLocator.Player
         public void OnSpawn(Func<Vector3> _spawnPositionFunc, PlayerSpawnData _spawnData)
         {
             playerController.Reset(playerConfig.playerData, _spawnPositionFunc());
+
+            // Adding Ammo for Weapons
+            for (int i = 0; i < _spawnData.playerSpawnAmmoDatas.Length; ++i)
+            {
+                PlayerSpawnAmmoData playerSpawnAmmoData = _spawnData.playerSpawnAmmoDatas[i];
+                playerController.GetWeaponController().AddAmmo(playerSpawnAmmoData.weaponType, playerSpawnAmmoData.ammoToAdd);
+            }
         }
 
         // Getters
