@@ -14,7 +14,7 @@ namespace ServiceLocator.Player
     public class PlayerData
     {
         [Header("Health Settings")]
-        public int maxHealth = 5;
+        public int maxHealth = 20;
 
         [Header("Movement Settings")]
         public float walkSpeed = 1.5f;

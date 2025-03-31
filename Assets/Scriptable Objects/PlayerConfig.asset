@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerPrefab: {fileID: 412605806165008903, guid: b3be32f90d47f8e48ac4d1630b45d456, type: 3}
   playerData:
+    maxHealth: 20
     walkSpeed: 1.5
     runSpeed: 5
     accelerationFactor: 5

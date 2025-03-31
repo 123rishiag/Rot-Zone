@@ -74,7 +74,7 @@ namespace ServiceLocator.Player
             lastMoveDirection = Vector3.zero;
             verticalVelocity = 0f;
             currentSpeed = 0f;
-            currentHealth = playerModel.MaxHealth;
+            currentHealth = 0;
             isRecentlyAttacked = false;
 
             playerView.SetPosition(_spawnPosition);
@@ -287,6 +287,14 @@ namespace ServiceLocator.Player
             currentHealth -= _damage;
             if (currentHealth < 0)
                 currentHealth = 0;
+        }
+        public void IncreaseHealth(int _healthAmount)
+        {
+            currentHealth += _healthAmount;
+            if (currentHealth > playerModel.MaxHealth)
+            {
+                currentHealth = playerModel.MaxHealth;
+            }
         }
         #endregion
 
