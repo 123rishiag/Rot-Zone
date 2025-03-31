@@ -14,9 +14,7 @@ namespace ServiceLocator.Weapon
 
             WeaponAimLaserMaxDistance = _weaponData.weaponAimLaserMaxDistance;
 
-            WeaponInitialAmmo = _weaponData.weaponInitialAmmo;
             WeaponMaxCapacity = _weaponData.weaponMaxCapacity;
-            WeaponTotalAmmo = _weaponData.weaponTotalAmmo;
         }
 
         // Getters
@@ -28,8 +26,6 @@ namespace ServiceLocator.Weapon
 
         public float WeaponAimLaserMaxDistance { get; private set; }
 
-        public int WeaponInitialAmmo { get; private set; }
         public int WeaponMaxCapacity { get; private set; }
-        public int WeaponTotalAmmo { get; private set; }
     }
 }

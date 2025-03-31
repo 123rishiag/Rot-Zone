@@ -19,24 +19,18 @@ MonoBehaviour:
     weaponFireType: 0
     weaponFireRateInSeconds: 1
     weaponAimLaserMaxDistance: 15
-    weaponInitialAmmo: 8
-    weaponMaxCapacity: 20
-    weaponTotalAmmo: 30
+    weaponMaxCapacity: 8
   - weaponType: 2
     weaponPrefab: {fileID: -7221344354335743011, guid: 7444562fe5798e846a4045a93e123308, type: 3}
     weaponProjectileType: 1
     weaponFireType: 1
     weaponFireRateInSeconds: 5
     weaponAimLaserMaxDistance: 20
-    weaponInitialAmmo: 100
-    weaponMaxCapacity: 500
-    weaponTotalAmmo: 100
+    weaponMaxCapacity: 100
   - weaponType: 3
     weaponPrefab: {fileID: 9203822970734637043, guid: c9841888fa5041d499ada59f73087c6a, type: 3}
     weaponProjectileType: 2
     weaponFireType: 0
     weaponFireRateInSeconds: 1
     weaponAimLaserMaxDistance: 5
-    weaponInitialAmmo: 5
-    weaponMaxCapacity: 15
-    weaponTotalAmmo: 50
+    weaponMaxCapacity: 5

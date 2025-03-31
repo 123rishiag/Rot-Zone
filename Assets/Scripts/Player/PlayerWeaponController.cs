@@ -109,6 +109,11 @@ namespace ServiceLocator.Player
             weapons[currentWeaponType].ReloadWeapon();
         }
 
+        public void AddAmmo(WeaponType _weaponType, int _ammoToAdd)
+        {
+            weapons[_weaponType].AddAmmo(_ammoToAdd);
+        }
+
         public void ReloadComplete() => playerController.IsReloading = false;
 
         public void FireWeapon()

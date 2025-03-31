@@ -16,7 +16,13 @@ MonoBehaviour:
   - waveType: 0
     playerSpawnData:
       playerHealth: 5
-      playerSpawnAmmoDatas: []
+      playerSpawnAmmoDatas:
+      - weaponType: 1
+        ammoToAdd: 50
+      - weaponType: 2
+        ammoToAdd: 200
+      - weaponType: 3
+        ammoToAdd: 20
     enemySpawnDatas:
     - enemyType: 0
       enemyCount: 2
