@@ -2,6 +2,7 @@ using ServiceLocator.Enemy;
 using ServiceLocator.Player;
 using ServiceLocator.Projectile;
 using ServiceLocator.Vision;
+using ServiceLocator.Wave;
 using ServiceLocator.Weapon;
 using UnityEngine;
 
@@ -25,6 +26,7 @@ namespace ServiceLocator.Main
         public WeaponConfig weaponConfig;
         public PlayerConfig playerConfig;
         public EnemyConfig enemyConfig;
+        public WaveConfig waveConfig;
 
         // Private Variables
         private GameController gameController;

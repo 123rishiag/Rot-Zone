@@ -473,6 +473,7 @@ MonoBehaviour:
   weaponConfig: {fileID: 11400000, guid: 3d3b32c64ccbf2d4dac5e976a9b7d9e0, type: 2}
   playerConfig: {fileID: 11400000, guid: b2ed840bbfc766c41a5b21dd3f28ef28, type: 2}
   enemyConfig: {fileID: 11400000, guid: 5fab5e724812e9741a82d6a91db18dec, type: 2}
+  waveConfig: {fileID: 11400000, guid: 334e952329eef154784ecb089b012714, type: 2}
 --- !u!4 &509886793
 Transform:
   m_ObjectHideFlags: 0

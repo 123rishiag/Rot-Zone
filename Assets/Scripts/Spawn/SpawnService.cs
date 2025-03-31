@@ -31,28 +31,25 @@ namespace ServiceLocator.Spawn
             // Setting Services
             playerService = _playerService;
             enemyService = _enemyService;
-
-            Spawn(SpawnEntityType.PLAYER, 1);
-            Spawn(SpawnEntityType.ENEMY, 10);
         }
 
-        public void Spawn(SpawnEntityType _spawnEntityType, int _spawnCount)
+        public void Spawn<T>(SpawnEntityType _spawnEntityType, T[] _spawnData) where T : SpawnData
         {
-            ISpawn spawnEntity = GetSpawnEntity(_spawnEntityType);
-            for (int i = 0; i < _spawnCount; ++i)
+            ISpawn<T> spawner = GetSpawnEntity<T>(_spawnEntityType);
+            for (int i = 0; i < _spawnData.Length; ++i)
             {
-                spawnEntity.OnSpawn(GetSpawnPosition(_spawnEntityType));
+                spawner.OnSpawn(() => GetSpawnPosition(_spawnEntityType), _spawnData[i]);
             }
         }
 
-        public ISpawn GetSpawnEntity(SpawnEntityType _spawnEntityType)
+        private ISpawn<T> GetSpawnEntity<T>(SpawnEntityType _spawnEntityType) where T : SpawnData
         {
             switch (_spawnEntityType)
             {
                 case SpawnEntityType.PLAYER:
-                    return playerService;
+                    return (ISpawn<T>)playerService;
                 case SpawnEntityType.ENEMY:
-                    return enemyService;
+                    return (ISpawn<T>)enemyService;
                 default:
                     Debug.LogError($"Unhandled Spawn Entity Type: {_spawnEntityType}");
                     return null;
