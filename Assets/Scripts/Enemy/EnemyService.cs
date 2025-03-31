@@ -2,6 +2,7 @@ using ServiceLocator.Player;
 using ServiceLocator.Spawn;
 using ServiceLocator.Wave;
 using System;
+using System.Linq;
 using UnityEngine;
 
 namespace ServiceLocator.Enemy
@@ -97,5 +98,8 @@ namespace ServiceLocator.Enemy
             _enemyToReturn.GetView().HideView();
             enemyPool.ReturnItem(_enemyToReturn);
         }
+
+        // Getters
+        public bool IsAnyEnemyActive() => enemyPool.pooledItems.Any(item => item.isUsed);
     }
 }
