@@ -7,6 +7,7 @@ namespace ServiceLocator.Wave
     {
         // Private Variables
         private WaveConfig waveConfig;
+        private int currentWaveIndex;
         private WaveType currentWaveType;
 
         // Private Services
@@ -16,7 +17,8 @@ namespace ServiceLocator.Wave
         {
             // Setting Variables
             waveConfig = _waveConfig;
-            currentWaveType = WaveType.WAVE1;
+            currentWaveIndex = 0;
+            currentWaveType = waveConfig.waveData[0].waveType;
         }
 
         public void Init(SpawnService _spawnService)
@@ -34,6 +36,16 @@ namespace ServiceLocator.Wave
             spawnService.Spawn<PlayerSpawnData>(SpawnEntityType.PLAYER, new PlayerSpawnData[] { waveData.playerSpawnData });
             spawnService.Spawn<EnemySpawnData>(SpawnEntityType.ENEMY, waveData.enemySpawnDatas);
         }
+        public void SetNextWave()
+        {
+            currentWaveIndex++;
+            currentWaveType = waveConfig.waveData[currentWaveIndex].waveType;
+            LoadWave(currentWaveType);
+        }
+
+        // Getters
+        public bool IsLastWave() => currentWaveIndex >= waveConfig.waveData.Length - 1;
+        private int GetCurrentWaveIndex() => currentWaveIndex;
         private WaveData GetWaveData(WaveType _waveType) =>
             Array.Find(waveConfig.waveData, w => w.waveType == _waveType);
     }
