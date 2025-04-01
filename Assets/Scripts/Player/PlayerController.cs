@@ -242,6 +242,8 @@ namespace ServiceLocator.Player
                 Vector3 direction = (aimTarget - playerView.transform.position).normalized;
                 direction.y = 0f;
                 RotateTowards(direction);
+
+                playerWeaponController.GetCurrentWeapon().SetAimTarget(aimTarget);
             }
             else
             {

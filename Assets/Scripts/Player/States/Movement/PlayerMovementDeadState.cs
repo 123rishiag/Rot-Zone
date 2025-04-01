@@ -13,7 +13,6 @@ namespace ServiceLocator.Player
         {
             Owner.GetView().SetRagDollActive(true);
             Owner.GetView().GetAnimator().enabled = false;
-            Owner.GetView().GetAnimator().Play(Owner.GetAnimationController().fallHash);
         }
         public void Update()
         {

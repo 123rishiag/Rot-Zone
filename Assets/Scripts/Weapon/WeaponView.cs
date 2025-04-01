@@ -17,12 +17,10 @@ namespace ServiceLocator.Weapon
             weaponController = _weaponController;
         }
 
-        public void UpdateAimLaser()
+        public void UpdateAimLaser(Vector3 _aimTarget)
         {
-            Vector3 aimTarget = firePoint.position +
-                firePoint.forward * weaponController.GetModel().WeaponAimLaserMaxDistance;
             aimLaser.SetPosition(0, firePoint.position);
-            aimLaser.SetPosition(1, aimTarget);
+            aimLaser.SetPosition(1, _aimTarget);
         }
 
 
