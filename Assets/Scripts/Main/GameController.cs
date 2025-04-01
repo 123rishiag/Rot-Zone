@@ -55,7 +55,7 @@ namespace ServiceLocator.Main
             playerService.Init(inputService, cameraService, weaponService);
             enemyService.Init(playerService);
             spawnService.Init(playerService, enemyService);
-            waveService.Init(spawnService);
+            waveService.Init(spawnService, enemyService);
         }
 
         public void Destroy()
@@ -79,9 +79,9 @@ namespace ServiceLocator.Main
             playerService.Update();
             enemyService.Update();
             // Spawn Service
-            // Wave Service
+            waveService.Update();
 
-            CheckForWave();
+            CheckGameEndCondition();
         }
 
         public void LateUpdate()
@@ -96,22 +96,11 @@ namespace ServiceLocator.Main
             // Wave Service
         }
 
-        private void CheckForWave()
+        private void CheckGameEndCondition()
         {
-            if (!playerService.IsPlayerAlive())
+            if (!playerService.IsPlayerAlive() || waveService.IsLastWaveComplete)
             {
                 QuitGame();
-            }
-            if (!enemyService.IsAnyEnemyAlive())
-            {
-                if (waveService.IsLastWave())
-                {
-                    QuitGame();
-                }
-                else
-                {
-                    waveService.SetNextWave();
-                }
             }
         }
         private void QuitGame()

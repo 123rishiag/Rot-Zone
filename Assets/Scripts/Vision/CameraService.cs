@@ -72,9 +72,12 @@ namespace ServiceLocator.Vision
             Vector3 playerTargetPosition = playerTransform.position +
                 Vector3.up * cameraConfig.cameraHeightOffset;
 
+            // Side offset using camera's right vector
+            Vector3 sideOffset = cameraRotation * Vector3.right * cameraConfig.cameraSideOffset;
+
             // Computing the camera's orbiting position
             Vector3 targetPosition = playerTargetPosition -
-                cameraRotation * Vector3.forward * cameraConfig.cameraDistanceOffset;
+                cameraRotation * Vector3.forward * cameraConfig.cameraDistanceOffset + sideOffset;
 
             mainCamera.transform.position = targetPosition;
 

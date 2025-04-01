@@ -1,51 +1,74 @@
+using ServiceLocator.Enemy;
 using ServiceLocator.Spawn;
+using ServiceLocator.Utility;
 using System;
 
 namespace ServiceLocator.Wave
 {
-    public class WaveService
+    public class WaveService : IStateOwner<WaveService>
     {
         // Private Variables
         private WaveConfig waveConfig;
         private int currentWaveIndex;
-        private WaveType currentWaveType;
+        public WaveType CurrentWaveType { get; private set; }
+        public bool IsLastWaveComplete { get; set; }
+        public WaveService Owner { get; set; }
+        private WaveStateMachine waveStateMachine;
 
         // Private Services
         private SpawnService spawnService;
+        private EnemyService enemyService;
 
         public WaveService(WaveConfig _waveConfig)
         {
             // Setting Variables
             waveConfig = _waveConfig;
-            currentWaveIndex = 0;
-            currentWaveType = waveConfig.waveData[0].waveType;
         }
 
-        public void Init(SpawnService _spawnService)
+        public void Init(SpawnService _spawnService, EnemyService _enemyService)
         {
+            // Setting Variables
+            currentWaveIndex = 0;
+            CurrentWaveType = waveConfig.waveData[0].waveType;
+            IsLastWaveComplete = false;
+
             // Setting Services
             spawnService = _spawnService;
+            enemyService = _enemyService;
 
             // Setting Elements
-            LoadWave(currentWaveType);
+            CreateStateMachine();
+            waveStateMachine.ChangeState(WaveState.START);
         }
 
-        private void LoadWave(WaveType _waveType)
+        private void CreateStateMachine()
         {
-            WaveData waveData = GetWaveData(_waveType);
+            Owner = this;
+            waveStateMachine = new WaveStateMachine(this);
+        }
+
+        public void Update()
+        {
+            waveStateMachine.Update();
+        }
+
+        public void LoadCurrentWave()
+        {
+            WaveData waveData = GetWaveData(CurrentWaveType);
             spawnService.Spawn<PlayerSpawnData>(SpawnEntityType.PLAYER, new PlayerSpawnData[] { waveData.playerSpawnData });
             spawnService.Spawn<EnemySpawnData>(SpawnEntityType.ENEMY, waveData.enemySpawnDatas);
         }
+
+        // Setters
         public void SetNextWave()
         {
             currentWaveIndex++;
-            currentWaveType = waveConfig.waveData[currentWaveIndex].waveType;
-            LoadWave(currentWaveType);
+            CurrentWaveType = waveConfig.waveData[currentWaveIndex].waveType;
         }
 
         // Getters
         public bool IsLastWave() => currentWaveIndex >= waveConfig.waveData.Length - 1;
-        private int GetCurrentWaveIndex() => currentWaveIndex;
+        public bool IsWaveComplete() => !enemyService.IsAnyEnemyAlive();
         private WaveData GetWaveData(WaveType _waveType) =>
             Array.Find(waveConfig.waveData, w => w.waveType == _waveType);
     }

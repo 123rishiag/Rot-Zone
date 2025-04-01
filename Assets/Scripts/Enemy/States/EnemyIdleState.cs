@@ -17,7 +17,7 @@ namespace ServiceLocator.Enemy
             idleTimer = 0f;
 
             Owner.GetView().GetAnimator().enabled = true;
-            Owner.GetView().SetRagDollActive(false);
+            Owner.GetView().SetRagDollActive(true);
             Owner.GetView().GetCharacterController().enabled = true;
             Owner.GetView().GetNavMeshAgent().enabled = true;
 

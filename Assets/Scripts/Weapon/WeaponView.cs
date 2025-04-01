@@ -26,6 +26,5 @@ namespace ServiceLocator.Weapon
 
         // Getters
         public Transform GetFirePoint() => firePoint;
-        public float GetAimDistance() => Vector3.Distance(aimLaser.GetPosition(0), aimLaser.GetPosition(1));
     }
 }
