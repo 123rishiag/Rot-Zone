@@ -13,6 +13,7 @@ namespace ServiceLocator.Enemy
         public void OnStateEnter()
         {
             Owner.DetectionDistance = Owner.GetModel().DetectionMaxDistance * Owner.GetModel().DetectionIncreaseFactor;
+            Owner.GetView().SetConeDetectMaterial(true);
 
             var enemyModel = Owner.GetModel();
             Owner.GetView().StopNavMeshAgent(true);
@@ -33,7 +34,7 @@ namespace ServiceLocator.Enemy
             Owner.RotateTowardsPlayer();
         }
         public void FixedUpdate() { }
-        public void OnStateExit() 
+        public void OnStateExit()
         {
             Owner.DetectionDistance = Owner.GetModel().DetectionMaxDistance;
         }

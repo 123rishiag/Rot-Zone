@@ -28,8 +28,6 @@ namespace ServiceLocator.Enemy
             DetectionMinScreamDistance = _enemyData.detectionMinScreamDistance;
             DetectionIncreaseFactor = _enemyData.detectionIncreaseFactor;
             StopDistance = _enemyData.stopDistance;
-
-            IsGizmosEnabled = _enemyData.isGizmosEnabled;
         }
 
         public EnemyType EnemyType { get; private set; }
@@ -51,7 +49,5 @@ namespace ServiceLocator.Enemy
         public float DetectionMinScreamDistance { get; private set; }
         public float DetectionIncreaseFactor { get; private set; }
         public float StopDistance { get; private set; }
-
-        public bool IsGizmosEnabled { get; private set; }
     }
 }

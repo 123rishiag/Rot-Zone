@@ -27,7 +27,7 @@ namespace ServiceLocator.Enemy
             stunTimer += Time.deltaTime;
             if (stunTimer >= recoveryDuration)
             {
-                stateMachine.ChangeState(EnemyState.IDLE);
+                stateMachine.ChangeState(EnemyState.DETECT);
             }
         }
         public void FixedUpdate() { }

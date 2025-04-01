@@ -21,6 +21,8 @@ namespace ServiceLocator.Enemy
             Owner.GetView().GetCharacterController().enabled = true;
             Owner.GetView().GetNavMeshAgent().enabled = true;
 
+            Owner.GetView().SetConeDetectMaterial(false);
+
             Owner.GetView().StopNavMeshAgent(true);
             var animator = Owner.GetView().GetAnimator();
             if (animator != null && animator.isActiveAndEnabled)
