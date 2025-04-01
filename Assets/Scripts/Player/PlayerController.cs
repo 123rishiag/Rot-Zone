@@ -30,6 +30,7 @@ namespace ServiceLocator.Player
         private Vector2 aimPosition;
 
         private int currentHealth;
+        public bool IsAlive { get; set; }
 
         private bool isRecentlyAttacked;
 
@@ -75,6 +76,7 @@ namespace ServiceLocator.Player
             verticalVelocity = 0f;
             currentSpeed = 0f;
             currentHealth = 0;
+            IsAlive = true;
             isRecentlyAttacked = false;
 
             playerView.SetPosition(_spawnPosition);
@@ -228,8 +230,8 @@ namespace ServiceLocator.Player
                 // Setting Aim Based on Mouse Position
                 Ray ray = Camera.main.ScreenPointToRay(aimPosition);
 
-                Vector3 aimTarget =
-                    ray.GetPoint(playerWeaponController.GetCurrentWeapon().GetView().GetAimDistance());
+                // Getting rayPoint near player
+                Vector3 aimTarget = ray.GetPoint(5f);
 
                 // Setting Offsets for Weapons
                 aimTarget = new Vector3(
@@ -302,7 +304,6 @@ namespace ServiceLocator.Player
         #endregion
 
         #region Getters
-        public bool IsAlive() => playerMovementStateMachine.GetCurrentState() != PlayerMovementState.DEAD;
         public PlayerModel GetModel() => playerModel;
         public PlayerView GetView() => playerView;
         public PlayerAnimationController GetAnimationController() => playerAnimationController;

@@ -17,9 +17,6 @@ namespace ServiceLocator.Player
         public void Update()
         {
             CheckTransitionConditions();
-
-            //Owner.UpdateMovementVariables();
-            //Owner.MovePlayer();
         }
 
         public void FixedUpdate() { }

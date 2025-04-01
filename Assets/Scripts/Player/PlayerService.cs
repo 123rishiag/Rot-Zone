@@ -46,6 +46,6 @@ namespace ServiceLocator.Player
 
         // Getters
         public PlayerController GetController() => playerController;
-        public bool IsPlayerAlive() => playerController.IsAlive();
+        public bool IsPlayerAlive() => playerController.IsAlive;
     }
 }

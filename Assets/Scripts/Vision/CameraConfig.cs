@@ -7,9 +7,10 @@ namespace ServiceLocator.Vision
     {
         [Header("Camera Settings")]
         public float mouseSensitivity = 0.5f;
-        public float minPitch = 20f;
-        public float maxPitch = 60f;
-        public float cameraDistanceOffset = 2.5f;
+        public float cameraSideOffset = 0.5f;
+        public float minPitch = 10f;
+        public float maxPitch = 20f;
+        public float cameraDistanceOffset = 4f;
         public float cameraHeightOffset = 1f;
         public float initialYaw = 0f;
         public float initialPitch = 20f;

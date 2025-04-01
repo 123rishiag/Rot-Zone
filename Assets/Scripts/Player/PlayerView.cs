@@ -39,6 +39,7 @@ namespace ServiceLocator.Player
 
         public void HitImpactCoroutine(Vector3 _impactForce, int _damage, Collision _hitCollision)
         {
+            StopAllCoroutines();
             StartCoroutine(playerController.HitImpact(_impactForce, _damage, _hitCollision));
         }
 

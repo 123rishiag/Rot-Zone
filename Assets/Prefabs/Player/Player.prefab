@@ -824,7 +824,7 @@ MonoBehaviour:
       rightHand_TargetTransform: {fileID: 601330751473462148}
       leftHand_TargetTransform: {fileID: 5018506583136142878}
       leftHand_HintTransform: {fileID: 9073229748077757751}
-      weaponVerticalOffeset: -1
+      weaponVerticalOffeset: -0.4
   - weaponType: 2
     weaponTransform:
       weaponHolder: {fileID: 1478926393595562786}
@@ -838,7 +838,7 @@ MonoBehaviour:
       rightHand_TargetTransform: {fileID: 2243566336365966069}
       leftHand_TargetTransform: {fileID: 732931980772964330}
       leftHand_HintTransform: {fileID: 15097190717707419}
-      weaponVerticalOffeset: -1.5
+      weaponVerticalOffeset: -1.2
   rightHandAimConstraint: {fileID: 8310985297325246404}
   leftHandIK: {fileID: 6056014414725304192}
   aimTransform: {fileID: 5103283510018147113}
@@ -2036,7 +2036,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 0.35, y: 0.37, z: 0.284668}
-  m_Center: {x: -0.75, y: 0.15, z: 0.0020133555}
+  m_Center: {x: 0, y: 0.15, z: 0.05}
 --- !u!54 &4749491544720222147
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -3340,7 +3340,7 @@ CapsuleCollider:
   m_Radius: 0.09
   m_Height: 0.37
   m_Direction: 1
-  m_Center: {x: -0.13, y: 0.04, z: 0}
+  m_Center: {x: 0, y: 0.04, z: 0}
 --- !u!54 &2661705578615280742
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -3662,7 +3662,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7375434710205424825}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b2d8418b0b9634b1892b0268dd9c2743, type: 3}
   m_Name: 
@@ -4319,7 +4319,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 0.35, y: 0.12, z: 0.28394464}
-  m_Center: {x: -0.75, y: 0, z: -0.01132004}
+  m_Center: {x: 0, y: 0, z: 0.056}
 --- !u!54 &3776056551131288651
 Rigidbody:
   m_ObjectHideFlags: 0
