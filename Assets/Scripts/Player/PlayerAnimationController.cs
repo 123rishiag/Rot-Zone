@@ -9,7 +9,6 @@ namespace ServiceLocator.Player
         public readonly int movementLocomotionHash = Animator.StringToHash("Movement Locomotion");
         public readonly int fallHash = Animator.StringToHash("Fall");
         public readonly int hurtHash = Animator.StringToHash("Hurt");
-        public readonly int deadHash = Animator.StringToHash("Dead");
 
         public readonly int weaponFireHash = Animator.StringToHash("Weapon_Fire");
         public readonly int weaponIdleHash = Animator.StringToHash("Weapon_Idle");

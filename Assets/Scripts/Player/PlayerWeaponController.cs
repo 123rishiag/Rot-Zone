@@ -88,6 +88,7 @@ namespace ServiceLocator.Player
         }
         private void SwitchOffWeapons()
         {
+            ReloadComplete();
             foreach (WeaponIKData weaponIKData in playerController.GetView().GetWeaponIKDatas())
             {
                 weapons[weaponIKData.weaponType].DisableWeapon();
@@ -118,6 +119,7 @@ namespace ServiceLocator.Player
 
         public void FireWeapon()
         {
+            ReloadComplete();
             weapons[currentWeaponType].FireWeapon();
 
             // To Stop Constant Firing if the weapon is Single Type

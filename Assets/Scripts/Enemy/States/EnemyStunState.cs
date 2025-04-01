@@ -17,11 +17,8 @@ namespace ServiceLocator.Enemy
         {
             stunTimer = 0f;
 
-            var agent = Owner.GetView().GetNavMeshAgent();
             var enemyModel = Owner.GetModel();
-
-            agent.isStopped = true;
-            agent.velocity = Vector3.zero;
+            Owner.GetView().StopNavMeshAgent(true);
 
             Owner.GetView().GetAnimator().CrossFade(Owner.GetAnimationController().stunHash, 0.5f);
         }

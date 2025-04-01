@@ -1,5 +1,4 @@
 using ServiceLocator.Utility;
-using UnityEngine;
 
 namespace ServiceLocator.Player
 {
@@ -18,8 +17,6 @@ namespace ServiceLocator.Player
         }
         public void Update()
         {
-            CheckTransitionConditions();
-
             Owner.UpdateMovementVariables();
         }
         public void FixedUpdate() { }
@@ -27,18 +24,6 @@ namespace ServiceLocator.Player
         {
             Owner.GetView().SetRagDollActive(false);
             Owner.GetView().GetAnimator().enabled = true;
-        }
-
-        private void CheckTransitionConditions()
-        {
-            AnimatorStateInfo stateInfo =
-                Owner.GetView().GetAnimator().GetCurrentAnimatorStateInfo(0);
-
-            if (stateInfo.shortNameHash == Owner.GetAnimationController().deadHash &&
-                stateInfo.normalizedTime >= 0.9f)
-            {
-
-            }
         }
     }
 }

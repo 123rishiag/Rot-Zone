@@ -27,6 +27,7 @@ MonoBehaviour:
     detectionMaxDistance: 10
     detectionAngleDegree: 120
     detectionMinScreamDistance: 5
+    detectionIncreaseFactor: 2
     stopDistance: 1
     isGizmosEnabled: 1
   - enemyType: 1
@@ -43,5 +44,6 @@ MonoBehaviour:
     detectionMaxDistance: 5
     detectionAngleDegree: 240
     detectionMinScreamDistance: 2
+    detectionIncreaseFactor: 3
     stopDistance: 1
     isGizmosEnabled: 1

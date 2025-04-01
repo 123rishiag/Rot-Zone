@@ -12,11 +12,10 @@ namespace ServiceLocator.Enemy
 
         public void OnStateEnter()
         {
-            var agent = Owner.GetView().GetNavMeshAgent();
-            var enemyModel = Owner.GetModel();
+            Owner.DetectionDistance = Owner.GetModel().DetectionMaxDistance * Owner.GetModel().DetectionIncreaseFactor;
 
-            agent.isStopped = true;
-            agent.velocity = Vector3.zero;
+            var enemyModel = Owner.GetModel();
+            Owner.GetView().StopNavMeshAgent(true);
 
             Owner.GetView().SetTrailRenderActive(true);
             Owner.GetView().GetAnimator().Play(Owner.GetAnimationController().attackHash);
@@ -25,7 +24,14 @@ namespace ServiceLocator.Enemy
         {
             if (IsAttackAnimationFinished())
             {
-                stateMachine.ChangeState(EnemyState.IDLE);
+                if (Owner.GetDistanceFromPlayer() > Owner.DetectionDistance)
+                {
+                    stateMachine.ChangeState(EnemyState.IDLE);
+                }
+                else
+                {
+                    stateMachine.ChangeState(EnemyState.CHASE);
+                }
             }
 
             Owner.RotateTowardsPlayer();
@@ -33,6 +39,8 @@ namespace ServiceLocator.Enemy
         public void FixedUpdate() { }
         public void OnStateExit()
         {
+            Owner.DetectionDistance = Owner.GetModel().DetectionMaxDistance;
+
             Owner.GetView().SetTrailRenderActive(false);
         }
 

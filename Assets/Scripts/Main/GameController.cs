@@ -98,11 +98,11 @@ namespace ServiceLocator.Main
 
         private void CheckForWave()
         {
-            if (!playerService.IsPlayerActive())
+            if (!playerService.IsPlayerAlive())
             {
                 QuitGame();
             }
-            if (!enemyService.IsAnyEnemyActive())
+            if (!enemyService.IsAnyEnemyAlive())
             {
                 if (waveService.IsLastWave())
                 {

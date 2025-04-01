@@ -15,6 +15,7 @@ namespace ServiceLocator.Enemy
         public EnemyController Owner { get; set; }
         private EnemyStateMachine enemyStateMachine;
 
+        public float DetectionDistance { get; set; }
         private int currentHealth;
 
         // Private Services
@@ -49,6 +50,7 @@ namespace ServiceLocator.Enemy
             enemyStateMachine.ChangeState(EnemyState.IDLE);
             enemyModel.Reset(_enemyData);
 
+            DetectionDistance = enemyModel.DetectionMaxDistance;
             currentHealth = enemyModel.MaxHealth;
 
             enemyView.SetPosition(_spawnPosition);
@@ -84,8 +86,10 @@ namespace ServiceLocator.Enemy
         {
             enemyStateMachine.ChangeState(EnemyState.IDLE);
             DecreaseHealth(_damage);
-
             var hitPoint = _hitCollision.contacts[0].point;
+
+            yield return new WaitForEndOfFrame();
+
             if (currentHealth != 0)
             {
                 enemyStateMachine.ChangeState(EnemyState.HURT);
@@ -112,7 +116,7 @@ namespace ServiceLocator.Enemy
         // Getters
         public bool IsPlayerDetected()
         {
-            float detectionDistance = enemyModel.DetectionMaxDistance;
+            float detectionDistance = DetectionDistance;
             float detectionAngleDegree = enemyModel.DetectionAngleDegree / 2f;
 
             LayerMask layerMask = playerService.GetController().GetLayerMask();

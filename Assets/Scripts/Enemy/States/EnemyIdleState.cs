@@ -16,11 +16,18 @@ namespace ServiceLocator.Enemy
         {
             idleTimer = 0f;
 
-            var agent = Owner.GetView().GetNavMeshAgent();
-            agent.isStopped = true;
-            agent.velocity = Vector3.zero;
+            Owner.GetView().GetAnimator().enabled = true;
+            Owner.GetView().SetRagDollActive(false);
+            Owner.GetView().GetCharacterController().enabled = true;
+            Owner.GetView().GetNavMeshAgent().enabled = true;
 
-            Owner.GetView().GetAnimator().CrossFade(Owner.GetAnimationController().idleHash, 0.25f);
+            Owner.GetView().StopNavMeshAgent(true);
+            var animator = Owner.GetView().GetAnimator();
+            if (animator != null && animator.isActiveAndEnabled)
+            {
+                animator.CrossFade(Owner.GetAnimationController().idleHash, 0.25f);
+            }
+            
         }
         public void Update()
         {

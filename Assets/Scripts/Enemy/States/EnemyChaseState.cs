@@ -1,5 +1,4 @@
 using ServiceLocator.Utility;
-using UnityEngine;
 
 namespace ServiceLocator.Enemy
 {
@@ -12,9 +11,11 @@ namespace ServiceLocator.Enemy
 
         public void OnStateEnter()
         {
-            var agent = Owner.GetView().GetNavMeshAgent();
+            Owner.DetectionDistance = Owner.GetModel().DetectionMaxDistance * Owner.GetModel().DetectionIncreaseFactor;
+
             var enemyModel = Owner.GetModel();
-            agent.isStopped = false;
+            var agent = Owner.GetView().GetNavMeshAgent();
+            Owner.GetView().StopNavMeshAgent(false);
 
             agent.speed = enemyModel.ChaseSpeed;
             agent.acceleration = enemyModel.ChaseSpeed * 2;
@@ -24,8 +25,8 @@ namespace ServiceLocator.Enemy
             Owner.GetView().GetAnimator().CrossFade(Owner.GetAnimationController().chaseHash, 0.1f);
         }
         public void Update()
-        { 
-            if (Owner.GetDistanceFromPlayer() > Owner.GetModel().DetectionMaxDistance)         
+        {
+            if (Owner.GetDistanceFromPlayer() > Owner.DetectionDistance)
             {
                 stateMachine.ChangeState(EnemyState.IDLE);
             }
@@ -38,6 +39,9 @@ namespace ServiceLocator.Enemy
             Owner.RotateTowardsPlayer();
         }
         public void FixedUpdate() { }
-        public void OnStateExit() { }
+        public void OnStateExit()
+        {
+            Owner.DetectionDistance = Owner.GetModel().DetectionMaxDistance;
+        }
     }
 }

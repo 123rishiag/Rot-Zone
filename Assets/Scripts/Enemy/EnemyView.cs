@@ -35,7 +35,7 @@ namespace ServiceLocator.Enemy
 
         private void OnDrawGizmos()
         {
-            if (enemyController == null || transform == null || 
+            if (enemyController == null || transform == null ||
                 enemyController.GetEnemyStateMachine().GetCurrentState() == EnemyState.DEAD)
                 return;
 
@@ -46,7 +46,7 @@ namespace ServiceLocator.Enemy
         }
         private void DetectionGizmos()
         {
-            float detectionDistance = enemyController.GetModel().DetectionMaxDistance;
+            float detectionDistance = enemyController.DetectionDistance;
             float detectionAngleDegree = enemyController.GetModel().DetectionAngleDegree / 2f;
 
             Vector3 origin = transform.position + Vector3.up;
@@ -89,6 +89,17 @@ namespace ServiceLocator.Enemy
             foreach (Rigidbody rb in ragDollRigidbodies)
             {
                 rb.isKinematic = !_flag;
+            }
+        }
+        public void StopNavMeshAgent(bool _flag)
+        {
+            if (navMeshAgent.enabled && navMeshAgent.isOnNavMesh)
+            {
+                navMeshAgent.isStopped = _flag;
+                if (_flag)
+                {
+                    navMeshAgent.velocity = Vector3.zero;
+                }
             }
         }
         public void SetTrailRenderActive(bool _flag)
