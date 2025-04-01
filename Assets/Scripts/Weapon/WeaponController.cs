@@ -37,8 +37,8 @@ namespace ServiceLocator.Weapon
         public void LateUpdate()
         {
             cachedFirePosition = weaponView.GetFirePoint().position;
-            cachedFireDirection = weaponView.GetFirePoint().forward;
-            weaponView.UpdateAimLaser();
+            cachedFireDirection = weaponView.GetFirePoint().forward; 
+            weaponView.UpdateAimLaser(cachedFirePosition + cachedFireDirection * weaponModel.WeaponAimLaserMaxDistance);
         }
 
         public bool CanReloadWeapon()
@@ -76,6 +76,10 @@ namespace ServiceLocator.Weapon
         {
             totalAmmoLeft = _ammoAmount;
             ReloadWeapon();
+        }
+        public void SetAimTarget(Vector3 _aimTarget)
+        {
+            weaponView.UpdateAimLaser(_aimTarget);
         }
 
         public void EnableWeapon() => weaponView.gameObject.SetActive(true);
