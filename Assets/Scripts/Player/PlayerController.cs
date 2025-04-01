@@ -124,8 +124,6 @@ namespace ServiceLocator.Player
             inputControls.Player.WeaponStow.started += ctx => playerWeaponController.EquipWeapon(WeaponType.NONE);
             inputControls.Player.WeaponReload.started += ctx => IsReloading = true;
 
-            inputControls.Game.Pause.started += ctx => Time.timeScale = 0f;
-
             inputControls.Player.MousePosition.performed += ctx => aimPosition = ctx.ReadValue<Vector2>();
             inputControls.Player.MousePosition.canceled += ctx => aimPosition = Vector2.zero;
         }
@@ -302,7 +300,7 @@ namespace ServiceLocator.Player
         #endregion
 
         #region Getters
-        public bool IsActive() => playerView.gameObject.activeInHierarchy;
+        public bool IsAlive() => playerMovementStateMachine.GetCurrentState() != PlayerMovementState.DEAD;
         public PlayerModel GetModel() => playerModel;
         public PlayerView GetView() => playerView;
         public PlayerAnimationController GetAnimationController() => playerAnimationController;

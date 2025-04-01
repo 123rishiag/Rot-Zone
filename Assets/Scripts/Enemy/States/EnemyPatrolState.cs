@@ -15,9 +15,9 @@ namespace ServiceLocator.Enemy
 
         public void OnStateEnter()
         {
-            var agent = Owner.GetView().GetNavMeshAgent();
             var enemyModel = Owner.GetModel();
-            agent.isStopped = false;
+            var agent = Owner.GetView().GetNavMeshAgent();
+            Owner.GetView().StopNavMeshAgent(false);
 
             agent.speed = enemyModel.PatrolSpeed;
             agent.acceleration = enemyModel.PatrolSpeed;

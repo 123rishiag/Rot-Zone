@@ -35,9 +35,7 @@ namespace ServiceLocator.Enemy
         public float detectionMaxDistance = 10f;
         public float detectionAngleDegree = 120f;
         public float detectionMinScreamDistance = 5f;
+        public float detectionIncreaseFactor = 2f;
         public float stopDistance = 1f;
-
-        [Header("Gizmos Settings")]
-        public bool isGizmosEnabled = false;
     }
 }

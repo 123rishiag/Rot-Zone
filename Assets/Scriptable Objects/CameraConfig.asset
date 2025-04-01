@@ -15,7 +15,7 @@ MonoBehaviour:
   mouseSensitivity: 0.5
   minPitch: 20
   maxPitch: 60
-  cameraDistanceOffset: 4
-  cameraHeightOffset: 2
+  cameraDistanceOffset: 2.5
+  cameraHeightOffset: 1
   initialYaw: 0
   initialPitch: 20

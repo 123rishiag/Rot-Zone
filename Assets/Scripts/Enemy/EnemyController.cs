@@ -15,6 +15,7 @@ namespace ServiceLocator.Enemy
         public EnemyController Owner { get; set; }
         private EnemyStateMachine enemyStateMachine;
 
+        public float DetectionDistance { get; set; }
         private int currentHealth;
 
         // Private Services
@@ -49,6 +50,7 @@ namespace ServiceLocator.Enemy
             enemyStateMachine.ChangeState(EnemyState.IDLE);
             enemyModel.Reset(_enemyData);
 
+            DetectionDistance = enemyModel.DetectionMaxDistance;
             currentHealth = enemyModel.MaxHealth;
 
             enemyView.SetPosition(_spawnPosition);
@@ -60,6 +62,7 @@ namespace ServiceLocator.Enemy
         public void Update()
         {
             enemyStateMachine.Update();
+            enemyView.DrawDetectionCone();
         }
 
         public void RotateTowardsPlayer()
@@ -84,8 +87,10 @@ namespace ServiceLocator.Enemy
         {
             enemyStateMachine.ChangeState(EnemyState.IDLE);
             DecreaseHealth(_damage);
-
             var hitPoint = _hitCollision.contacts[0].point;
+
+            yield return new WaitForEndOfFrame();
+
             if (currentHealth != 0)
             {
                 enemyStateMachine.ChangeState(EnemyState.HURT);
@@ -112,8 +117,8 @@ namespace ServiceLocator.Enemy
         // Getters
         public bool IsPlayerDetected()
         {
-            float detectionDistance = enemyModel.DetectionMaxDistance;
-            float detectionAngleDegree = enemyModel.DetectionAngleDegree / 2f;
+            float detectionAngleDegree = enemyModel.DetectionAngleDegree;
+            float detectionAngleHalf = detectionAngleDegree / 2f;
 
             LayerMask layerMask = playerService.GetController().GetLayerMask();
             Transform target = playerService.GetController().GetTransform();
@@ -122,26 +127,23 @@ namespace ServiceLocator.Enemy
             Vector3 toTarget = (target.position + Vector3.up - origin);
             float distance = toTarget.magnitude;
 
-            // If Enemy is away from the distance
-            if (distance > detectionDistance)
+            if (distance > DetectionDistance)
                 return false;
 
-            // Fetching Angle Between enemy and Player
+            // Normalizing direction and computing angle using dot product
             Vector3 forward = enemyView.transform.forward;
             toTarget.Normalize();
             float dot = Vector3.Dot(forward, toTarget);
             float angleToTarget = Mathf.Acos(dot) * Mathf.Rad2Deg;
 
-            if (angleToTarget > detectionAngleDegree)
+            // Returning if player is outside detection angle
+            if (angleToTarget > detectionAngleHalf)
                 return false;
 
-            if (!Physics.Raycast(origin, toTarget, out RaycastHit hit, detectionDistance, layerMask.value))
+            if (!Physics.Raycast(origin, toTarget, out RaycastHit hit, DetectionDistance, layerMask.value))
                 return false;
 
-            if (hit.transform != target)
-                return false;
-
-            return true;
+            return hit.transform == target;
         }
         public float GetDistanceFromPlayer()
         {

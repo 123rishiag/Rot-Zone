@@ -100,6 +100,6 @@ namespace ServiceLocator.Enemy
         }
 
         // Getters
-        public bool IsAnyEnemyActive() => enemyPool.pooledItems.Any(item => item.isUsed);
+        public bool IsAnyEnemyAlive() => enemyPool.pooledItems.Any(item => item.isUsed);
     }
 }

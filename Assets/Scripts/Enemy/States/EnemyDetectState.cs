@@ -12,11 +12,11 @@ namespace ServiceLocator.Enemy
 
         public void OnStateEnter()
         {
-            var agent = Owner.GetView().GetNavMeshAgent();
-            var enemyModel = Owner.GetModel();
+            Owner.DetectionDistance = Owner.GetModel().DetectionMaxDistance * Owner.GetModel().DetectionIncreaseFactor;
+            Owner.GetView().SetConeDetectMaterial(true);
 
-            agent.isStopped = true;
-            agent.velocity = Vector3.zero;
+            var enemyModel = Owner.GetModel();
+            Owner.GetView().StopNavMeshAgent(true);
 
             Owner.GetView().GetAnimator().CrossFade(Owner.GetAnimationController().detectHash, 0.1f);
         }
@@ -34,7 +34,10 @@ namespace ServiceLocator.Enemy
             Owner.RotateTowardsPlayer();
         }
         public void FixedUpdate() { }
-        public void OnStateExit() { }
+        public void OnStateExit()
+        {
+            Owner.DetectionDistance = Owner.GetModel().DetectionMaxDistance;
+        }
 
         private bool IsDetectAnimationFinished()
         {

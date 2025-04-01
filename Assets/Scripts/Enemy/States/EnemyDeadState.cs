@@ -17,11 +17,7 @@ namespace ServiceLocator.Enemy
         {
             deadTimer = 0f;
 
-            var agent = Owner.GetView().GetNavMeshAgent();
             var enemyModel = Owner.GetModel();
-
-            agent.isStopped = true;
-            agent.velocity = Vector3.zero;
 
             Owner.GetView().GetAnimator().enabled = false;
             Owner.GetView().SetRagDollActive(true);
@@ -30,6 +26,7 @@ namespace ServiceLocator.Enemy
 
             Owner.GetView().GetAnimator().Play(Owner.GetAnimationController().deadHash);
         }
+
         public void Update()
         {
             deadTimer += Time.deltaTime;
@@ -39,12 +36,6 @@ namespace ServiceLocator.Enemy
             }
         }
         public void FixedUpdate() { }
-        public void OnStateExit()
-        {
-            Owner.GetView().GetAnimator().enabled = true;
-            Owner.GetView().SetRagDollActive(false);
-            Owner.GetView().GetCharacterController().enabled = true;
-            Owner.GetView().GetNavMeshAgent().enabled = true;
-        }
+        public void OnStateExit() { }
     }
 }
