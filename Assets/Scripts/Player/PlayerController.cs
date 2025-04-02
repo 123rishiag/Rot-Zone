@@ -240,17 +240,13 @@ namespace ServiceLocator.Player
 
                 playerView.GetAimTransform().position = aimTarget;
 
-                Vector3 direction = (aimTarget - playerView.transform.position).normalized;
-                direction.y = 0f;
-                RotateTowards(direction);
-
                 playerWeaponController.GetCurrentWeapon().SetAimTarget(aimTarget);
             }
             else
             {
                 playerView.GetAimTransform().localPosition = playerModel.AimTransformDefaultPosition;
-                RotateTowards(cameraService.GetCameraForwardXZNormalized());
             }
+            RotateTowards(cameraService.GetCameraForwardXZNormalized());
         }
         #endregion
 
