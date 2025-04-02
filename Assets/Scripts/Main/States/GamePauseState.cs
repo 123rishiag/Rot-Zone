@@ -11,6 +11,8 @@ namespace ServiceLocator.Main
 
         public void OnStateEnter()
         {
+            Owner.IsPausePressed = false;
+
             Owner.GetUIService().GetUIController().EnablePauseMenuPanel(true); // Show Pause Menu
         }
         public void Update()

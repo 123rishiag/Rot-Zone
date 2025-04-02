@@ -14,6 +14,7 @@ namespace ServiceLocator.Main
         public void OnStateEnter()
         {
             Time.timeScale = 1f; // Resume the game
+            Owner.IsPausePressed = false;
         }
         public void Update()
         {

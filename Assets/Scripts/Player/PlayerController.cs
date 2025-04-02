@@ -230,7 +230,7 @@ namespace ServiceLocator.Player
                 Ray ray = Camera.main.ScreenPointToRay(aimPosition);
 
                 // Getting rayPoint near player
-                Vector3 aimTarget = ray.GetPoint(5f);
+                Vector3 aimTarget = ray.GetPoint(1000f);
 
                 // Setting Offsets for Weapons
                 aimTarget = new Vector3(
