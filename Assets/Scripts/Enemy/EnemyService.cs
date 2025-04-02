@@ -33,10 +33,6 @@ namespace ServiceLocator.Enemy
             // Setting Elements
             enemyPool = new EnemyPool(enemyConfig, enemyParentPanel, playerService);
         }
-        public void Destroy()
-        {
-            DestroyEnemies(true);
-        }
 
         public void Reset()
         {

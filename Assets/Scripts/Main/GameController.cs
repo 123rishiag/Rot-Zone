@@ -102,10 +102,10 @@ namespace ServiceLocator.Main
             inputService.Destroy();
             // Camera Service
             uiService.Destroy();
-            projectileService.Destroy();
+            // Projectile Service
             // Weapon Service
             // Player Service
-            enemyService.Destroy();
+            // Enemy Service
             // Spawn Service
             // Wave Service
         }

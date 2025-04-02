@@ -22,12 +22,6 @@ namespace ServiceLocator.Projectile
             // Setting Variables
             projectilePool = new ProjectilePool(projectileConfig, projectileParentPanel);
         }
-
-        public void Destroy()
-        {
-            DestroyProjectiles(true);
-        }
-
         public void Reset()
         {
             DestroyProjectiles(true);
