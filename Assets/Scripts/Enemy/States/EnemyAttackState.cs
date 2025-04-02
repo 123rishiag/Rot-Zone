@@ -37,6 +37,7 @@ namespace ServiceLocator.Enemy
             Owner.RotateTowardsPlayer();
         }
         public void FixedUpdate() { }
+        public void LateUpdate() { }
         public void OnStateExit()
         {
             Owner.DetectionDistance = Owner.GetModel().DetectionMaxDistance;

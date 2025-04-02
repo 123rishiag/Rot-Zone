@@ -23,22 +23,32 @@ namespace ServiceLocator.Projectile
             projectilePool = new ProjectilePool(projectileConfig, projectileParentPanel);
         }
 
+        public void Destroy()
+        {
+            DestroyProjectiles(true);
+        }
+
+        public void Reset()
+        {
+            DestroyProjectiles(true);
+        }
+
         public void Update()
         {
-            DestroyProjectiles();
+            DestroyProjectiles(false);
         }
-        private void DestroyProjectiles()
+        private void DestroyProjectiles(bool _isAllFlag)
         {
             for (int i = projectilePool.pooledItems.Count - 1; i >= 0; i--)
             {
                 // Skipping if the pooled item's isUsed is false
-                if (!projectilePool.pooledItems[i].isUsed)
+                if (!projectilePool.pooledItems[i].isUsed && !_isAllFlag)
                 {
                     continue;
                 }
 
                 var projectileController = projectilePool.pooledItems[i].Item;
-                if (!projectileController.IsActive())
+                if (!projectileController.IsActive() || _isAllFlag)
                 {
                     ReturnProjectileToPool(projectileController);
                 }

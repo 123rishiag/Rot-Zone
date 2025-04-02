@@ -33,11 +33,20 @@ namespace ServiceLocator.Enemy
             // Setting Elements
             enemyPool = new EnemyPool(enemyConfig, enemyParentPanel, playerService);
         }
+        public void Destroy()
+        {
+            DestroyEnemies(true);
+        }
+
+        public void Reset()
+        {
+            DestroyEnemies(true);
+        }
 
         public void Update()
         {
             UpdateEnemies();
-            DestroyEnemies();
+            DestroyEnemies(false);
         }
         private void UpdateEnemies()
         {
@@ -53,18 +62,18 @@ namespace ServiceLocator.Enemy
                 enemyController.Update();
             }
         }
-        private void DestroyEnemies()
+        private void DestroyEnemies(bool _isAllFlag)
         {
             for (int i = enemyPool.pooledItems.Count - 1; i >= 0; i--)
             {
                 // Skipping if the pooled item's isUsed is false
-                if (!enemyPool.pooledItems[i].isUsed)
+                if (!enemyPool.pooledItems[i].isUsed && !_isAllFlag)
                 {
                     continue;
                 }
 
                 var enemyController = enemyPool.pooledItems[i].Item;
-                if (!enemyController.IsActive())
+                if (!enemyController.IsActive() || _isAllFlag)
                 {
                     ReturnEnemyToPool(enemyController);
                 }

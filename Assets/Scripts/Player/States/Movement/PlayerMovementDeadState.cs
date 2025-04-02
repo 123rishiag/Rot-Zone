@@ -23,13 +23,14 @@ namespace ServiceLocator.Player
         public void Update()
         {
             deadTimer += Time.deltaTime;
-            if(deadTimer > deadDuration)
+            if (deadTimer > deadDuration)
             {
                 Owner.IsAlive = false;
             }
             Owner.UpdateMovementVariables();
         }
         public void FixedUpdate() { }
+        public void LateUpdate() { }
         public void OnStateExit()
         {
             Owner.GetView().SetRagDollActive(false);

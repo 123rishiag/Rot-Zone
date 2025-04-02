@@ -25,6 +25,13 @@ namespace ServiceLocator.Player
             // Setting Variables
             playerController = new PlayerController(playerConfig.playerData, playerConfig.playerPrefab, Vector3.zero,
                 _inputService, _cameraService, _weaponService);
+            Reset();
+        }
+
+        public void Reset()
+        {
+            playerController.GetMovementStateMachine().ChangeState(PlayerMovementState.IDLE);
+            playerController.GetView().SetPosition(Vector3.zero);
         }
 
         public void Update() => playerController.Update();

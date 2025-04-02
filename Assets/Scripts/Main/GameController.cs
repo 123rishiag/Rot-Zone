@@ -3,13 +3,16 @@ using ServiceLocator.Enemy;
 using ServiceLocator.Player;
 using ServiceLocator.Projectile;
 using ServiceLocator.Spawn;
+using ServiceLocator.UI;
+using ServiceLocator.Utility;
 using ServiceLocator.Vision;
 using ServiceLocator.Wave;
 using ServiceLocator.Weapon;
+using UnityEngine.SceneManagement;
 
 namespace ServiceLocator.Main
 {
-    public class GameController
+    public class GameController : IStateOwner<GameController>
     {
         // Private Variables
         private GameService gameService;
@@ -17,6 +20,7 @@ namespace ServiceLocator.Main
         // Private Services
         private InputService inputService;
         private CameraService cameraService;
+        private UIService uiService;
         private ProjectileService projectileService;
         private WeaponService weaponService;
         private PlayerService playerService;
@@ -24,6 +28,9 @@ namespace ServiceLocator.Main
         private SpawnService spawnService;
         private WaveService waveService;
 
+        public GameController Owner { get; set; }
+        private GameStateMachine gameStateMachine;
+        public bool IsPausePressed { get; private set; }
         public GameController(GameService _gameService)
         {
             // Setting Variables
@@ -32,12 +39,26 @@ namespace ServiceLocator.Main
             // Setting Services
             CreateServices();
             InjectDependencies();
+            CreateStateMachine();
+
+            // Setting Elements
+            gameStateMachine.ChangeState(GameState.GAME_START);
+            IsPausePressed = false;
+
+            AssignInputs();
+        }
+
+        private void AssignInputs()
+        {
+            inputService.GetInputControls().Game.Pause.started += ctx => IsPausePressed = true;
+            inputService.GetInputControls().Game.Pause.canceled += ctx => IsPausePressed = false;
         }
 
         private void CreateServices()
         {
             inputService = new InputService();
             cameraService = new CameraService(gameService.cameraConfig, gameService.mainCamera);
+            uiService = new UIService(gameService.uiCanvas, this);
             projectileService = new ProjectileService(gameService.projectileConfig, gameService.projectilePoolPanel);
             weaponService = new WeaponService(gameService.weaponConfig);
             playerService = new PlayerService(gameService.playerConfig);
@@ -50,6 +71,7 @@ namespace ServiceLocator.Main
         {
             inputService.Init();
             cameraService.Init(inputService, playerService);
+            uiService.Init();
             projectileService.Init();
             weaponService.Init(projectileService);
             playerService.Init(inputService, cameraService, weaponService);
@@ -57,53 +79,52 @@ namespace ServiceLocator.Main
             spawnService.Init(playerService, enemyService);
             waveService.Init(spawnService, enemyService);
         }
+        private void CreateStateMachine()
+        {
+            Owner = this;
+            gameStateMachine = new GameStateMachine(this);
+        }
 
+        public void Reset()
+        {
+            // Input Service
+            cameraService.Reset();
+            uiService.Reset();
+            projectileService.Reset();
+            // Weapon Service
+            playerService.Reset();
+            enemyService.Reset();
+            // Spawn Service
+            waveService.Reset();
+        }
         public void Destroy()
         {
             inputService.Destroy();
             // Camera Service
-            // Projectile Service
+            uiService.Destroy();
+            projectileService.Destroy();
             // Weapon Service
             // Player Service
-            // Enemy Service
+            enemyService.Destroy();
             // Spawn Service
             // Wave Service
         }
+        public void Update() => gameStateMachine.Update();
+        public void LateUpdate() => gameStateMachine.LateUpdate();
 
-        public void Update()
+        public void PlayGame()
         {
-            // Input Service
-            cameraService.Update();
-            projectileService.Update();
-            // Weapon Service
-            playerService.Update();
-            enemyService.Update();
-            // Spawn Service
-            waveService.Update();
-
-            CheckGameEndCondition();
+            gameStateMachine.ChangeState(GameState.GAME_PLAY);
         }
-
-        public void LateUpdate()
+        public void RestartGame()
         {
-            // Input Service
-            cameraService.LateUpdate();
-            // Projectile Service
-            weaponService.LateUpdate();
-            // Player Service
-            // Enemy Service
-            // Spawn Service
-            // Wave Service
+            gameStateMachine.ChangeState(GameState.GAME_RESTART);
         }
-
-        private void CheckGameEndCondition()
+        public void MainMenu()
         {
-            if (!playerService.IsPlayerAlive() || waveService.IsLastWaveComplete)
-            {
-                QuitGame();
-            }
+            SceneManager.LoadScene(0); // Reload 0th scene
         }
-        private void QuitGame()
+        public void QuitGame()
         {
 #if UNITY_EDITOR
             UnityEditor.EditorApplication.isPlaying = false;
@@ -111,6 +132,23 @@ namespace ServiceLocator.Main
     Application.Quit();
 #endif
         }
+
+        public void MuteGame()
+        {
+            //uiService.GetUIController().SetMuteButtonText(soundService.IsMute);
+        }
+
+        // Getters
+
+        public InputService GetInputService() => inputService;
+        public CameraService GetCameraService() => cameraService;
+        public UIService GetUIService() => uiService;
+        public ProjectileService GetProjectileService() => projectileService;
+        public WeaponService GetWeaponService() => weaponService;
+        public PlayerService GetPlayerService() => playerService;
+        public EnemyService GetEnemyService() => enemyService;
+        public SpawnService GetSpawnService() => spawnService;
+        public WaveService GetWaveService() => waveService;
 
     }
 }

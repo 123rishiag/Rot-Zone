@@ -40,6 +40,7 @@ namespace ServiceLocator.Enemy
             Owner.GetView().GetNavMeshAgent().destination = patrolTarget;
         }
         public void FixedUpdate() { }
+        public void LateUpdate() { }
         public void OnStateExit() { }
 
         private void SetNewPatrolTarget()

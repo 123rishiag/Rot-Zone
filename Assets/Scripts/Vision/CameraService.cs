@@ -39,6 +39,7 @@ namespace ServiceLocator.Vision
             cameraRotation = Quaternion.identity;
 
             AssignInputs();
+            Reset();
         }
 
         private void AssignInputs()
@@ -48,6 +49,13 @@ namespace ServiceLocator.Vision
 
             inputControls.Camera.MouseDelta.performed += ctx => cameraMouseDelta = ctx.ReadValue<Vector2>();
             inputControls.Camera.MouseDelta.canceled += ctx => cameraMouseDelta = Vector2.zero;
+        }
+
+        public void Reset()
+        {
+            mainCamera.transform.position = Vector3.zero + Vector3.up * cameraConfig.cameraHeightOffset
+                - Vector3.forward * cameraConfig.cameraDistanceOffset;
+            mainCamera.transform.rotation = Quaternion.identity;
         }
 
         public void Update() => HandleCameraRotation();
