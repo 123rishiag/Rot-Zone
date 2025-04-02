@@ -14,6 +14,7 @@ namespace ServiceLocator.Utility
 
         public void Update() => currentState?.Update();
         public void FixedUpdate() => currentState?.FixedUpdate();
+        public void LateUpdate() => currentState?.LateUpdate();
 
         public U GetCurrentState()
         {

@@ -46,6 +46,7 @@ namespace ServiceLocator.Enemy
         }
 
         public void FixedUpdate() { }
+        public void LateUpdate() { }
         public void OnStateExit() { }
     }
 }

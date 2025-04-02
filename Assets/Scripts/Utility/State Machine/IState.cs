@@ -13,6 +13,7 @@ namespace ServiceLocator.Utility
         public void OnStateEnter();
         public void Update();
         public void FixedUpdate();
+        public void LateUpdate();
         public void OnStateExit();
     }
 }

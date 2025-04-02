@@ -1,0 +1,91 @@
+using ServiceLocator.Utility;
+using ServiceLocator.Wave;
+using UnityEngine;
+
+namespace ServiceLocator.Main
+{
+    public class GamePlayState<T> : IState<GameController, GameState>
+    {
+        public GameController Owner { get; set; }
+        private GameStateMachine stateMachine;
+
+        public GamePlayState(GameStateMachine _stateMachine) => stateMachine = _stateMachine;
+
+        public void OnStateEnter()
+        {
+            Time.timeScale = 1f; // Resume the game
+        }
+        public void Update()
+        {
+            CheckGameEndCondition();
+            if (Owner.GetWaveService().GetWaveStateMachine().GetCurrentState() == WaveState.PROGRESS)
+            {
+                CheckPlayerDeadCondition();
+                CheckGamePause();
+
+                // Input Service
+                Owner.GetCameraService().Update();
+                // UI Service
+                Owner.GetProjectileService().Update();
+                // Weapon Service
+                Owner.GetPlayerService().Update();
+                Owner.GetEnemyService().Update();
+                // Spawn Service
+            }
+            Owner.GetWaveService().Update();
+        }
+        public void FixedUpdate()
+        {
+            // Input Service
+            // Camera Service
+            // UI Service
+            // Projectile Service
+            // Weapon Service
+            // Player Service
+            // Enemy Service
+            // Spawn Service
+            // Wave Service
+        }
+        public void LateUpdate()
+        {
+            if (Owner.GetWaveService().GetWaveStateMachine().GetCurrentState() == WaveState.PROGRESS)
+            {
+                // Input Service
+                Owner.GetCameraService().LateUpdate();
+                // UI Service
+                // Projectile Service
+                Owner.GetWeaponService().LateUpdate();
+                // Player Service
+                // Enemy Service
+                // Spawn Service
+            }
+            // Wave Service
+        }
+        public void OnStateExit()
+        {
+            Time.timeScale = 0f; // Stop the game
+        }
+
+        private void CheckGamePause()
+        {
+            if (Owner.IsPausePressed)
+            {
+                stateMachine.ChangeState(GameState.GAME_PAUSE);
+            }
+        }
+        private void CheckGameEndCondition()
+        {
+            if (Owner.GetWaveService().IsLastWaveComplete)
+            {
+                stateMachine.ChangeState(GameState.GAME_OVER);
+            }
+        }
+        private void CheckPlayerDeadCondition()
+        {
+            if (!Owner.GetPlayerService().IsPlayerAlive())
+            {
+                stateMachine.ChangeState(GameState.GAME_OVER);
+            }
+        }
+    }
+}

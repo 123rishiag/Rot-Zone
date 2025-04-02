@@ -81,7 +81,6 @@ namespace ServiceLocator.Player
 
             playerView.SetPosition(_spawnPosition);
             playerView.SetRagDollActive(true);
-            playerView.ShowView();
 
             AssignInputs();
         }
@@ -290,7 +289,6 @@ namespace ServiceLocator.Player
             if (currentHealth < 0)
             {
                 currentHealth = 0;
-                playerView.HideView();
             }
         }
         public void IncreaseHealth(int _healthAmount)

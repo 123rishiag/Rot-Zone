@@ -46,7 +46,9 @@ namespace ServiceLocator.Player
         private void OnCollisionEnter(Collision _collision)
         {
             EnemyView enemyView = _collision.collider.GetComponentInParent<EnemyView>();
-            if (enemyView != null)
+            if (enemyView != null &&
+                enemyView.GetController().GetEnemyStateMachine().GetCurrentState() != EnemyState.DEAD &&
+                playerController.GetMovementStateMachine().GetCurrentState() != PlayerMovementState.DEAD)
             {
                 Rigidbody enemyRigidbody = _collision.collider.attachedRigidbody;
                 Vector3 impactForce = enemyRigidbody.linearVelocity.normalized *
@@ -67,14 +69,6 @@ namespace ServiceLocator.Player
         public void SetPosition(Vector3 _spawnPosition)
         {
             transform.position = _spawnPosition;
-        }
-        public void ShowView()
-        {
-            gameObject.SetActive(true);
-        }
-        public void HideView()
-        {
-            gameObject.SetActive(false);
         }
 
         // Getters

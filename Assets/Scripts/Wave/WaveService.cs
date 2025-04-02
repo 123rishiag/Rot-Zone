@@ -27,24 +27,27 @@ namespace ServiceLocator.Wave
 
         public void Init(SpawnService _spawnService, EnemyService _enemyService)
         {
-            // Setting Variables
-            currentWaveIndex = 0;
-            CurrentWaveType = waveConfig.waveData[0].waveType;
-            IsLastWaveComplete = false;
-
             // Setting Services
             spawnService = _spawnService;
             enemyService = _enemyService;
 
             // Setting Elements
             CreateStateMachine();
-            waveStateMachine.ChangeState(WaveState.START);
+            Reset();
         }
 
         private void CreateStateMachine()
         {
             Owner = this;
             waveStateMachine = new WaveStateMachine(this);
+        }
+
+        public void Reset()
+        {
+            currentWaveIndex = 0;
+            CurrentWaveType = waveConfig.waveData[0].waveType;
+            IsLastWaveComplete = false;
+            waveStateMachine.ChangeState(WaveState.START);
         }
 
         public void Update()
@@ -69,6 +72,7 @@ namespace ServiceLocator.Wave
         // Getters
         public bool IsLastWave() => currentWaveIndex >= waveConfig.waveData.Length - 1;
         public bool IsWaveComplete() => !enemyService.IsAnyEnemyAlive();
+        public WaveStateMachine GetWaveStateMachine() => waveStateMachine;
         private WaveData GetWaveData(WaveType _waveType) =>
             Array.Find(waveConfig.waveData, w => w.waveType == _waveType);
     }

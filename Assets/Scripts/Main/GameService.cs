@@ -1,6 +1,7 @@
 using ServiceLocator.Enemy;
 using ServiceLocator.Player;
 using ServiceLocator.Projectile;
+using ServiceLocator.UI;
 using ServiceLocator.Vision;
 using ServiceLocator.Wave;
 using ServiceLocator.Weapon;
@@ -13,6 +14,9 @@ namespace ServiceLocator.Main
         [Header("Camera Variables")]
         public CameraConfig cameraConfig;
         public Camera mainCamera;
+
+        [Header("UI Variables")]
+        [SerializeField] public UIView uiCanvas;
 
         [Header("Pool Panels")]
         public Transform projectilePoolPanel;
