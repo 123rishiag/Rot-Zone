@@ -30,7 +30,7 @@ namespace ServiceLocator.Main
 
         public GameController Owner { get; set; }
         private GameStateMachine gameStateMachine;
-        public bool IsPausePressed { get; private set; }
+        public bool IsPausePressed { get; set; }
         public GameController(GameService _gameService)
         {
             // Setting Variables

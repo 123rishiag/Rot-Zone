@@ -824,7 +824,7 @@ MonoBehaviour:
       rightHand_TargetTransform: {fileID: 601330751473462148}
       leftHand_TargetTransform: {fileID: 5018506583136142878}
       leftHand_HintTransform: {fileID: 9073229748077757751}
-      weaponVerticalOffeset: -0.4
+      weaponVerticalOffeset: -100
   - weaponType: 2
     weaponTransform:
       weaponHolder: {fileID: 1478926393595562786}
@@ -838,7 +838,7 @@ MonoBehaviour:
       rightHand_TargetTransform: {fileID: 2243566336365966069}
       leftHand_TargetTransform: {fileID: 732931980772964330}
       leftHand_HintTransform: {fileID: 15097190717707419}
-      weaponVerticalOffeset: -1.2
+      weaponVerticalOffeset: -300
   rightHandAimConstraint: {fileID: 8310985297325246404}
   leftHandIK: {fileID: 6056014414725304192}
   aimTransform: {fileID: 5103283510018147113}
@@ -4072,7 +4072,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aeda7bfbf984f2a4da5ab4b8967b115d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Weight: 1
+  m_Weight: 0
   m_Data:
     m_Root: {fileID: 6789322816270704824}
     m_Mid: {fileID: 7622483042554663568}
@@ -4393,7 +4393,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3c430f382484144e925c097c2d33cfe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Weight: 1
+  m_Weight: 0
   m_Data:
     m_ConstrainedObject: {fileID: 405540531800337236}
     m_SourceObjects:
