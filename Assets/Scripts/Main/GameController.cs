@@ -1,5 +1,6 @@
 using ServiceLocator.Controls;
 using ServiceLocator.Enemy;
+using ServiceLocator.Event;
 using ServiceLocator.Player;
 using ServiceLocator.Projectile;
 using ServiceLocator.Spawn;
@@ -18,6 +19,7 @@ namespace ServiceLocator.Main
         private GameService gameService;
 
         // Private Services
+        private EventService eventService;
         private InputService inputService;
         private CameraService cameraService;
         private UIService uiService;
@@ -56,6 +58,7 @@ namespace ServiceLocator.Main
 
         private void CreateServices()
         {
+            eventService = new EventService();
             inputService = new InputService();
             cameraService = new CameraService(gameService.cameraConfig, gameService.mainCamera);
             uiService = new UIService(gameService.uiCanvas, this);
@@ -69,15 +72,16 @@ namespace ServiceLocator.Main
 
         private void InjectDependencies()
         {
+            // Event Service
             inputService.Init();
             cameraService.Init(inputService, playerService);
-            uiService.Init();
+            uiService.Init(eventService);
             projectileService.Init();
             weaponService.Init(projectileService);
-            playerService.Init(inputService, cameraService, weaponService, uiService);
-            enemyService.Init(playerService, uiService);
+            playerService.Init(eventService, inputService, cameraService, weaponService);
+            enemyService.Init(eventService, playerService);
             spawnService.Init(playerService, enemyService);
-            waveService.Init(inputService, spawnService, playerService, enemyService, uiService);
+            waveService.Init(eventService, inputService, spawnService, playerService, enemyService);
         }
         private void CreateStateMachine()
         {
@@ -87,6 +91,7 @@ namespace ServiceLocator.Main
 
         public void Reset()
         {
+            // Event Service
             // Input Service
             cameraService.Reset();
             uiService.Reset();
@@ -99,6 +104,7 @@ namespace ServiceLocator.Main
         }
         public void Destroy()
         {
+            // Event Service
             inputService.Destroy();
             // Camera Service
             uiService.Destroy();

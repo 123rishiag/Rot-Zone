@@ -14,7 +14,7 @@ namespace ServiceLocator.Wave
             Owner.InputService.EnableControls();
             Owner.LoadCurrentWave();
 
-            Owner.UIService.GetController().UpdateMessageText("");
+            Owner.EventService.OnMessageUIUpdateEvent.Invoke("");
         }
         public void Update()
         {

@@ -24,6 +24,7 @@ namespace ServiceLocator.Main
                 CheckPlayerDeadCondition();
                 CheckGamePause();
 
+                // Event Service
                 // Input Service
                 Owner.GetCameraService().Update();
                 // UI Service
@@ -37,6 +38,7 @@ namespace ServiceLocator.Main
         }
         public void FixedUpdate()
         {
+            // Event Service
             // Input Service
             // Camera Service
             // UI Service
@@ -51,6 +53,7 @@ namespace ServiceLocator.Main
         {
             if (Owner.GetWaveService().GetWaveStateMachine().GetCurrentState() == WaveState.PROGRESS)
             {
+                // Event Service
                 // Input Service
                 Owner.GetCameraService().LateUpdate();
                 // UI Service
