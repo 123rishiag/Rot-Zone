@@ -1,6 +1,6 @@
+using ServiceLocator.Event;
 using ServiceLocator.Player;
 using ServiceLocator.Spawn;
-using ServiceLocator.UI;
 using ServiceLocator.Wave;
 using System;
 using System.Linq;
@@ -17,8 +17,8 @@ namespace ServiceLocator.Enemy
         private EnemyPool enemyPool;
 
         // Private Services
+        private EventService eventService;
         private PlayerService playerService;
-        private UIService uiService;
 
         public EnemyService(EnemyConfig _enemyConfig, Transform _parentPanel)
         {
@@ -27,11 +27,11 @@ namespace ServiceLocator.Enemy
             enemyParentPanel = _parentPanel;
         }
 
-        public void Init(PlayerService _playerService, UIService _uiService)
+        public void Init(EventService _eventService, PlayerService _playerService)
         {
             // Setting Services
+            eventService = _eventService;
             playerService = _playerService;
-            uiService = _uiService;
 
             // Setting Elements
             enemyPool = new EnemyPool(enemyConfig, enemyParentPanel, playerService);
@@ -86,7 +86,7 @@ namespace ServiceLocator.Enemy
                 CreateEnemy(_spawnData.enemyType, _spawnPositionFunc());
             }
 
-            uiService.GetController().UpdateEnemiesText(EnemiesAliveCount());
+            eventService.OnEnemyCountUIUpdateEvent.Invoke(EnemiesAliveCount());
         }
 
         private EnemyController CreateEnemy(EnemyType _enemyType, Vector3 _spawnPosition)
@@ -108,7 +108,7 @@ namespace ServiceLocator.Enemy
             _enemyToReturn.GetView().HideView();
             enemyPool.ReturnItem(_enemyToReturn);
 
-            uiService.GetController().UpdateEnemiesText(EnemiesAliveCount());
+            eventService.OnEnemyCountUIUpdateEvent.Invoke(EnemiesAliveCount());
         }
 
         // Getters

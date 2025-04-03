@@ -1,5 +1,5 @@
 using ServiceLocator.Controls;
-using ServiceLocator.UI;
+using ServiceLocator.Event;
 using ServiceLocator.Utility;
 using ServiceLocator.Vision;
 using ServiceLocator.Weapon;
@@ -36,12 +36,12 @@ namespace ServiceLocator.Player
         private bool isRecentlyAttacked;
 
         // Private Services
+        private EventService eventService;
         public InputService InputService { get; private set; }
         private CameraService cameraService;
-        private UIService uiService;
 
         public PlayerController(PlayerData _playerData, PlayerView _playerPrefab, Vector3 _spawnPosition,
-            InputService _inputService, CameraService _cameraService, WeaponService _weaponService, UIService _uiService)
+            EventService _eventService, InputService _inputService, CameraService _cameraService, WeaponService _weaponService)
         {
             // Setting Variables
             playerModel = new PlayerModel(_playerData);
@@ -51,9 +51,9 @@ namespace ServiceLocator.Player
             playerWeaponController = new PlayerWeaponController(this, _weaponService);
 
             // Setting Services
+            eventService = _eventService;
             InputService = _inputService;
             cameraService = _cameraService;
-            uiService = _uiService;
 
             // Setting Elements
             CreateStateMachine();
@@ -104,18 +104,18 @@ namespace ServiceLocator.Player
         }
         private void UpdateHealthUI()
         {
-            uiService.GetController().UpdateHealthText(currentHealth);
+            eventService.OnPlayerHealthUIUpdateEvent.Invoke(currentHealth);
         }
         public void UpdateAmmoUI()
         {
             if (playerWeaponController.GetCurrentWeaponType() != WeaponType.NONE)
             {
                 WeaponController weaponController = playerWeaponController.GetCurrentWeapon();
-                uiService.GetController().UpdateAmmoText(weaponController.CurrentAmmo, weaponController.TotalAmmoLeft);
+                eventService.OnPlayerAmmoUIUpdateEvent.Invoke(weaponController.CurrentAmmo, weaponController.TotalAmmoLeft);
             }
             else
             {
-                uiService.GetController().UpdateAmmoText(0, 0);
+                eventService.OnPlayerAmmoUIUpdateEvent.Invoke(0, 0);
             }
         }
         #endregion

@@ -1,3 +1,4 @@
+using ServiceLocator.Event;
 using ServiceLocator.Main;
 
 namespace ServiceLocator.UI
@@ -17,10 +18,10 @@ namespace ServiceLocator.UI
             gameController = _gameController;
         }
 
-        public void Init()
+        public void Init(EventService _eventService)
         {
             // Setting Elements
-            uiController = new UIController(uiCanvas, gameController);
+            uiController = new UIController(uiCanvas, gameController, _eventService);
         }
 
         public void Destroy() => uiController.Destroy();

@@ -1,6 +1,6 @@
 using ServiceLocator.Controls;
+using ServiceLocator.Event;
 using ServiceLocator.Spawn;
-using ServiceLocator.UI;
 using ServiceLocator.Vision;
 using ServiceLocator.Wave;
 using ServiceLocator.Weapon;
@@ -22,11 +22,11 @@ namespace ServiceLocator.Player
         }
 
         public void Init(
-            InputService _inputService, CameraService _cameraService, WeaponService _weaponService, UIService _uiService)
+            EventService _eventService, InputService _inputService, CameraService _cameraService, WeaponService _weaponService)
         {
             // Setting Variables
             playerController = new PlayerController(playerConfig.playerData, playerConfig.playerPrefab, Vector3.zero,
-                _inputService, _cameraService, _weaponService, _uiService);
+                _eventService, _inputService, _cameraService, _weaponService);
             Reset();
         }
 

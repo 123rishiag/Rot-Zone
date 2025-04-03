@@ -1,3 +1,4 @@
+using ServiceLocator.Event;
 using ServiceLocator.Main;
 
 namespace ServiceLocator.UI
@@ -8,13 +9,25 @@ namespace ServiceLocator.UI
         private UIView uiView;
         private GameController gameController;
 
-        public UIController(UIView _uiCanvas, GameController _gameController)
+        // Private Services
+        private EventService eventService;
+
+        public UIController(UIView _uiCanvas, GameController _gameController, EventService _eventService)
         {
             // Setting Variables
             uiView = _uiCanvas.GetComponent<UIView>();
             gameController = _gameController;
 
+            // Setting Services
+            eventService = _eventService;
+
             // Adding Listeners
+            eventService.OnPlayerHealthUIUpdateEvent.AddListener(UpdateHealthText);
+            eventService.OnPlayerAmmoUIUpdateEvent.AddListener(UpdateAmmoText);
+            eventService.OnEnemyCountUIUpdateEvent.AddListener(UpdateEnemiesText);
+            eventService.OnWaveCountUIUpdateEvent.AddListener(UpdateWaveText);
+            eventService.OnMessageUIUpdateEvent.AddListener(UpdateMessageText);
+
             uiView.pauseMenuResumeButton.onClick.AddListener(gameController.PlayGame);
             uiView.pauseMenuMainMenuButton.onClick.AddListener(gameController.MainMenu);
 
@@ -32,6 +45,12 @@ namespace ServiceLocator.UI
         public void Destroy()
         {
             // Removing Listeners
+            eventService.OnPlayerHealthUIUpdateEvent.RemoveListener(UpdateHealthText);
+            eventService.OnPlayerAmmoUIUpdateEvent.RemoveListener(UpdateAmmoText);
+            eventService.OnEnemyCountUIUpdateEvent.RemoveListener(UpdateEnemiesText);
+            eventService.OnWaveCountUIUpdateEvent.RemoveListener(UpdateWaveText);
+            eventService.OnMessageUIUpdateEvent.RemoveListener(UpdateMessageText);
+
             uiView.pauseMenuResumeButton.onClick.RemoveListener(gameController.PlayGame);
             uiView.pauseMenuMainMenuButton.onClick.RemoveListener(gameController.MainMenu);
 
