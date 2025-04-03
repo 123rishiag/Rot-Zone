@@ -13,7 +13,7 @@ namespace ServiceLocator.Main
         {
             Owner.IsPausePressed = false;
 
-            Owner.GetUIService().GetUIController().EnablePauseMenuPanel(true); // Show Pause Menu
+            Owner.GetUIService().GetController().EnablePauseMenuPanel(true); // Show Pause Menu
         }
         public void Update()
         {
@@ -23,7 +23,7 @@ namespace ServiceLocator.Main
         public void LateUpdate() { }
         public void OnStateExit()
         {
-            Owner.GetUIService().GetUIController().EnablePauseMenuPanel(false); // Hide Pause Menu
+            Owner.GetUIService().GetController().EnablePauseMenuPanel(false); // Hide Pause Menu
         }
 
         private void CheckGameResume()

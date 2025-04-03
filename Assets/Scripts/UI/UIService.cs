@@ -28,6 +28,6 @@ namespace ServiceLocator.UI
         public void Reset() => uiController.Reset();
 
         // Getters
-        public UIController GetUIController() => uiController;
+        public UIController GetController() => uiController;
     }
 }

@@ -1,5 +1,8 @@
+using ServiceLocator.Controls;
 using ServiceLocator.Enemy;
+using ServiceLocator.Player;
 using ServiceLocator.Spawn;
+using ServiceLocator.UI;
 using ServiceLocator.Utility;
 using System;
 
@@ -16,8 +19,11 @@ namespace ServiceLocator.Wave
         private WaveStateMachine waveStateMachine;
 
         // Private Services
+        public InputService InputService { get; private set; }
         private SpawnService spawnService;
+        public PlayerService PlayerService { get; private set; }
         private EnemyService enemyService;
+        public UIService UIService { get; private set; }
 
         public WaveService(WaveConfig _waveConfig)
         {
@@ -25,11 +31,16 @@ namespace ServiceLocator.Wave
             waveConfig = _waveConfig;
         }
 
-        public void Init(SpawnService _spawnService, EnemyService _enemyService)
+        public void Init(
+            InputService _inputService, SpawnService _spawnService, PlayerService _playerService, EnemyService _enemyService,
+            UIService _uiService)
         {
             // Setting Services
+            InputService = _inputService;
             spawnService = _spawnService;
+            PlayerService = _playerService;
             enemyService = _enemyService;
+            UIService = _uiService;
 
             // Setting Elements
             CreateStateMachine();
@@ -71,7 +82,7 @@ namespace ServiceLocator.Wave
 
         // Getters
         public bool IsLastWave() => currentWaveIndex >= waveConfig.waveData.Length - 1;
-        public bool IsWaveComplete() => !enemyService.IsAnyEnemyAlive();
+        public bool IsWaveComplete() => enemyService.EnemiesAliveCount() == 0;
         public WaveStateMachine GetWaveStateMachine() => waveStateMachine;
         private WaveData GetWaveData(WaveType _waveType) =>
             Array.Find(waveConfig.waveData, w => w.waveType == _waveType);

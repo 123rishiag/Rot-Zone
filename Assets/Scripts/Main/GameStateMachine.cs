@@ -6,6 +6,7 @@ namespace ServiceLocator.Main
     {
         GAME_START,
         GAME_MENU,
+        GAME_CONTROL,
         GAME_PLAY,
         GAME_PAUSE,
         GAME_RESTART,
@@ -25,6 +26,7 @@ namespace ServiceLocator.Main
         {
             States.Add(GameState.GAME_START, new GameStartState<GameController>(this));
             States.Add(GameState.GAME_MENU, new GameMenuState<GameController>(this));
+            States.Add(GameState.GAME_CONTROL, new GameControlState<GameController>(this));
             States.Add(GameState.GAME_PLAY, new GamePlayState<GameController>(this));
             States.Add(GameState.GAME_PAUSE, new GamePauseState<GameController>(this));
             States.Add(GameState.GAME_RESTART, new GameRestartState<GameController>(this));

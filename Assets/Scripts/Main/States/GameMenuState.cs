@@ -11,14 +11,14 @@ namespace ServiceLocator.Main
 
         public void OnStateEnter()
         {
-            Owner.GetUIService().GetUIController().EnableMainMenuPanel(true); // Show Main Menu
+            Owner.GetUIService().GetController().EnableMainMenuPanel(true); // Show Main Menu
         }
         public void Update() { }
         public void FixedUpdate() { }
         public void LateUpdate() { }
         public void OnStateExit()
         {
-            Owner.GetUIService().GetUIController().EnableMainMenuPanel(false); // Hide Main Menu
+            Owner.GetUIService().GetController().EnableMainMenuPanel(false); // Hide Main Menu
         }
     }
 }

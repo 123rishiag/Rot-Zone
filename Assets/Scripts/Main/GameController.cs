@@ -74,10 +74,10 @@ namespace ServiceLocator.Main
             uiService.Init();
             projectileService.Init();
             weaponService.Init(projectileService);
-            playerService.Init(inputService, cameraService, weaponService);
-            enemyService.Init(playerService);
+            playerService.Init(inputService, cameraService, weaponService, uiService);
+            enemyService.Init(playerService, uiService);
             spawnService.Init(playerService, enemyService);
-            waveService.Init(spawnService, enemyService);
+            waveService.Init(inputService, spawnService, playerService, enemyService, uiService);
         }
         private void CreateStateMachine()
         {
@@ -119,6 +119,10 @@ namespace ServiceLocator.Main
         public void RestartGame()
         {
             gameStateMachine.ChangeState(GameState.GAME_RESTART);
+        }
+        public void ControlMenu()
+        {
+            gameStateMachine.ChangeState(GameState.GAME_CONTROL);
         }
         public void MainMenu()
         {

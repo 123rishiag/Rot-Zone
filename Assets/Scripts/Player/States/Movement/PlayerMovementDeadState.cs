@@ -16,6 +16,7 @@ namespace ServiceLocator.Player
         public void OnStateEnter()
         {
             deadTimer = 0f;
+            Owner.InputService.DisableControls();
 
             Owner.GetView().SetRagDollActive(true);
             Owner.GetView().GetAnimator().enabled = false;
