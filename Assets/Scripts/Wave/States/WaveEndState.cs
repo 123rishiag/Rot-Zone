@@ -9,13 +9,16 @@ namespace ServiceLocator.Wave
 
         public WaveEndState(WaveStateMachine _stateMachine) => stateMachine = _stateMachine;
 
-        public void OnStateEnter() { }
+        public void OnStateEnter()
+        {
+            Owner.InputService.DisableControls();
+        }
         public void Update()
         {
             if (!Owner.IsLastWave())
             {
-                stateMachine.ChangeState(WaveState.START);
                 Owner.SetNextWave();
+                stateMachine.ChangeState(WaveState.START);
             }
             else
             {

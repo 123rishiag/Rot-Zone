@@ -1,5 +1,6 @@
 using ServiceLocator.Controls;
 using ServiceLocator.Spawn;
+using ServiceLocator.UI;
 using ServiceLocator.Vision;
 using ServiceLocator.Wave;
 using ServiceLocator.Weapon;
@@ -20,17 +21,20 @@ namespace ServiceLocator.Player
             playerConfig = _playerConfig;
         }
 
-        public void Init(InputService _inputService, CameraService _cameraService, WeaponService _weaponService)
+        public void Init(
+            InputService _inputService, CameraService _cameraService, WeaponService _weaponService, UIService _uiService)
         {
             // Setting Variables
             playerController = new PlayerController(playerConfig.playerData, playerConfig.playerPrefab, Vector3.zero,
-                _inputService, _cameraService, _weaponService);
+                _inputService, _cameraService, _weaponService, _uiService);
             Reset();
         }
 
         public void Reset()
         {
             playerController.GetMovementStateMachine().ChangeState(PlayerMovementState.IDLE);
+            playerController.GetActionStateMachine().ChangeState(PlayerActionState.NONE);
+            playerController.GetWeaponController().EquipWeapon(WeaponType.NONE);
             playerController.GetView().SetPosition(Vector3.zero);
         }
 
@@ -40,7 +44,7 @@ namespace ServiceLocator.Player
         {
             playerController.Reset(playerConfig.playerData, _spawnPositionFunc());
 
-            playerController.IncreaseHealth(_spawnData.playerHealth);
+            playerController.SetHealth(_spawnData.playerHealth);
 
             // Adding Ammo for Weapons
             for (int i = 0; i < _spawnData.playerSpawnAmmoDatas.Length; ++i)
@@ -49,6 +53,7 @@ namespace ServiceLocator.Player
                 playerController.GetWeaponController().SetAmmo(playerSpawnAmmoData.weaponType, 0);
                 playerController.GetWeaponController().SetAmmo(playerSpawnAmmoData.weaponType, playerSpawnAmmoData.ammoToAdd);
             }
+            playerController.UpdateUI();
         }
 
         // Getters

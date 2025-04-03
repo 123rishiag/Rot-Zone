@@ -11,7 +11,10 @@ namespace ServiceLocator.Wave
 
         public void OnStateEnter()
         {
+            Owner.InputService.EnableControls();
             Owner.LoadCurrentWave();
+
+            Owner.UIService.GetController().UpdateMessageText("");
         }
         public void Update()
         {

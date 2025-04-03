@@ -11,9 +11,10 @@ namespace ServiceLocator.Weapon
 
         private Vector3 cachedFirePosition;
         private Vector3 cachedFireDirection;
-        private int currentAmmo;
-        private int totalAmmoLeft;
+
         private float lastFireTime;
+        public int CurrentAmmo { get; private set; }
+        public int TotalAmmoLeft { get; private set; }
 
         // Private Services
         private ProjectileService projectileService;
@@ -26,9 +27,9 @@ namespace ServiceLocator.Weapon
             weaponView = Object.Instantiate(_weaponData.weaponPrefab, _parentPanel).GetComponent<WeaponView>();
             weaponView.Init(this);
 
-            currentAmmo = 0;
-            totalAmmoLeft = 0;
             lastFireTime = 0f;
+            CurrentAmmo = 0;
+            TotalAmmoLeft = 0;
 
             // Setting Services
             projectileService = _projectileService;
@@ -37,13 +38,13 @@ namespace ServiceLocator.Weapon
         public void LateUpdate()
         {
             cachedFirePosition = weaponView.GetFirePoint().position;
-            cachedFireDirection = weaponView.GetFirePoint().forward; 
+            cachedFireDirection = weaponView.GetFirePoint().forward;
             weaponView.UpdateAimLaser(cachedFirePosition + cachedFireDirection * weaponModel.WeaponAimLaserMaxDistance);
         }
 
         public bool CanReloadWeapon()
         {
-            return (currentAmmo < weaponModel.WeaponMaxCapacity && totalAmmoLeft > 0) ? true : false;
+            return (CurrentAmmo < weaponModel.WeaponMaxCapacity && TotalAmmoLeft > 0) ? true : false;
         }
 
         public bool CanFireWeapon()
@@ -55,26 +56,27 @@ namespace ServiceLocator.Weapon
 
         public void ReloadWeapon()
         {
-            int ammoInsertAvailable = weaponModel.WeaponMaxCapacity - currentAmmo;
-            int ammoToAdd = Mathf.Min(totalAmmoLeft, ammoInsertAvailable);
+            int ammoInsertAvailable = weaponModel.WeaponMaxCapacity - CurrentAmmo;
+            int ammoToAdd = Mathf.Min(TotalAmmoLeft, ammoInsertAvailable);
 
-            currentAmmo += ammoToAdd;
-            totalAmmoLeft -= ammoToAdd;
+            CurrentAmmo += ammoToAdd;
+            TotalAmmoLeft -= ammoToAdd;
         }
 
         public void FireWeapon()
         {
-            if (currentAmmo > 0)
+            if (CurrentAmmo > 0)
             {
                 projectileService.FireProjectile(weaponModel.WeaponProjectileType, cachedFirePosition, cachedFireDirection);
                 lastFireTime = Time.time;
-                --currentAmmo;
+                --CurrentAmmo;
             }
         }
 
         public void SetAmmo(int _ammoAmount)
         {
-            totalAmmoLeft = _ammoAmount;
+            CurrentAmmo = 0;
+            TotalAmmoLeft = _ammoAmount;
             ReloadWeapon();
         }
         public void SetAimTarget(Vector3 _aimTarget)

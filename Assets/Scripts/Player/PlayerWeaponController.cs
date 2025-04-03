@@ -1,3 +1,4 @@
+using ServiceLocator.UI;
 using ServiceLocator.Weapon;
 using System;
 using System.Collections.Generic;
@@ -85,6 +86,7 @@ namespace ServiceLocator.Player
             }
 
             SetCurrentWeaponSetting();
+            playerController.UpdateAmmoUI();
         }
         private void SwitchOffWeapons()
         {
@@ -108,6 +110,7 @@ namespace ServiceLocator.Player
         public void ReloadWeapon()
         {
             weapons[currentWeaponType].ReloadWeapon();
+            playerController.UpdateAmmoUI();
         }
 
         public void SetAmmo(WeaponType _weaponType, int _ammoAmount)
@@ -127,6 +130,7 @@ namespace ServiceLocator.Player
             {
                 playerController.IsFiring = false;
             }
+            playerController.UpdateAmmoUI();
         }
         // Setters
         private void SetCurrentWeaponSetting()

@@ -16,6 +16,11 @@ namespace ServiceLocator.Wave
         public void OnStateEnter()
         {
             startTimer = 0f;
+            Owner.PlayerService.Reset();
+            Owner.InputService.DisableControls();
+
+            Owner.UIService.GetController().UpdateWaveText(Owner.CurrentWaveType.ToString());
+            Owner.UIService.GetController().UpdateMessageText("Loading");
         }
         public void Update()
         {
