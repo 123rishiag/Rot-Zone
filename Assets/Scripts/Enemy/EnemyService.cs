@@ -34,7 +34,7 @@ namespace ServiceLocator.Enemy
             playerService = _playerService;
 
             // Setting Elements
-            enemyPool = new EnemyPool(enemyConfig, enemyParentPanel, playerService);
+            enemyPool = new EnemyPool(enemyConfig, enemyParentPanel, _eventService, _playerService);
         }
 
         public void Reset()

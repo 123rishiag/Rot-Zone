@@ -29,7 +29,7 @@ namespace ServiceLocator.Enemy
             {
                 animator.CrossFade(Owner.GetAnimationController().idleHash, 0.25f);
             }
-            
+
         }
         public void Update()
         {

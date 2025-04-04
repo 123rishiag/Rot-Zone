@@ -1,5 +1,6 @@
 using ServiceLocator.Event;
 using ServiceLocator.Main;
+using ServiceLocator.Wave;
 
 namespace ServiceLocator.UI
 {
@@ -25,8 +26,8 @@ namespace ServiceLocator.UI
             eventService.OnPlayerHealthUIUpdateEvent.AddListener(UpdateHealthText);
             eventService.OnPlayerAmmoUIUpdateEvent.AddListener(UpdateAmmoText);
             eventService.OnEnemyCountUIUpdateEvent.AddListener(UpdateEnemiesText);
-            eventService.OnWaveCountUIUpdateEvent.AddListener(UpdateWaveText);
-            eventService.OnMessageUIUpdateEvent.AddListener(UpdateMessageText);
+            eventService.OnWaveUIUpdateEvent.AddListener(UpdateWaveText);
+            eventService.OnLoadTextUIUpdateEvent.AddListener(UpdateLoadText);
 
             uiView.pauseMenuResumeButton.onClick.AddListener(gameController.PlayGame);
             uiView.pauseMenuMainMenuButton.onClick.AddListener(gameController.MainMenu);
@@ -48,8 +49,8 @@ namespace ServiceLocator.UI
             eventService.OnPlayerHealthUIUpdateEvent.RemoveListener(UpdateHealthText);
             eventService.OnPlayerAmmoUIUpdateEvent.RemoveListener(UpdateAmmoText);
             eventService.OnEnemyCountUIUpdateEvent.RemoveListener(UpdateEnemiesText);
-            eventService.OnWaveCountUIUpdateEvent.RemoveListener(UpdateWaveText);
-            eventService.OnMessageUIUpdateEvent.RemoveListener(UpdateMessageText);
+            eventService.OnWaveUIUpdateEvent.RemoveListener(UpdateWaveText);
+            eventService.OnLoadTextUIUpdateEvent.RemoveListener(UpdateLoadText);
 
             uiView.pauseMenuResumeButton.onClick.RemoveListener(gameController.PlayGame);
             uiView.pauseMenuMainMenuButton.onClick.RemoveListener(gameController.MainMenu);
@@ -68,16 +69,16 @@ namespace ServiceLocator.UI
             UpdateHealthText(0);
             UpdateAmmoText(0, 0);
             UpdateEnemiesText(0);
-            UpdateWaveText("Wave0");
-            UpdateMessageText("");
+            UpdateWaveText(WaveType.WAVE1);
+            UpdateLoadText(false);
         }
 
         // Setters
         public void UpdateHealthText(int _health) => uiView.UpdateHealthText(_health);
         public void UpdateAmmoText(int _currentAmmo, int _totalAmmo) => uiView.UpdateAmmoText(_currentAmmo, _totalAmmo);
         public void UpdateEnemiesText(int _count) => uiView.UpdateEnemiesText(_count);
-        public void UpdateWaveText(string _waveString) => uiView.UpdateWaveText(_waveString);
-        public void UpdateMessageText(string _message) => uiView.UpdateMessageText(_message);
+        public void UpdateWaveText(WaveType _waveType) => uiView.UpdateWaveText(_waveType);
+        public void UpdateLoadText(bool _flag) => uiView.UpdateLoadText(_flag);
 
         public void SetMuteButtonText(bool _isMute) => uiView.SetMuteButtonText(_isMute);
         public void EnablePauseMenuPanel(bool _flag) => uiView.pauseMenuPanel.SetActive(_flag);

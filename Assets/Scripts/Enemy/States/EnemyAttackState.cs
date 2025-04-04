@@ -1,3 +1,4 @@
+using ServiceLocator.Sound;
 using ServiceLocator.Utility;
 using UnityEngine;
 
@@ -19,6 +20,7 @@ namespace ServiceLocator.Enemy
 
             Owner.GetView().SetTrailRenderActive(true);
             Owner.GetView().GetAnimator().Play(Owner.GetAnimationController().attackHash);
+            Owner.EventService.OnPlaySoundEffectEvent.Invoke(SoundType.ENEMY_ATTACK);
         }
         public void Update()
         {

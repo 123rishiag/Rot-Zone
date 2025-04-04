@@ -1,4 +1,3 @@
-using ServiceLocator.Player;
 using ServiceLocator.Utility;
 using System;
 using UnityEngine;

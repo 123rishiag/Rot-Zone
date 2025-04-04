@@ -1,4 +1,5 @@
-using ServiceLocator.UI;
+using ServiceLocator.Event;
+using ServiceLocator.Sound;
 using ServiceLocator.Weapon;
 using System;
 using System.Collections.Generic;
@@ -16,15 +17,17 @@ namespace ServiceLocator.Player
         private WeaponTransform currentWeaponTransform;
 
         // Private Services
+        private EventService eventService;
         private WeaponService weaponService;
 
         public PlayerWeaponController(PlayerController _playerController,
-            WeaponService _weaponService)
+            EventService _eventService, WeaponService _weaponService)
         {
             // Setting Variables
             playerController = _playerController;
 
             // Setting Services
+            eventService = _eventService;
             weaponService = _weaponService;
 
             // Setting Variables
@@ -83,6 +86,7 @@ namespace ServiceLocator.Player
                 currentWeaponTransform = weaponIKData.weaponTransform;
 
                 AttachLeftHandToWeapon(currentWeaponType);
+                eventService.OnPlaySoundEffectEvent.Invoke(SoundType.WEAPON_EQUIP);
             }
 
             SetCurrentWeaponSetting();

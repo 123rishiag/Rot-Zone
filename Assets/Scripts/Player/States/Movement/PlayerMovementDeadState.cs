@@ -1,3 +1,4 @@
+using ServiceLocator.Sound;
 using ServiceLocator.Utility;
 using UnityEngine;
 
@@ -20,6 +21,8 @@ namespace ServiceLocator.Player
 
             Owner.GetView().SetRagDollActive(true);
             Owner.GetView().GetAnimator().enabled = false;
+
+            Owner.EventService.OnPlaySoundEffectEvent.Invoke(SoundType.PLAYER_DEAD);
         }
         public void Update()
         {

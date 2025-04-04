@@ -1,3 +1,4 @@
+using ServiceLocator.Sound;
 using ServiceLocator.Utility;
 
 namespace ServiceLocator.Main
@@ -14,6 +15,7 @@ namespace ServiceLocator.Main
             Owner.IsPausePressed = false;
 
             Owner.GetUIService().GetController().EnablePauseMenuPanel(true); // Show Pause Menu
+            Owner.GetEventService().OnPlaySoundEffectEvent.Invoke(SoundType.GAME_PAUSE);
         }
         public void Update()
         {

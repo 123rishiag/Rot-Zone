@@ -1,9 +1,10 @@
+using ServiceLocator.Event;
 using ServiceLocator.Projectile;
 using UnityEngine;
 
 namespace ServiceLocator.Weapon
 {
-    public class WeaponController
+    public abstract class WeaponController
     {
         // Private Variables
         private WeaponModel weaponModel;
@@ -17,10 +18,11 @@ namespace ServiceLocator.Weapon
         public int TotalAmmoLeft { get; private set; }
 
         // Private Services
+        protected EventService eventService;
         private ProjectileService projectileService;
 
         public WeaponController(WeaponData _weaponData, Transform _parentPanel,
-            ProjectileService _projectileService)
+            EventService _eventService, ProjectileService _projectileService)
         {
             // Setting Variables
             weaponModel = new WeaponModel(_weaponData);
@@ -32,6 +34,7 @@ namespace ServiceLocator.Weapon
             TotalAmmoLeft = 0;
 
             // Setting Services
+            eventService = _eventService;
             projectileService = _projectileService;
         }
 
@@ -41,7 +44,6 @@ namespace ServiceLocator.Weapon
             cachedFireDirection = weaponView.GetFirePoint().forward;
             weaponView.UpdateAimLaser(cachedFirePosition + cachedFireDirection * weaponModel.WeaponAimLaserMaxDistance);
         }
-
         public bool CanReloadWeapon()
         {
             return (CurrentAmmo < weaponModel.WeaponMaxCapacity && TotalAmmoLeft > 0) ? true : false;
@@ -68,10 +70,13 @@ namespace ServiceLocator.Weapon
             if (CurrentAmmo > 0)
             {
                 projectileService.FireProjectile(weaponModel.WeaponProjectileType, cachedFirePosition, cachedFireDirection);
-                lastFireTime = Time.time;
                 --CurrentAmmo;
+                PlayFireSound();
             }
+            lastFireTime = Time.time;
         }
+
+        public abstract void PlayFireSound();
 
         public void SetAmmo(int _ammoAmount)
         {

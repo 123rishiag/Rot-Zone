@@ -1,3 +1,4 @@
+using ServiceLocator.Sound;
 using ServiceLocator.Utility;
 using ServiceLocator.Weapon;
 using UnityEngine;
@@ -19,6 +20,7 @@ namespace ServiceLocator.Player
             Owner.GetAnimationController().EnableIKWeight(
                 Owner.GetWeaponController().GetCurrentWeaponType(), false);
             Owner.GetView().GetAnimator().Play(Owner.GetAnimationController().weaponReloadHash);
+            Owner.EventService.OnPlaySoundEffectEvent.Invoke(SoundType.WEAPON_RELOAD);
         }
         public void Update()
         {

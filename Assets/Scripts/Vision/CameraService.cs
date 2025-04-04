@@ -58,9 +58,11 @@ namespace ServiceLocator.Vision
             mainCamera.transform.rotation = Quaternion.identity;
         }
 
-        public void Update() => HandleCameraRotation();
-
-        public void LateUpdate() => HandleCameraPosition();
+        public void LateUpdate()
+        {
+            HandleCameraRotation();
+            HandleCameraPosition();
+        }
 
         private void HandleCameraRotation()
         {

@@ -19,8 +19,8 @@ namespace ServiceLocator.Wave
             Owner.PlayerService.Reset();
             Owner.InputService.DisableControls();
 
-            Owner.EventService.OnWaveCountUIUpdateEvent.Invoke(Owner.CurrentWaveType.ToString());
-            Owner.EventService.OnMessageUIUpdateEvent.Invoke("Loading");
+            Owner.EventService.OnWaveUIUpdateEvent.Invoke(Owner.CurrentWaveType);
+            Owner.EventService.OnLoadTextUIUpdateEvent.Invoke(true);
         }
         public void Update()
         {

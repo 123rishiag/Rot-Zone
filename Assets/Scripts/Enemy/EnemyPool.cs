@@ -1,3 +1,4 @@
+using ServiceLocator.Event;
 using ServiceLocator.Player;
 using ServiceLocator.Utility;
 using System;
@@ -15,16 +16,18 @@ namespace ServiceLocator.Enemy
         private Vector3 spawnPosition;
 
         // Private Services
+        private EventService eventService;
         private PlayerService playerService;
 
         public EnemyPool(EnemyConfig _enemyConfig, Transform _parentPanel,
-            PlayerService _playerService)
+            EventService _eventService, PlayerService _playerService)
         {
             // Setting Variables
             enemyConfig = _enemyConfig;
             enemyParentPanel = _parentPanel;
 
             // Setting Services
+            eventService = _eventService;
             playerService = _playerService;
         }
 
@@ -52,11 +55,11 @@ namespace ServiceLocator.Enemy
                 case EnemyType.SLOW_ZOMBIE:
                     return new SlowEnemyController(
                         GetEnemyData(enemyType), enemyParentPanel, spawnPosition,
-                        playerService);
+                        eventService, playerService);
                 case EnemyType.FAST_ZOMBIE:
                     return new FastEnemyController(
                         GetEnemyData(enemyType), enemyParentPanel, spawnPosition,
-                        playerService);
+                        eventService, playerService);
                 default:
                     Debug.LogError($"Unhandled EnemyType: {enemyType}");
                     return null;

@@ -1,3 +1,4 @@
+using ServiceLocator.Sound;
 using ServiceLocator.Utility;
 using ServiceLocator.Weapon;
 using UnityEngine;
@@ -19,6 +20,10 @@ namespace ServiceLocator.Player
             if (!IsFireAnimationInProgress())
             {
                 Owner.GetView().GetAnimator().Play(Owner.GetAnimationController().weaponFireHash);
+            }
+            if (Owner.GetWeaponController().GetCurrentWeapon().CurrentAmmo == 0)
+            {
+                Owner.EventService.OnPlaySoundEffectEvent.Invoke(SoundType.WEAPON_EMPTY);
             }
         }
         public void Update()

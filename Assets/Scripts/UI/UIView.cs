@@ -1,3 +1,4 @@
+using ServiceLocator.Wave;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -47,13 +48,20 @@ namespace ServiceLocator.UI
         {
             enemiesText.text = "Enemies: " + _count;
         }
-        public void UpdateWaveText(string _waveString)
+        public void UpdateWaveText(WaveType _waveType)
         {
-            waveText.text = _waveString;
+            waveText.text = _waveType.ToString();
         }
-        public void UpdateMessageText(string _message)
+        public void UpdateLoadText(bool _flag)
         {
-            messageText.text = _message;
+            if (_flag)
+            {
+                messageText.text = "Loading";
+            }
+            else
+            {
+                messageText.text = "";
+            }
         }
         public void SetMuteButtonText(bool _isMute)
         {
