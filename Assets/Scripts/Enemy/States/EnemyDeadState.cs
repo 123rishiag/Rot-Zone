@@ -1,3 +1,4 @@
+using ServiceLocator.Sound;
 using ServiceLocator.Utility;
 using UnityEngine;
 
@@ -25,6 +26,7 @@ namespace ServiceLocator.Enemy
             Owner.GetView().GetNavMeshAgent().enabled = false;
 
             Owner.GetView().GetAnimator().Play(Owner.GetAnimationController().deadHash);
+            Owner.EventService.OnPlaySoundEffectEvent.Invoke(SoundType.ENEMY_DEAD);
         }
 
         public void Update()

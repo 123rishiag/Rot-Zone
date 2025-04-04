@@ -1,3 +1,4 @@
+using ServiceLocator.Event;
 using ServiceLocator.Player;
 using ServiceLocator.Utility;
 using System.Collections;
@@ -19,10 +20,11 @@ namespace ServiceLocator.Enemy
         private int currentHealth;
 
         // Private Services
+        public EventService EventService { get; private set; }
         private PlayerService playerService;
 
         public EnemyController(EnemyData _enemyData, Transform _parentPanel, Vector3 _spawnPosition,
-            PlayerService _playerService)
+            EventService _eventService, PlayerService _playerService)
         {
             // Setting Variables
             enemyModel = new EnemyModel(_enemyData);
@@ -31,6 +33,7 @@ namespace ServiceLocator.Enemy
             enemyAnimationController = new EnemyAnimationController(enemyView.GetAnimator(), this);
 
             // Setting Services
+            EventService = _eventService;
             playerService = _playerService;
 
             // Setting Elements

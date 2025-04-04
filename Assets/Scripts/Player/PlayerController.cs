@@ -36,7 +36,7 @@ namespace ServiceLocator.Player
         private bool isRecentlyAttacked;
 
         // Private Services
-        private EventService eventService;
+        public EventService EventService { get; private set; }
         public InputService InputService { get; private set; }
         private CameraService cameraService;
 
@@ -48,10 +48,10 @@ namespace ServiceLocator.Player
             playerView = Object.Instantiate(_playerPrefab).GetComponent<PlayerView>();
             playerView.Init(this);
             playerAnimationController = new PlayerAnimationController(playerView.GetAnimator(), this);
-            playerWeaponController = new PlayerWeaponController(this, _weaponService);
+            playerWeaponController = new PlayerWeaponController(this, _eventService, _weaponService);
 
             // Setting Services
-            eventService = _eventService;
+            EventService = _eventService;
             InputService = _inputService;
             cameraService = _cameraService;
 
@@ -104,18 +104,18 @@ namespace ServiceLocator.Player
         }
         private void UpdateHealthUI()
         {
-            eventService.OnPlayerHealthUIUpdateEvent.Invoke(currentHealth);
+            EventService.OnPlayerHealthUIUpdateEvent.Invoke(currentHealth);
         }
         public void UpdateAmmoUI()
         {
             if (playerWeaponController.GetCurrentWeaponType() != WeaponType.NONE)
             {
                 WeaponController weaponController = playerWeaponController.GetCurrentWeapon();
-                eventService.OnPlayerAmmoUIUpdateEvent.Invoke(weaponController.CurrentAmmo, weaponController.TotalAmmoLeft);
+                EventService.OnPlayerAmmoUIUpdateEvent.Invoke(weaponController.CurrentAmmo, weaponController.TotalAmmoLeft);
             }
             else
             {
-                eventService.OnPlayerAmmoUIUpdateEvent.Invoke(0, 0);
+                EventService.OnPlayerAmmoUIUpdateEvent.Invoke(0, 0);
             }
         }
         #endregion

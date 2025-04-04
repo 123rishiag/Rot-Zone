@@ -1,6 +1,7 @@
 using ServiceLocator.Enemy;
 using ServiceLocator.Player;
 using ServiceLocator.Projectile;
+using ServiceLocator.Sound;
 using ServiceLocator.UI;
 using ServiceLocator.Vision;
 using ServiceLocator.Wave;
@@ -14,6 +15,11 @@ namespace ServiceLocator.Main
         [Header("Camera Variables")]
         public CameraConfig cameraConfig;
         public Camera mainCamera;
+
+        [Header("Sound Variables")]
+        [SerializeField] public SoundConfig soundConfig;
+        [SerializeField] public AudioSource bgmSource;
+        [SerializeField] public AudioSource sfxSource;
 
         [Header("UI Variables")]
         [SerializeField] public UIView uiCanvas;

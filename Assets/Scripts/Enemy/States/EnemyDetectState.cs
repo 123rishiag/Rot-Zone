@@ -1,3 +1,4 @@
+using ServiceLocator.Sound;
 using ServiceLocator.Utility;
 using UnityEngine;
 
@@ -19,6 +20,7 @@ namespace ServiceLocator.Enemy
             Owner.GetView().StopNavMeshAgent(true);
 
             Owner.GetView().GetAnimator().CrossFade(Owner.GetAnimationController().detectHash, 0.1f);
+            Owner.EventService.OnPlaySoundEffectEvent.Invoke(SoundType.ENEMY_DETECT);
         }
         public void Update()
         {

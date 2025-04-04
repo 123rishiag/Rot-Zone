@@ -1,3 +1,4 @@
+using ServiceLocator.Event;
 using ServiceLocator.Projectile;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,7 @@ namespace ServiceLocator.Weapon
         private List<WeaponController> weaponControllers;
 
         // Private Services
+        private EventService eventService;
         private ProjectileService projectileService;
 
         public WeaponService(WeaponConfig _weaponConfig)
@@ -23,9 +25,10 @@ namespace ServiceLocator.Weapon
             weaponControllers = new List<WeaponController>();
         }
 
-        public void Init(ProjectileService _projectileService)
+        public void Init(EventService _eventService, ProjectileService _projectileService)
         {
             // Setting Services
+            eventService = _eventService;
             projectileService = _projectileService;
         }
 
@@ -39,11 +42,28 @@ namespace ServiceLocator.Weapon
 
         public WeaponController CreateWeapon(WeaponType _weaponType, Transform _parentPanel)
         {
-            WeaponController weaponController = new WeaponController(GetWeaponData(_weaponType), _parentPanel,
-                projectileService);
+            // Creating Controller
+            WeaponController weaponController = null;
+            switch (_weaponType)
+            {
+                case WeaponType.PISTOL:
+                    weaponController = new PistolWeaponController(GetWeaponData(_weaponType), _parentPanel,
+                        eventService, projectileService);
+                    break;
+                case WeaponType.RIFLE:
+                    weaponController = new RifleWeaponController(GetWeaponData(_weaponType), _parentPanel,
+                        eventService, projectileService);
+                    break;
+                case WeaponType.SHOTGUN:
+                    weaponController = new ShotgunWeaponController(GetWeaponData(_weaponType), _parentPanel,
+                        eventService, projectileService);
+                    break;
+                default:
+                    Debug.LogError($"Unhandled Weapon Type: {_weaponType}");
+                    return null;
+            }
 
             weaponControllers.Add(weaponController);
-
             return weaponController;
         }
 

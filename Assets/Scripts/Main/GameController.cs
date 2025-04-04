@@ -3,6 +3,7 @@ using ServiceLocator.Enemy;
 using ServiceLocator.Event;
 using ServiceLocator.Player;
 using ServiceLocator.Projectile;
+using ServiceLocator.Sound;
 using ServiceLocator.Spawn;
 using ServiceLocator.UI;
 using ServiceLocator.Utility;
@@ -22,6 +23,7 @@ namespace ServiceLocator.Main
         private EventService eventService;
         private InputService inputService;
         private CameraService cameraService;
+        private SoundService soundService;
         private UIService uiService;
         private ProjectileService projectileService;
         private WeaponService weaponService;
@@ -61,6 +63,7 @@ namespace ServiceLocator.Main
             eventService = new EventService();
             inputService = new InputService();
             cameraService = new CameraService(gameService.cameraConfig, gameService.mainCamera);
+            soundService = new SoundService(gameService.soundConfig, gameService.bgmSource, gameService.sfxSource);
             uiService = new UIService(gameService.uiCanvas, this);
             projectileService = new ProjectileService(gameService.projectileConfig, gameService.projectilePoolPanel);
             weaponService = new WeaponService(gameService.weaponConfig);
@@ -75,9 +78,10 @@ namespace ServiceLocator.Main
             // Event Service
             inputService.Init();
             cameraService.Init(inputService, playerService);
+            soundService.Init(eventService);
             uiService.Init(eventService);
             projectileService.Init();
-            weaponService.Init(projectileService);
+            weaponService.Init(eventService, projectileService);
             playerService.Init(eventService, inputService, cameraService, weaponService);
             enemyService.Init(eventService, playerService);
             spawnService.Init(playerService, enemyService);
@@ -94,6 +98,7 @@ namespace ServiceLocator.Main
             // Event Service
             // Input Service
             cameraService.Reset();
+            soundService.Reset();
             uiService.Reset();
             projectileService.Reset();
             // Weapon Service
@@ -107,6 +112,7 @@ namespace ServiceLocator.Main
             // Event Service
             inputService.Destroy();
             // Camera Service
+            // Sound Service
             uiService.Destroy();
             // Projectile Service
             // Weapon Service
@@ -120,22 +126,27 @@ namespace ServiceLocator.Main
 
         public void PlayGame()
         {
+            soundService.PlaySoundEffect(SoundType.BUTTON_CLICK);
             gameStateMachine.ChangeState(GameState.GAME_PLAY);
         }
         public void RestartGame()
         {
+            soundService.PlaySoundEffect(SoundType.BUTTON_QUIT);
             gameStateMachine.ChangeState(GameState.GAME_RESTART);
         }
         public void ControlMenu()
         {
+            soundService.PlaySoundEffect(SoundType.BUTTON_CLICK);
             gameStateMachine.ChangeState(GameState.GAME_CONTROL);
         }
         public void MainMenu()
         {
+            soundService.PlaySoundEffect(SoundType.BUTTON_QUIT);
             SceneManager.LoadScene(0); // Reload 0th scene
         }
         public void QuitGame()
         {
+            soundService.PlaySoundEffect(SoundType.BUTTON_QUIT);
 #if UNITY_EDITOR
             UnityEditor.EditorApplication.isPlaying = false;
 #else
@@ -145,11 +156,13 @@ namespace ServiceLocator.Main
 
         public void MuteGame()
         {
-            //uiService.GetUIController().SetMuteButtonText(soundService.IsMute);
+            soundService.MuteGame(); // Mute/unmute the game
+            uiService.GetController().SetMuteButtonText(soundService.IsMute);
+            soundService.PlaySoundEffect(SoundType.BUTTON_CLICK);
         }
 
         // Getters
-
+        public EventService GetEventService() => eventService;
         public InputService GetInputService() => inputService;
         public CameraService GetCameraService() => cameraService;
         public UIService GetUIService() => uiService;

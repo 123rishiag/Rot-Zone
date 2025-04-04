@@ -1,3 +1,4 @@
+using ServiceLocator.Sound;
 using ServiceLocator.Utility;
 
 namespace ServiceLocator.Main
@@ -12,6 +13,7 @@ namespace ServiceLocator.Main
         public void OnStateEnter()
         {
             Owner.GetUIService().GetController().EnableGameOverMenuPanel(true); // Show Game Over Menu
+            Owner.GetEventService().OnPlaySoundEffectEvent.Invoke(SoundType.GAME_OVER);
         }
         public void Update() { }
         public void FixedUpdate() { }

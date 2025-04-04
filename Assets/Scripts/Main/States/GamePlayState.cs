@@ -1,3 +1,4 @@
+using ServiceLocator.Sound;
 using ServiceLocator.Utility;
 using ServiceLocator.Wave;
 using UnityEngine;
@@ -15,6 +16,7 @@ namespace ServiceLocator.Main
         {
             Time.timeScale = 1f; // Resume the game
             Owner.IsPausePressed = false;
+            Owner.GetEventService().OnPlaySoundEffectEvent.Invoke(SoundType.GAME_PLAY);
         }
         public void Update()
         {
@@ -26,7 +28,8 @@ namespace ServiceLocator.Main
 
                 // Event Service
                 // Input Service
-                Owner.GetCameraService().Update();
+                // Camera Service
+                // Sound Service
                 // UI Service
                 Owner.GetProjectileService().Update();
                 // Weapon Service
@@ -41,6 +44,7 @@ namespace ServiceLocator.Main
             // Event Service
             // Input Service
             // Camera Service
+            // Sound Service
             // UI Service
             // Projectile Service
             // Weapon Service
@@ -56,6 +60,7 @@ namespace ServiceLocator.Main
                 // Event Service
                 // Input Service
                 Owner.GetCameraService().LateUpdate();
+                // Sound Service
                 // UI Service
                 // Projectile Service
                 Owner.GetWeaponService().LateUpdate();
