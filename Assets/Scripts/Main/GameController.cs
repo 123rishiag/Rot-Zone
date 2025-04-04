@@ -10,6 +10,7 @@ using ServiceLocator.Utility;
 using ServiceLocator.Vision;
 using ServiceLocator.Wave;
 using ServiceLocator.Weapon;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace ServiceLocator.Main
@@ -147,11 +148,7 @@ namespace ServiceLocator.Main
         public void QuitGame()
         {
             soundService.PlaySoundEffect(SoundType.BUTTON_QUIT);
-#if UNITY_EDITOR
-            UnityEditor.EditorApplication.isPlaying = false;
-#else
-    Application.Quit();
-#endif
+            Application.Quit();
         }
 
         public void MuteGame()
