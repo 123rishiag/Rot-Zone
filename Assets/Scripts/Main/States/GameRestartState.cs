@@ -1,6 +1,6 @@
-using ServiceLocator.Utility;
+using Game.Utility;
 
-namespace ServiceLocator.Main
+namespace Game.Main
 {
     public class GameRestartState<T> : IState<GameController, GameState>
     {

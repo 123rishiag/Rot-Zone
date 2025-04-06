@@ -1,7 +1,7 @@
-using ServiceLocator.Sound;
-using ServiceLocator.Utility;
+using Game.Sound;
+using Game.Utility;
 
-namespace ServiceLocator.Main
+namespace Game.Main
 {
     public class GameOverState<T> : IState<GameController, GameState>
     {

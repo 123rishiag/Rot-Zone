@@ -1,4 +1,4 @@
-namespace ServiceLocator.Enemy
+namespace Game.Enemy
 {
     public enum EnemyType
     {

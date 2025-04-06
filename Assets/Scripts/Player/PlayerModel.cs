@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace ServiceLocator.Player
+namespace Game.Player
 {
     public class PlayerModel
     {

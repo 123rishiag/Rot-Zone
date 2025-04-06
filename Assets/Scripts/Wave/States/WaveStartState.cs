@@ -1,7 +1,7 @@
-using ServiceLocator.Utility;
+using Game.Utility;
 using UnityEngine;
 
-namespace ServiceLocator.Wave
+namespace Game.Wave
 {
     public class WaveStartState<T> : IState<WaveService, WaveState>
     {

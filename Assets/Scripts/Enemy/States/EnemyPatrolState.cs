@@ -1,8 +1,8 @@
-using ServiceLocator.Utility;
+using Game.Utility;
 using UnityEngine;
 using UnityEngine.AI;
 
-namespace ServiceLocator.Enemy
+namespace Game.Enemy
 {
     public class EnemyPatrolState<T> : IState<EnemyController, EnemyState>
     {

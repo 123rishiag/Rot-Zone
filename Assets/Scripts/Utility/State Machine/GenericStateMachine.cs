@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ServiceLocator.Utility
+namespace Game.Utility
 {
     public class GenericStateMachine<T, U> where T : class, IStateOwner<T> where U : Enum
     {

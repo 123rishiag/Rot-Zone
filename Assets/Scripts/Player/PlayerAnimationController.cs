@@ -1,7 +1,7 @@
-using ServiceLocator.Weapon;
+using Game.Weapon;
 using UnityEngine;
 
-namespace ServiceLocator.Player
+namespace Game.Player
 {
     public class PlayerAnimationController
     {

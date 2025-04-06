@@ -1,8 +1,8 @@
-using ServiceLocator.Sound;
-using ServiceLocator.Utility;
+using Game.Sound;
+using Game.Utility;
 using UnityEngine;
 
-namespace ServiceLocator.Player
+namespace Game.Player
 {
     public class PlayerMovementHurtState<T> : IState<PlayerController, PlayerMovementState>
     {

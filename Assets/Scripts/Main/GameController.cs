@@ -1,19 +1,19 @@
-using ServiceLocator.Controls;
-using ServiceLocator.Enemy;
-using ServiceLocator.Event;
-using ServiceLocator.Player;
-using ServiceLocator.Projectile;
-using ServiceLocator.Sound;
-using ServiceLocator.Spawn;
-using ServiceLocator.UI;
-using ServiceLocator.Utility;
-using ServiceLocator.Vision;
-using ServiceLocator.Wave;
-using ServiceLocator.Weapon;
+using Game.Controls;
+using Game.Enemy;
+using Game.Event;
+using Game.Player;
+using Game.Projectile;
+using Game.Sound;
+using Game.Spawn;
+using Game.UI;
+using Game.Utility;
+using Game.Vision;
+using Game.Wave;
+using Game.Weapon;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace ServiceLocator.Main
+namespace Game.Main
 {
     public class GameController : IStateOwner<GameController>
     {

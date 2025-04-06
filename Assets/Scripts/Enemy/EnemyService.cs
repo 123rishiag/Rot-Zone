@@ -1,12 +1,12 @@
-using ServiceLocator.Event;
-using ServiceLocator.Player;
-using ServiceLocator.Spawn;
-using ServiceLocator.Wave;
+using Game.Event;
+using Game.Player;
+using Game.Spawn;
+using Game.Wave;
 using System;
 using System.Linq;
 using UnityEngine;
 
-namespace ServiceLocator.Enemy
+namespace Game.Enemy
 {
     public class EnemyService : ISpawn<EnemySpawnData>
     {

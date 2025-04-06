@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace ServiceLocator.Weapon
+namespace Game.Weapon
 {
     public class WeaponView : MonoBehaviour
     {

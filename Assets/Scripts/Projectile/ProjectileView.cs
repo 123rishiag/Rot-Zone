@@ -1,8 +1,8 @@
-using ServiceLocator.Enemy;
+using Game.Enemy;
 using System.Collections;
 using UnityEngine;
 
-namespace ServiceLocator.Projectile
+namespace Game.Projectile
 {
     public class ProjectileView : MonoBehaviour
     {

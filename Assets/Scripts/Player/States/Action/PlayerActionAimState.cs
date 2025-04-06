@@ -1,7 +1,7 @@
-using ServiceLocator.Utility;
-using ServiceLocator.Weapon;
+using Game.Utility;
+using Game.Weapon;
 
-namespace ServiceLocator.Player
+namespace Game.Player
 {
     public class PlayerActionAimState<T> : IState<PlayerController, PlayerActionState>
     {

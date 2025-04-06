@@ -1,9 +1,9 @@
-using ServiceLocator.Wave;
+using Game.Wave;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace ServiceLocator.UI
+namespace Game.UI
 {
     public class UIView : MonoBehaviour
     {

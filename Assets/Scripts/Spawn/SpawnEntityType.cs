@@ -1,4 +1,4 @@
-namespace ServiceLocator.Spawn
+namespace Game.Spawn
 {
     public enum SpawnEntityType
     {

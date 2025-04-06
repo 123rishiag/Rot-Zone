@@ -1,8 +1,8 @@
-using ServiceLocator.Utility;
+using Game.Utility;
 using System;
 using UnityEngine;
 
-namespace ServiceLocator.Projectile
+namespace Game.Projectile
 {
     public class ProjectilePool : GenericObjectPool<ProjectileController>
     {

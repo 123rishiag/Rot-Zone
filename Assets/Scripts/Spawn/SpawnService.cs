@@ -1,8 +1,8 @@
-using ServiceLocator.Enemy;
-using ServiceLocator.Player;
+using Game.Enemy;
+using Game.Player;
 using UnityEngine;
 
-namespace ServiceLocator.Spawn
+namespace Game.Spawn
 {
     public class SpawnService
     {

@@ -1,10 +1,10 @@
-using ServiceLocator.Event;
-using ServiceLocator.Player;
-using ServiceLocator.Utility;
+using Game.Event;
+using Game.Player;
+using Game.Utility;
 using System;
 using UnityEngine;
 
-namespace ServiceLocator.Enemy
+namespace Game.Enemy
 {
     public class EnemyPool : GenericObjectPool<EnemyController>
     {

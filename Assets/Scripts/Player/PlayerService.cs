@@ -1,13 +1,13 @@
-using ServiceLocator.Controls;
-using ServiceLocator.Event;
-using ServiceLocator.Spawn;
-using ServiceLocator.Vision;
-using ServiceLocator.Wave;
-using ServiceLocator.Weapon;
+using Game.Controls;
+using Game.Event;
+using Game.Spawn;
+using Game.Vision;
+using Game.Wave;
+using Game.Weapon;
 using System;
 using UnityEngine;
 
-namespace ServiceLocator.Player
+namespace Game.Player
 {
     public class PlayerService : ISpawn<PlayerSpawnData>
     {

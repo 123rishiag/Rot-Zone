@@ -1,7 +1,7 @@
-using ServiceLocator.Utility;
+using Game.Utility;
 using UnityEngine;
 
-namespace ServiceLocator.Enemy
+namespace Game.Enemy
 {
     public class EnemyStunState<T> : IState<EnemyController, EnemyState>
     {

@@ -1,12 +1,12 @@
-using ServiceLocator.Controls;
-using ServiceLocator.Enemy;
-using ServiceLocator.Event;
-using ServiceLocator.Player;
-using ServiceLocator.Spawn;
-using ServiceLocator.Utility;
+using Game.Controls;
+using Game.Enemy;
+using Game.Event;
+using Game.Player;
+using Game.Spawn;
+using Game.Utility;
 using System;
 
-namespace ServiceLocator.Wave
+namespace Game.Wave
 {
     public class WaveService : IStateOwner<WaveService>
     {

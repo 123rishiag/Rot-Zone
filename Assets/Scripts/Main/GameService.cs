@@ -1,14 +1,14 @@
-using ServiceLocator.Enemy;
-using ServiceLocator.Player;
-using ServiceLocator.Projectile;
-using ServiceLocator.Sound;
-using ServiceLocator.UI;
-using ServiceLocator.Vision;
-using ServiceLocator.Wave;
-using ServiceLocator.Weapon;
+using Game.Enemy;
+using Game.Player;
+using Game.Projectile;
+using Game.Sound;
+using Game.UI;
+using Game.Vision;
+using Game.Wave;
+using Game.Weapon;
 using UnityEngine;
 
-namespace ServiceLocator.Main
+namespace Game.Main
 {
     public class GameService : MonoBehaviour
     {

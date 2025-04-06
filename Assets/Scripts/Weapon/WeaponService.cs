@@ -1,10 +1,10 @@
-using ServiceLocator.Event;
-using ServiceLocator.Projectile;
+using Game.Event;
+using Game.Projectile;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace ServiceLocator.Weapon
+namespace Game.Weapon
 {
     public class WeaponService
     {

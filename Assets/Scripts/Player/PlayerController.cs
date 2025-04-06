@@ -1,13 +1,13 @@
-using ServiceLocator.Controls;
-using ServiceLocator.Event;
-using ServiceLocator.Utility;
-using ServiceLocator.Vision;
-using ServiceLocator.Weapon;
+using Game.Controls;
+using Game.Event;
+using Game.Utility;
+using Game.Vision;
+using Game.Weapon;
 using System.Collections;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace ServiceLocator.Player
+namespace Game.Player
 {
     public class PlayerController : IStateOwner<PlayerController>
     {

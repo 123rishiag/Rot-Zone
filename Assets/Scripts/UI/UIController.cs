@@ -1,8 +1,8 @@
-using ServiceLocator.Event;
-using ServiceLocator.Main;
-using ServiceLocator.Wave;
+using Game.Event;
+using Game.Main;
+using Game.Wave;
 
-namespace ServiceLocator.UI
+namespace Game.UI
 {
     public class UIController
     {

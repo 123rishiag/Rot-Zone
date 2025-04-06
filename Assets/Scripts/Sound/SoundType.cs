@@ -1,4 +1,4 @@
-namespace ServiceLocator.Sound
+namespace Game.Sound
 {
     public enum SoundType
     {

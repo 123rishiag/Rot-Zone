@@ -1,8 +1,8 @@
-using ServiceLocator.Projectile;
+using Game.Projectile;
 using System;
 using UnityEngine;
 
-namespace ServiceLocator.Weapon
+namespace Game.Weapon
 {
     [CreateAssetMenu(fileName = "WeaponConfig", menuName = "Scriptable Objects/WeaponConfig")]
     public class WeaponConfig : ScriptableObject

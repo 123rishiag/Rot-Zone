@@ -1,4 +1,4 @@
-namespace ServiceLocator.Weapon
+namespace Game.Weapon
 {
     public enum WeaponType
     {

@@ -1,8 +1,8 @@
-using ServiceLocator.Event;
-using ServiceLocator.Player;
+using Game.Event;
+using Game.Player;
 using UnityEngine;
 
-namespace ServiceLocator.Enemy
+namespace Game.Enemy
 {
     public class SlowEnemyController : EnemyController
     {
