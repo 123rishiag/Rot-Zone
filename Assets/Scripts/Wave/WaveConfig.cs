@@ -1,10 +1,10 @@
-using ServiceLocator.Enemy;
-using ServiceLocator.Spawn;
-using ServiceLocator.Weapon;
+using Game.Enemy;
+using Game.Spawn;
+using Game.Weapon;
 using System;
 using UnityEngine;
 
-namespace ServiceLocator.Wave
+namespace Game.Wave
 {
     [CreateAssetMenu(fileName = "WaveConfig", menuName = "Scriptable Objects/WaveConfig")]
     public class WaveConfig : ScriptableObject

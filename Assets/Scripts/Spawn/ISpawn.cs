@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace ServiceLocator.Spawn
+namespace Game.Spawn
 {
     public interface ISpawn<T> where T : SpawnData
     {

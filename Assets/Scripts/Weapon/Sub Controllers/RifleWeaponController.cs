@@ -1,9 +1,9 @@
-using ServiceLocator.Event;
-using ServiceLocator.Projectile;
-using ServiceLocator.Sound;
+using Game.Event;
+using Game.Projectile;
+using Game.Sound;
 using UnityEngine;
 
-namespace ServiceLocator.Weapon
+namespace Game.Weapon
 {
     public class RifleWeaponController : WeaponController
     {

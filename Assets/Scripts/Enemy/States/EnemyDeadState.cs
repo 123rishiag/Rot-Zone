@@ -1,8 +1,8 @@
-using ServiceLocator.Sound;
-using ServiceLocator.Utility;
+using Game.Sound;
+using Game.Utility;
 using UnityEngine;
 
-namespace ServiceLocator.Enemy
+namespace Game.Enemy
 {
     public class EnemyDeadState<T> : IState<EnemyController, EnemyState>
     {

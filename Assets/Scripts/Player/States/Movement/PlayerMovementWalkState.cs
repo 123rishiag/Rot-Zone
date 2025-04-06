@@ -1,6 +1,6 @@
-using ServiceLocator.Utility;
+using Game.Utility;
 
-namespace ServiceLocator.Player
+namespace Game.Player
 {
     public class PlayerMovementWalkState<T> : IState<PlayerController, PlayerMovementState>
     {

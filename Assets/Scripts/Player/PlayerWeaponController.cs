@@ -1,11 +1,11 @@
-using ServiceLocator.Event;
-using ServiceLocator.Sound;
-using ServiceLocator.Weapon;
+using Game.Event;
+using Game.Sound;
+using Game.Weapon;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace ServiceLocator.Player
+namespace Game.Player
 {
     public class PlayerWeaponController
     {

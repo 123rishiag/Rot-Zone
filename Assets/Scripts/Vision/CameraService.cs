@@ -1,8 +1,8 @@
-using ServiceLocator.Controls;
-using ServiceLocator.Player;
+using Game.Controls;
+using Game.Player;
 using UnityEngine;
 
-namespace ServiceLocator.Vision
+namespace Game.Vision
 {
     public class CameraService
     {

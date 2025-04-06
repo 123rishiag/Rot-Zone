@@ -1,4 +1,4 @@
-namespace ServiceLocator.Controls
+namespace Game.Controls
 {
     public class InputService
     {

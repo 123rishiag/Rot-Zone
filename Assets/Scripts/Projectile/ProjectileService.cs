@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace ServiceLocator.Projectile
+namespace Game.Projectile
 {
     public class ProjectileService
     {

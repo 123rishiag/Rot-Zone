@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace ServiceLocator.Sound
+namespace Game.Sound
 {
     [CreateAssetMenu(fileName = "SoundConfig", menuName = "Scriptable Objects/SoundConfig")]
     public class SoundConfig : ScriptableObject

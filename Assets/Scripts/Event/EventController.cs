@@ -1,6 +1,6 @@
 using System;
 
-namespace ServiceLocator.Event
+namespace Game.Event
 {
     public class EventController<TDelegate> where TDelegate : Delegate
     {

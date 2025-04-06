@@ -1,7 +1,7 @@
-using ServiceLocator.Event;
-using ServiceLocator.Main;
+using Game.Event;
+using Game.Main;
 
-namespace ServiceLocator.UI
+namespace Game.UI
 {
     public class UIService
     {

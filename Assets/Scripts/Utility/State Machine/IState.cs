@@ -1,6 +1,6 @@
 using System;
 
-namespace ServiceLocator.Utility
+namespace Game.Utility
 {
     public interface IStateOwner<T> where T : class
     {

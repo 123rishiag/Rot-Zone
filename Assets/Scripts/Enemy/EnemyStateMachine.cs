@@ -1,6 +1,6 @@
-using ServiceLocator.Utility;
+using Game.Utility;
 
-namespace ServiceLocator.Enemy
+namespace Game.Enemy
 {
     public enum EnemyState
     {

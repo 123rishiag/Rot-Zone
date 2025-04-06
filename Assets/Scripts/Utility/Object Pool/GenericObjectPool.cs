@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace ServiceLocator.Utility
+namespace Game.Utility
 {
     public class GenericObjectPool<T> where T : class
     {

@@ -1,9 +1,9 @@
-using ServiceLocator.Enemy;
-using ServiceLocator.Weapon;
+using Game.Enemy;
+using Game.Weapon;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
 
-namespace ServiceLocator.Player
+namespace Game.Player
 {
     public class PlayerView : MonoBehaviour
     {

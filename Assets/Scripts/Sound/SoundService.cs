@@ -1,8 +1,8 @@
-using ServiceLocator.Event;
+using Game.Event;
 using System;
 using UnityEngine;
 
-namespace ServiceLocator.Sound
+namespace Game.Sound
 {
     public class SoundService
     {

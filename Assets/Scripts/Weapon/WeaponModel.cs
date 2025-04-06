@@ -1,6 +1,6 @@
-using ServiceLocator.Projectile;
+using Game.Projectile;
 
-namespace ServiceLocator.Weapon
+namespace Game.Weapon
 {
     public class WeaponModel
     {

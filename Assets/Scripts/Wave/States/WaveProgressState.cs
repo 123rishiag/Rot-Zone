@@ -1,6 +1,6 @@
-using ServiceLocator.Utility;
+using Game.Utility;
 
-namespace ServiceLocator.Wave
+namespace Game.Wave
 {
     public class WaveProgressState<T> : IState<WaveService, WaveState>
     {

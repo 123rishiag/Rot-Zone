@@ -1,8 +1,8 @@
-using ServiceLocator.Event;
-using ServiceLocator.Projectile;
+using Game.Event;
+using Game.Projectile;
 using UnityEngine;
 
-namespace ServiceLocator.Weapon
+namespace Game.Weapon
 {
     public abstract class WeaponController
     {

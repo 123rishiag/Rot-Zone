@@ -1,4 +1,4 @@
-namespace ServiceLocator.Wave
+namespace Game.Wave
 {
     public enum WaveType
     {

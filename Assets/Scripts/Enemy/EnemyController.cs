@@ -1,10 +1,10 @@
-using ServiceLocator.Event;
-using ServiceLocator.Player;
-using ServiceLocator.Utility;
+using Game.Event;
+using Game.Player;
+using Game.Utility;
 using System.Collections;
 using UnityEngine;
 
-namespace ServiceLocator.Enemy
+namespace Game.Enemy
 {
     public abstract class EnemyController : IStateOwner<EnemyController>
     {

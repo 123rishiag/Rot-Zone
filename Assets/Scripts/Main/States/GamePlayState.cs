@@ -1,9 +1,9 @@
-using ServiceLocator.Sound;
-using ServiceLocator.Utility;
-using ServiceLocator.Wave;
+using Game.Sound;
+using Game.Utility;
+using Game.Wave;
 using UnityEngine;
 
-namespace ServiceLocator.Main
+namespace Game.Main
 {
     public class GamePlayState<T> : IState<GameController, GameState>
     {
@@ -41,17 +41,20 @@ namespace ServiceLocator.Main
         }
         public void FixedUpdate()
         {
-            // Event Service
-            // Input Service
-            // Camera Service
-            // Sound Service
-            // UI Service
-            // Projectile Service
-            // Weapon Service
-            // Player Service
-            // Enemy Service
-            // Spawn Service
-            // Wave Service
+            if (Owner.GetWaveService().GetWaveStateMachine().GetCurrentState() == WaveState.PROGRESS)
+            {
+                // Event Service
+                // Input Service
+                // Camera Service
+                // Sound Service
+                // UI Service
+                // Projectile Service
+                // Weapon Service
+                // Player Service
+                // Enemy Service
+                // Spawn Service
+                // Wave Service
+            }
         }
         public void LateUpdate()
         {

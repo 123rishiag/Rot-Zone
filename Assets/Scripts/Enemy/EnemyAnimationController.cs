@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace ServiceLocator.Enemy
+namespace Game.Enemy
 {
     public class EnemyAnimationController
     {

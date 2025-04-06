@@ -1,9 +1,9 @@
-using ServiceLocator.Sound;
-using ServiceLocator.Utility;
-using ServiceLocator.Weapon;
+using Game.Sound;
+using Game.Utility;
+using Game.Weapon;
 using UnityEngine;
 
-namespace ServiceLocator.Player
+namespace Game.Player
 {
     public class PlayerActionReloadState<T> : IState<PlayerController, PlayerActionState>
     {

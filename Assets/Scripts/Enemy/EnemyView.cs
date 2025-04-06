@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-namespace ServiceLocator.Enemy
+namespace Game.Enemy
 {
     public class EnemyView : MonoBehaviour
     {

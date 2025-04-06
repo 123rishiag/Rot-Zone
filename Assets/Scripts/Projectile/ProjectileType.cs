@@ -1,4 +1,4 @@
-namespace ServiceLocator.Projectile
+namespace Game.Projectile
 {
     public enum ProjectileType
     {

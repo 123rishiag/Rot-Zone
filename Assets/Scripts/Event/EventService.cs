@@ -1,8 +1,8 @@
-using ServiceLocator.Sound;
-using ServiceLocator.Wave;
+using Game.Sound;
+using Game.Wave;
 using System;
 
-namespace ServiceLocator.Event
+namespace Game.Event
 {
     public class EventService
     {
