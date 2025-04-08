@@ -2,7 +2,7 @@
 
 ## Overview
 
-Rot Zone is a 3D zombie survival shooter, where player fight off waves of zombies using multiple weapon types, each with distinct projectiles. The game features NavMesh-based AI, hand-aligned weapon grips using IK, and head aiming based on weapon aim. The game integrates various design patterns, including **Dependency Injection**, **Model-View-Controller (MVC)**, **Observer Pattern**, **Object Pooling**, and **State Machine**, ensuring modularity and scalability. **Scriptable Objects** handle flexible data storage, while **Unity's New Input System** provides precise player controls.
+Rot Zone is a 3D zombie survival shooter, where player fight off waves of zombies using multiple weapon types, each with distinct projectiles. The game features NavMesh-based AI, hand-aligned weapon grips using IK, and head aiming based on weapon aim. The game integrates various design patterns, including **Service Locator**, **Dependency Injection**, **Model-View-Controller (MVC)**, **Observer Pattern**, **Object Pooling**, and **State Machine**, ensuring modularity and scalability. **Scriptable Objects** handle flexible data storage, while **Unity's New Input System** provides precise player controls.
 
 ---
 
