@@ -200,23 +200,23 @@ Stores reusable configurations for player, enemies, weapons, projectiles and wav
 
 ## Development Workflow
 
-| **Branch**                     | **Feature**                                              |
-|--------------------------------|----------------------------------------------------------|
-| `Feature-0-Project-Setup`      | Initial Unity project structure setup.                   |
-| `Feature-1-Character-Setup`    | Player controller, config, animation, and IK setup.      |
-| `Feature-2-Weapon-Setup`       | Weapon controllers and fire logic.                       |
-| `Feature-3-Service-Locator-DI` | Centrailized Services with Dependency Injection system.  |
-| `Feature-4-MVC`                | Applied MVC architecture across core systems.            |
-| `Feature-5-State-Machine`      | Integrated Generic State Machines.                       |
-| `Feature-6-Projectile-Setup`   | Setup projectile logic and pooling.                      |
-| `Feature-7-Object-Pool`        | Generic pooling for enemies and projectiles.             |
-| `Feature-8-Enemy-Setup`        | Enemy AI with NavMesh and states.                        |
-| `Feature-9-Wave-Level-Setup`   | Wave system and entity spawning.                         |
-| `Feature-10-UI-Setup`          | HUD, menus, and dynamic UI updates.                      |
-| `Feature-11-Observer-Pattern`  | Implemented event system for decoupling.                 |
-| `Feature-12-Sound-Setup`       | Integrated SFX and music using `SoundService`.           |
-| `Feature-13-Polish`            | Visual/audio polish and game balance tuning.             |
-| `Feature-14-Documentation`     | Created documentation and final project README.          |
+| **Branch**                       | **Feature**                                              |
+|----------------------------------|----------------------------------------------------------|
+| `Feature-0-Project-Setup`        | Initial Unity project structure setup.                   |
+| `Feature-1-Character-Setup`      | Player controller, config, animation, and IK setup.      |
+| `Feature-2-Weapon-Setup`         | Weapon controllers and fire logic.                       |
+| `Feature-3-Dependency-Injection` | Centrailized Services with Dependency Injection system.  |
+| `Feature-4-MVC`                  | Applied MVC architecture across core systems.            |
+| `Feature-5-State-Machine`        | Integrated Generic State Machines.                       |
+| `Feature-6-Projectile-Setup`     | Setup projectile logic and pooling.                      |
+| `Feature-7-Object-Pool`          | Generic pooling for enemies and projectiles.             |
+| `Feature-8-Enemy-Setup`          | Enemy AI with NavMesh and states.                        |
+| `Feature-9-Wave-Level-Setup`     | Wave system and entity spawning.                         |
+| `Feature-10-UI-Setup`            | HUD, menus, and dynamic UI updates.                      |
+| `Feature-11-Observer-Pattern`    | Implemented event system for decoupling.                 |
+| `Feature-12-Sound-Setup`         | Integrated SFX and music using `SoundService`.           |
+| `Feature-13-Polish`              | Visual/audio polish and game balance tuning.             |
+| `Feature-14-Documentation`       | Created documentation and final project README.          |
 
 ---
 
