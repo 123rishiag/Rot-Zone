@@ -93,8 +93,8 @@ Below is the block diagram illustrating the **core architecture**:
 
 ## Design Patterns and Programming Principles
 
-### 1. **Dependency Injection**  
-Centralized System for all Service's creation and passing services using method injection for flexibility and maintainability.
+### 1. **Service Locator & Dependency Injection**  
+Centralized System for all Service's creation using Soft Service Locator and passed services using method injection for flexibility and maintainability.
 
 ### 2. **Model-View-Controller (MVC)**  
 Separates concerns for data, visuals, and interactions:
