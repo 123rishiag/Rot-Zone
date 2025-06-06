@@ -28,7 +28,6 @@ namespace Game.Main
 
                 // Event Service
                 // Input Service
-                // Camera Service
                 // Sound Service
                 // UI Service
                 Owner.GetProjectileService().Update();
@@ -36,6 +35,7 @@ namespace Game.Main
                 Owner.GetPlayerService().Update();
                 Owner.GetEnemyService().Update();
                 // Spawn Service
+                // Camera Service
             }
             Owner.GetWaveService().Update();
         }
@@ -45,7 +45,6 @@ namespace Game.Main
             {
                 // Event Service
                 // Input Service
-                // Camera Service
                 // Sound Service
                 // UI Service
                 // Projectile Service
@@ -53,6 +52,7 @@ namespace Game.Main
                 // Player Service
                 // Enemy Service
                 // Spawn Service
+                // Camera Service
                 // Wave Service
             }
         }
@@ -62,7 +62,6 @@ namespace Game.Main
             {
                 // Event Service
                 // Input Service
-                // Camera Service
                 // Sound Service
                 // UI Service
                 // Projectile Service
@@ -70,6 +69,7 @@ namespace Game.Main
                 // Player Service
                 // Enemy Service
                 // Spawn Service
+                // Camera Service
             }
             // Wave Service
         }
