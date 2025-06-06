@@ -58,6 +58,41 @@ namespace Game.Player
             }
         }
 
+        // Debug Circle for Aiming
+        public void DrawDebugCircle(Vector3 _center, Vector3 _normal, float _radius, int _segments = 32)
+        {
+            // Creating the first axis perpendicular to the normal (in the plane of the circle)
+            Vector3 axisA = Vector3.Cross(_normal, Vector3.up);
+
+            // If normal is nearly parallel to Vector3.up, using Vector3.right to avoid zero vector
+            if (axisA.sqrMagnitude < 0.001f)
+                axisA = Vector3.Cross(_normal, Vector3.right);
+
+            axisA.Normalize();
+
+            // Creating the second axis perpendicular to both normal and axisA (also lies in circle plane)
+            Vector3 axisB = Vector3.Cross(_normal, axisA).normalized;
+
+            // Start point on the circle edge
+            Vector3 prevPoint = _center + axisA * _radius;
+
+            // Drawing all the segments
+            for (int i = 1; i <= _segments; ++i)
+            {
+                // Angle for this segment
+                float angle = (i * Mathf.PI * 2f) / _segments;
+
+                // Calculating next point using cosine and sine on the two axes
+                Vector3 nextPoint = _center + (axisA * Mathf.Cos(angle) + axisB * Mathf.Sin(angle)) * _radius;
+
+                // Drawing line between previous and next point
+                Debug.DrawLine(prevPoint, nextPoint, Color.red, 0.1f);
+
+                // Moving to the next point
+                prevPoint = nextPoint;
+            }
+        }
+
         // Setters
         public void SetRagDollActive(bool _flag)
         {
@@ -78,27 +113,6 @@ namespace Game.Player
         public WeaponIKData[] GetWeaponIKDatas() => weaponIKDatas;
         public MultiAimConstraint GetRightHandAimConstraint() => rightHandAimConstraint;
         public TwoBoneIKConstraint GetLeftHandIK() => leftHandIK;
-
-        // Debug Circle for Aiming
-        public void DrawDebugCircle(Vector3 center, Vector3 normal, float radius, int segments = 32)
-        {
-            Vector3 axisA = Vector3.Cross(normal, Vector3.up);
-            if (axisA.sqrMagnitude < 0.001f)
-                axisA = Vector3.Cross(normal, Vector3.right);
-
-            axisA.Normalize();
-            Vector3 axisB = Vector3.Cross(normal, axisA).normalized;
-
-            Vector3 prevPoint = center + axisA * radius;
-
-            for (int i = 1; i <= segments; i++)
-            {
-                float angle = (i * Mathf.PI * 2f) / segments;
-                Vector3 nextPoint = center + (axisA * Mathf.Cos(angle) + axisB * Mathf.Sin(angle)) * radius;
-                Debug.DrawLine(prevPoint, nextPoint, Color.red, 0.1f);
-                prevPoint = nextPoint;
-            }
-        }
 
     }
 }
