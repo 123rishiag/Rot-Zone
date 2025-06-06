@@ -23,7 +23,6 @@ namespace Game.Main
         // Private Services
         private EventService eventService;
         private InputService inputService;
-        private CameraService cameraService;
         private SoundService soundService;
         private UIService uiService;
         private ProjectileService projectileService;
@@ -31,6 +30,7 @@ namespace Game.Main
         private PlayerService playerService;
         private EnemyService enemyService;
         private SpawnService spawnService;
+        private CameraService cameraService;
         private WaveService waveService;
 
         public GameController Owner { get; set; }
@@ -63,7 +63,6 @@ namespace Game.Main
         {
             eventService = new EventService();
             inputService = new InputService();
-            cameraService = new CameraService(gameService.cameraConfig, gameService.cmCamera);
             soundService = new SoundService(gameService.soundConfig, gameService.bgmSource, gameService.sfxSource);
             uiService = new UIService(gameService.uiCanvas, this);
             projectileService = new ProjectileService(gameService.projectileConfig, gameService.projectilePoolPanel);
@@ -71,6 +70,7 @@ namespace Game.Main
             playerService = new PlayerService(gameService.playerConfig);
             enemyService = new EnemyService(gameService.enemyConfig, gameService.enemyPoolPanel);
             spawnService = new SpawnService(gameService.spawnTransformPanel);
+            cameraService = new CameraService(gameService.cameraConfig, gameService.cmCamera);
             waveService = new WaveService(gameService.waveConfig);
         }
 
@@ -83,9 +83,9 @@ namespace Game.Main
             projectileService.Init();
             weaponService.Init(eventService, projectileService);
             playerService.Init(eventService, inputService, weaponService);
-            cameraService.Init(playerService);
             enemyService.Init(eventService, playerService);
             spawnService.Init(playerService, enemyService);
+            cameraService.Init(playerService);
             waveService.Init(eventService, inputService, spawnService, playerService, enemyService);
         }
         private void CreateStateMachine()
@@ -98,7 +98,6 @@ namespace Game.Main
         {
             // Event Service
             // Input Service
-            cameraService.Reset();
             soundService.Reset();
             uiService.Reset();
             projectileService.Reset();
@@ -106,13 +105,13 @@ namespace Game.Main
             playerService.Reset();
             enemyService.Reset();
             // Spawn Service
+            cameraService.Reset();
             waveService.Reset();
         }
         public void Destroy()
         {
             // Event Service
             inputService.Destroy();
-            // Camera Service
             // Sound Service
             uiService.Destroy();
             // Projectile Service
@@ -120,6 +119,7 @@ namespace Game.Main
             // Player Service
             // Enemy Service
             // Spawn Service
+            // Camera Service
             // Wave Service
         }
         public void Update() => gameStateMachine.Update();
@@ -161,13 +161,13 @@ namespace Game.Main
         // Getters
         public EventService GetEventService() => eventService;
         public InputService GetInputService() => inputService;
-        public CameraService GetCameraService() => cameraService;
         public UIService GetUIService() => uiService;
         public ProjectileService GetProjectileService() => projectileService;
         public WeaponService GetWeaponService() => weaponService;
         public PlayerService GetPlayerService() => playerService;
         public EnemyService GetEnemyService() => enemyService;
         public SpawnService GetSpawnService() => spawnService;
+        public CameraService GetCameraService() => cameraService;
         public WaveService GetWaveService() => waveService;
 
     }
