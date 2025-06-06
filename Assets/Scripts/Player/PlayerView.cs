@@ -78,5 +78,27 @@ namespace Game.Player
         public WeaponIKData[] GetWeaponIKDatas() => weaponIKDatas;
         public MultiAimConstraint GetRightHandAimConstraint() => rightHandAimConstraint;
         public TwoBoneIKConstraint GetLeftHandIK() => leftHandIK;
+
+        // Debug Circle for Aiming
+        public void DrawDebugCircle(Vector3 center, Vector3 normal, float radius, int segments = 32)
+        {
+            Vector3 axisA = Vector3.Cross(normal, Vector3.up);
+            if (axisA.sqrMagnitude < 0.001f)
+                axisA = Vector3.Cross(normal, Vector3.right);
+
+            axisA.Normalize();
+            Vector3 axisB = Vector3.Cross(normal, axisA).normalized;
+
+            Vector3 prevPoint = center + axisA * radius;
+
+            for (int i = 1; i <= segments; i++)
+            {
+                float angle = (i * Mathf.PI * 2f) / segments;
+                Vector3 nextPoint = center + (axisA * Mathf.Cos(angle) + axisB * Mathf.Sin(angle)) * radius;
+                Debug.DrawLine(prevPoint, nextPoint, Color.red, 0.1f);
+                prevPoint = nextPoint;
+            }
+        }
+
     }
 }

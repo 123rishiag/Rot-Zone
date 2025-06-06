@@ -62,7 +62,7 @@ namespace Game.Main
             {
                 // Event Service
                 // Input Service
-                Owner.GetCameraService().LateUpdate();
+                // Camera Service
                 // Sound Service
                 // UI Service
                 // Projectile Service

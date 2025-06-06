@@ -6,6 +6,7 @@ using Game.UI;
 using Game.Vision;
 using Game.Wave;
 using Game.Weapon;
+using Unity.Cinemachine;
 using UnityEngine;
 
 namespace Game.Main
@@ -14,7 +15,7 @@ namespace Game.Main
     {
         [Header("Camera Variables")]
         public CameraConfig cameraConfig;
-        public Camera mainCamera;
+        public CinemachineCamera cmCamera;
 
         [Header("Sound Variables")]
         [SerializeField] public SoundConfig soundConfig;

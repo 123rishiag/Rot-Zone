@@ -86,12 +86,15 @@ namespace Game.Player
                 currentWeaponTransform = weaponIKData.weaponTransform;
 
                 AttachLeftHandToWeapon(currentWeaponType);
+                SetRightHandWeaponOffset();
+
                 eventService.OnPlaySoundEffectEvent.Invoke(SoundType.WEAPON_EQUIP);
             }
 
             SetCurrentWeaponSetting();
             playerController.UpdateAmmoUI();
         }
+
         private void SwitchOffWeapons()
         {
             ReloadComplete();
@@ -99,6 +102,11 @@ namespace Game.Player
             {
                 weapons[weaponIKData.weaponType].DisableWeapon();
             }
+        }
+
+        private void SetRightHandWeaponOffset()
+        {
+            playerController.GetView().GetRightHandAimConstraint().data.offset = currentWeaponTransform.rightHand_TargetOffset;
         }
 
         private void AttachLeftHandToWeapon(WeaponType _weaponType)

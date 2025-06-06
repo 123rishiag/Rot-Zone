@@ -22,11 +22,11 @@ namespace Game.Player
         }
 
         public void Init(
-            EventService _eventService, InputService _inputService, CameraService _cameraService, WeaponService _weaponService)
+            EventService _eventService, InputService _inputService, WeaponService _weaponService)
         {
             // Setting Variables
             playerController = new PlayerController(playerConfig.playerData, playerConfig.playerPrefab, Vector3.zero,
-                _eventService, _inputService, _cameraService, _weaponService);
+                _eventService, _inputService, _weaponService);
             Reset();
         }
 

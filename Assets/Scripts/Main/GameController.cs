@@ -63,7 +63,7 @@ namespace Game.Main
         {
             eventService = new EventService();
             inputService = new InputService();
-            cameraService = new CameraService(gameService.cameraConfig, gameService.mainCamera);
+            cameraService = new CameraService(gameService.cameraConfig, gameService.cmCamera);
             soundService = new SoundService(gameService.soundConfig, gameService.bgmSource, gameService.sfxSource);
             uiService = new UIService(gameService.uiCanvas, this);
             projectileService = new ProjectileService(gameService.projectileConfig, gameService.projectilePoolPanel);
@@ -78,12 +78,12 @@ namespace Game.Main
         {
             // Event Service
             inputService.Init();
-            cameraService.Init(inputService, playerService);
             soundService.Init(eventService);
             uiService.Init(eventService);
             projectileService.Init();
             weaponService.Init(eventService, projectileService);
-            playerService.Init(eventService, inputService, cameraService, weaponService);
+            playerService.Init(eventService, inputService, weaponService);
+            cameraService.Init(playerService);
             enemyService.Init(eventService, playerService);
             spawnService.Init(playerService, enemyService);
             waveService.Init(eventService, inputService, spawnService, playerService, enemyService);
