@@ -822,23 +822,23 @@ MonoBehaviour:
     weaponTransform:
       weaponHolder: {fileID: 8572400879980588013}
       rightHand_TargetTransform: {fileID: 601330751473462148}
+      rightHand_TargetOffset: {x: -5, y: 0, z: 0}
       leftHand_TargetTransform: {fileID: 5018506583136142878}
       leftHand_HintTransform: {fileID: 9073229748077757751}
-      weaponVerticalOffeset: -100
   - weaponType: 2
     weaponTransform:
       weaponHolder: {fileID: 1478926393595562786}
       rightHand_TargetTransform: {fileID: 3161840467740064994}
+      rightHand_TargetOffset: {x: 1, y: 0, z: 1}
       leftHand_TargetTransform: {fileID: 834724104272120410}
       leftHand_HintTransform: {fileID: 8334575163125056902}
-      weaponVerticalOffeset: 0
   - weaponType: 3
     weaponTransform:
       weaponHolder: {fileID: 7428284830406645795}
       rightHand_TargetTransform: {fileID: 2243566336365966069}
+      rightHand_TargetOffset: {x: -10, y: 0, z: -5}
       leftHand_TargetTransform: {fileID: 732931980772964330}
       leftHand_HintTransform: {fileID: 15097190717707419}
-      weaponVerticalOffeset: -300
   rightHandAimConstraint: {fileID: 8310985297325246404}
   leftHandIK: {fileID: 6056014414725304192}
   aimTransform: {fileID: 5103283510018147113}

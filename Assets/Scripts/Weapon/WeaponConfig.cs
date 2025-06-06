@@ -40,10 +40,21 @@ namespace Game.Weapon
     [Serializable]
     public class WeaponTransform
     {
-        public Transform weaponHolder;
+        // All WeaponIK Transforms for weapon alignments based on weapon type
+
+        // Transform GameObject for Weapon Holder
+        public Transform weaponHolder; 
+
+        // Right Hand Transform, how the character will hold weapon on right hand
         public Transform rightHand_TargetTransform;
+
+        // How much Offset weapon should have after right hand is set for weapon to point forward
+        public Vector3 rightHand_TargetOffset; 
+
+        // Left Hand Transforms after weapon is set on right hand
         public Transform leftHand_TargetTransform;
+
+        // Left Hand Hint to change other left hand bones based on posture, so posture remains maintained
         public Transform leftHand_HintTransform;
-        public float weaponVerticalOffeset = 0f;
     }
 }

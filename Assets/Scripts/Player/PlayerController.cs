@@ -1,7 +1,6 @@
 using Game.Controls;
 using Game.Event;
 using Game.Utility;
-using Game.Vision;
 using Game.Weapon;
 using System.Collections;
 using UnityEngine;
@@ -38,10 +37,9 @@ namespace Game.Player
         // Private Services
         public EventService EventService { get; private set; }
         public InputService InputService { get; private set; }
-        private CameraService cameraService;
 
         public PlayerController(PlayerData _playerData, PlayerView _playerPrefab, Vector3 _spawnPosition,
-            EventService _eventService, InputService _inputService, CameraService _cameraService, WeaponService _weaponService)
+            EventService _eventService, InputService _inputService, WeaponService _weaponService)
         {
             // Setting Variables
             playerModel = new PlayerModel(_playerData);
@@ -53,7 +51,6 @@ namespace Game.Player
             // Setting Services
             EventService = _eventService;
             InputService = _inputService;
-            cameraService = _cameraService;
 
             // Setting Elements
             CreateStateMachine();
@@ -175,9 +172,9 @@ namespace Game.Player
             // If Player is pressing any movement input, movement direction will be based on movement input
             if (inputDirection.magnitude > 0.1f)
             {
-                // Fetching Target Direction where player is trying to move in world based on input and camera
-                targetDirection = (cameraService.GetCameraForwardXZNormalized() * inputDirection.z +
-                    cameraService.GetCameraRightXZNormalized() * inputDirection.x).normalized;
+                // Fetching Target Direction where player is trying to move in world based on input and world location 
+                targetDirection = (GetXZNormalized(Vector3.forward) * inputDirection.z +
+                    GetXZNormalized(Vector3.right) * inputDirection.x).normalized;
 
                 lastMoveDirection = moveDirection;
             }
@@ -255,25 +252,35 @@ namespace Game.Player
             {
                 // Setting Aim Based on Mouse Position
                 Ray ray = Camera.main.ScreenPointToRay(aimPosition);
+                Vector3 hitPoint;
 
-                // Getting rayPoint near player
-                Vector3 aimTarget = ray.GetPoint(1000f);
-
+                if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, playerModel.GroundLayer))
+                {
+                    // Getting rayPoint near player
+                    hitPoint = hit.point;                    
+                }
+                else
+                {
+                    hitPoint = aimPosition;
+                    hitPoint.y = 0;
+                }
+                playerView.DrawDebugCircle(hitPoint, hit.normal, 1f);
                 // Setting Offsets for Weapons
-                aimTarget = new Vector3(
-                    aimTarget.x,
-                    aimTarget.y + playerWeaponController.GetCurrentWeaponTransform().weaponVerticalOffeset,
-                    aimTarget.z);
+                Vector3 aimTarget = new Vector3(
+                    hitPoint.x,
+                    hitPoint.y + playerView.GetCharacterController().height/2,
+                    hitPoint.z);
 
                 playerView.GetAimTransform().position = aimTarget;
-
                 playerWeaponController.GetCurrentWeapon().SetAimTarget(aimTarget);
+
+                RotateTowards(GetXZNormalized(aimTarget - playerView.transform.position));
             }
             else
             {
-                playerView.GetAimTransform().localPosition = playerModel.AimTransformDefaultPosition;
+                playerView.GetAimTransform().localPosition = GetXZNormalized(moveDirection);
+                RotateTowards(GetXZNormalized(moveDirection));
             }
-            RotateTowards(cameraService.GetCameraForwardXZNormalized());
         }
         #endregion
 
@@ -336,6 +343,12 @@ namespace Game.Player
         public Transform GetTransform() => playerView.transform;
         public Vector3 GetMoveDirection() => moveDirection;
         public float GetCurrentSpeed() => currentSpeed;
+        public Vector3 GetXZNormalized(Vector3 _direction)
+        {
+            _direction.y = 0;
+            _direction.Normalize();
+            return _direction;
+        }
         public LayerMask GetLayerMask()
         {
             int layer = playerView.gameObject.layer;

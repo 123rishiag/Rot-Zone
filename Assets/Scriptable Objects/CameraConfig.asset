@@ -12,11 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 542f96ee1f831a84fbb1dddd155af1ef, type: 3}
   m_Name: CameraConfig
   m_EditorClassIdentifier: 
-  mouseSensitivity: 0.5
-  cameraSideOffset: 0.5
-  minPitch: 10
-  maxPitch: 20
-  cameraDistanceOffset: 4
+  isometricPitch: 45
+  cameraDistanceOffset: 9
   cameraHeightOffset: 1
-  initialYaw: 0
-  initialPitch: 20
+  cameraDamping: 0.75
