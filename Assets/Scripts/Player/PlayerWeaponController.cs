@@ -135,6 +135,7 @@ namespace Game.Player
         public void FireWeapon()
         {
             ReloadComplete();
+            playerController.ApplyKickback();
             weapons[currentWeaponType].FireWeapon();
 
             // To Stop Constant Firing if the weapon is Single Type
@@ -144,6 +145,7 @@ namespace Game.Player
             }
             playerController.UpdateAmmoUI();
         }
+
         // Setters
         private void SetCurrentWeaponSetting()
         {

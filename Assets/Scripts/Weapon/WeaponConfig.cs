@@ -22,6 +22,8 @@ namespace Game.Weapon
         public ProjectileType weaponProjectileType;
         public WeaponFireType weaponFireType;
         public float weaponFireRateInSeconds = 1f;
+        [Range(2, 9)]
+        public int weaponKickBackFactor = 3;
 
         [Header("Weapon Aim Settings")]
         public float weaponAimLaserMaxDistance = 5f;
@@ -43,13 +45,13 @@ namespace Game.Weapon
         // All WeaponIK Transforms for weapon alignments based on weapon type
 
         // Transform GameObject for Weapon Holder
-        public Transform weaponHolder; 
+        public Transform weaponHolder;
 
         // Right Hand Transform, how the character will hold weapon on right hand
         public Transform rightHand_TargetTransform;
 
         // How much Offset weapon should have after right hand is set for weapon to point forward
-        public Vector3 rightHand_TargetOffset; 
+        public Vector3 rightHand_TargetOffset;
 
         // Left Hand Transforms after weapon is set on right hand
         public Transform leftHand_TargetTransform;

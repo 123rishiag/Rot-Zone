@@ -257,7 +257,7 @@ namespace Game.Player
                 if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, playerModel.GroundLayer))
                 {
                     // Getting rayPoint near player
-                    hitPoint = hit.point;                    
+                    hitPoint = hit.point;
                 }
                 else
                 {
@@ -266,11 +266,11 @@ namespace Game.Player
                 }
 
                 // playerView.DrawDebugCircle(hitPoint, hit.normal, 1f);
-                
+
                 // Setting Offsets for Weapons
                 Vector3 aimTarget = new Vector3(
                     hitPoint.x,
-                    hitPoint.y + playerView.GetCharacterController().height/2,
+                    hitPoint.y + playerView.GetCharacterController().height / 2,
                     hitPoint.z);
 
                 RotateTowards(GetXZNormalized(aimTarget - playerView.transform.position));
@@ -282,6 +282,17 @@ namespace Game.Player
             {
                 RotateTowards(GetXZNormalized(moveDirection));
                 playerView.GetAimTransform().localPosition = playerModel.AimTransformDefaultPosition;
+            }
+        }
+        #endregion
+
+        #region Special Actions
+
+        public void ApplyKickback()
+        {
+            if (playerWeaponController.GetCurrentWeapon().IsAmmoLeft())
+            {
+                currentSpeed /= playerWeaponController.GetCurrentWeapon().GetModel().WeaponKickBackFactor;
             }
         }
         #endregion
