@@ -11,6 +11,7 @@ namespace Game.Weapon
             WeaponProjectileType = _weaponData.weaponProjectileType;
             WeaponFireType = _weaponData.weaponFireType;
             WeaponFireRateInSeconds = _weaponData.weaponFireRateInSeconds;
+            WeaponKickBackFactor = _weaponData.weaponKickBackFactor;
 
             WeaponAimLaserMaxDistance = _weaponData.weaponAimLaserMaxDistance;
 
@@ -23,6 +24,7 @@ namespace Game.Weapon
         public ProjectileType WeaponProjectileType { get; private set; }
         public WeaponFireType WeaponFireType { get; private set; }
         public float WeaponFireRateInSeconds { get; private set; }
+        public int WeaponKickBackFactor { get; private set; }
 
         public float WeaponAimLaserMaxDistance { get; private set; }
 

@@ -44,17 +44,6 @@ namespace Game.Weapon
             cachedFireDirection = weaponView.GetFirePoint().forward;
             weaponView.UpdateAimLaser(cachedFirePosition + cachedFireDirection * weaponModel.WeaponAimLaserMaxDistance);
         }
-        public bool CanReloadWeapon()
-        {
-            return (CurrentAmmo < weaponModel.WeaponMaxCapacity && TotalAmmoLeft > 0) ? true : false;
-        }
-
-        public bool CanFireWeapon()
-        {
-            return (lastFireTime == 0f ||
-                (Time.time > lastFireTime + 1 / weaponModel.WeaponFireRateInSeconds)
-                ) ? true : false;
-        }
 
         public void ReloadWeapon()
         {
@@ -67,7 +56,7 @@ namespace Game.Weapon
 
         public void FireWeapon()
         {
-            if (CurrentAmmo > 0)
+            if (IsAmmoLeft())
             {
                 projectileService.FireProjectile(weaponModel.WeaponProjectileType, cachedFirePosition, cachedFireDirection);
                 --CurrentAmmo;
@@ -101,6 +90,18 @@ namespace Game.Weapon
         }
 
         // Getters
+        public bool IsAmmoLeft() => CurrentAmmo > 0 ? true : false;
+        public bool CanReloadWeapon()
+        {
+            return (CurrentAmmo < weaponModel.WeaponMaxCapacity && TotalAmmoLeft > 0) ? true : false;
+        }
+
+        public bool CanFireWeapon()
+        {
+            return (lastFireTime == 0f ||
+                (Time.time > lastFireTime + 1 / weaponModel.WeaponFireRateInSeconds)
+                ) ? true : false;
+        }
         public WeaponModel GetModel() => weaponModel;
         public WeaponView GetView() => weaponView;
     }
