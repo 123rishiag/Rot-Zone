@@ -12,6 +12,7 @@ namespace Game.Weapon
 
         private Vector3 cachedFirePosition;
         private Vector3 cachedFireDirection;
+        public Vector3 WeaponLaserEndPoint;
 
         private float lastFireTime;
         public int CurrentAmmo { get; private set; }
@@ -38,11 +39,17 @@ namespace Game.Weapon
             projectileService = _projectileService;
         }
 
+        public void Update()
+        {
+            UpdateLaserEndPoint();
+        }
+
         public void LateUpdate()
         {
             cachedFirePosition = weaponView.GetFirePoint().position;
             cachedFireDirection = weaponView.GetFirePoint().forward;
-            weaponView.UpdateAimLaser(cachedFirePosition + cachedFireDirection * weaponModel.WeaponAimLaserMaxDistance);
+            weaponView.UpdateAimLaser(WeaponLaserEndPoint);
+            DrawLaserEndPoint();
         }
 
         public void ReloadWeapon()
@@ -64,6 +71,24 @@ namespace Game.Weapon
             }
             lastFireTime = Time.time;
         }
+        private void UpdateLaserEndPoint()
+        {
+            if (Physics.Raycast(cachedFirePosition, cachedFireDirection, out RaycastHit hit,
+                weaponModel.WeaponAimLaserMaxDistance, weaponModel.WeaponGroundLayer))
+            {
+                WeaponLaserEndPoint = hit.point;
+            }
+            else
+            {
+                WeaponLaserEndPoint = cachedFirePosition + cachedFireDirection * weaponModel.WeaponAimLaserMaxDistance;
+            }
+        }
+
+        private void DrawLaserEndPoint()
+        {
+            // For Debug
+            Debug.DrawLine(cachedFirePosition, WeaponLaserEndPoint, Color.green, 0.1f);
+        }
 
         public abstract void PlayFireSound();
 
@@ -72,10 +97,6 @@ namespace Game.Weapon
             CurrentAmmo = 0;
             TotalAmmoLeft = _ammoAmount;
             ReloadWeapon();
-        }
-        public void SetAimTarget(Vector3 _aimTarget)
-        {
-            weaponView.UpdateAimLaser(_aimTarget);
         }
 
         public void EnableWeapon() => weaponView.gameObject.SetActive(true);
@@ -95,13 +116,14 @@ namespace Game.Weapon
         {
             return (CurrentAmmo < weaponModel.WeaponMaxCapacity && TotalAmmoLeft > 0) ? true : false;
         }
-
         public bool CanFireWeapon()
         {
             return (lastFireTime == 0f ||
                 (Time.time > lastFireTime + 1 / weaponModel.WeaponFireRateInSeconds)
                 ) ? true : false;
         }
+
+        public bool IsEnabled() => weaponView.gameObject.activeSelf;
         public WeaponModel GetModel() => weaponModel;
         public WeaponView GetView() => weaponView;
     }

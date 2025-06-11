@@ -32,11 +32,24 @@ namespace Game.Weapon
             projectileService = _projectileService;
         }
 
+        public void Update()
+        {
+            foreach (WeaponController weaponController in weaponControllers)
+            {
+                if(weaponController.IsEnabled())
+                {
+                    weaponController.Update();
+                }
+            }
+        }
         public void LateUpdate()
         {
             foreach (WeaponController weaponController in weaponControllers)
             {
-                weaponController.LateUpdate();
+                if (weaponController.IsEnabled())
+                {
+                    weaponController.LateUpdate();
+                }
             }
         }
 

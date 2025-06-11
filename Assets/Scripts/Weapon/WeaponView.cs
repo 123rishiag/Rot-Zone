@@ -23,7 +23,6 @@ namespace Game.Weapon
             aimLaser.SetPosition(1, _aimTarget);
         }
 
-
         // Getters
         public Transform GetFirePoint() => firePoint;
     }

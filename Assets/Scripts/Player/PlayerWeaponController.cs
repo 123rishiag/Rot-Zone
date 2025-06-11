@@ -104,7 +104,7 @@ namespace Game.Player
             }
         }
 
-        private void SetRightHandWeaponOffset()
+        public void SetRightHandWeaponOffset()
         {
             playerController.GetView().GetRightHandAimConstraint().data.offset = currentWeaponTransform.rightHand_TargetOffset;
         }

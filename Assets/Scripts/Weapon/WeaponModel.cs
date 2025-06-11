@@ -1,4 +1,5 @@
 using Game.Projectile;
+using UnityEngine;
 
 namespace Game.Weapon
 {
@@ -14,6 +15,7 @@ namespace Game.Weapon
             WeaponKickBackFactor = _weaponData.weaponKickBackFactor;
 
             WeaponAimLaserMaxDistance = _weaponData.weaponAimLaserMaxDistance;
+            WeaponGroundLayer = _weaponData.weaponGroundLayer;
 
             WeaponMaxCapacity = _weaponData.weaponMaxCapacity;
         }
@@ -27,6 +29,7 @@ namespace Game.Weapon
         public int WeaponKickBackFactor { get; private set; }
 
         public float WeaponAimLaserMaxDistance { get; private set; }
+        public LayerMask WeaponGroundLayer { get; private set; }
 
         public int WeaponMaxCapacity { get; private set; }
     }

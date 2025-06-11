@@ -836,7 +836,7 @@ MonoBehaviour:
     weaponTransform:
       weaponHolder: {fileID: 7428284830406645795}
       rightHand_TargetTransform: {fileID: 2243566336365966069}
-      rightHand_TargetOffset: {x: -10, y: 0, z: -5}
+      rightHand_TargetOffset: {x: -10, y: 0, z: -10}
       leftHand_TargetTransform: {fileID: 732931980772964330}
       leftHand_HintTransform: {fileID: 15097190717707419}
   rightHandAimConstraint: {fileID: 8310985297325246404}
