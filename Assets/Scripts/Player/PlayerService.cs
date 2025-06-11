@@ -22,11 +22,11 @@ namespace Game.Player
         }
 
         public void Init(
-            EventService _eventService, InputService _inputService, WeaponService _weaponService)
+            EventService _eventService, InputService _inputService, WeaponService _weaponService, CameraService _cameraService)
         {
             // Setting Variables
             playerController = new PlayerController(playerConfig.playerData, playerConfig.playerPrefab, Vector3.zero,
-                _eventService, _inputService, _weaponService);
+                _eventService, _inputService, _weaponService, _cameraService);
             Reset();
         }
 
@@ -39,6 +39,7 @@ namespace Game.Player
         }
 
         public void Update() => playerController.Update();
+        public void LateUpdate() => playerController.LateUpdate();
 
         public void OnSpawn(Func<Vector3> _spawnPositionFunc, PlayerSpawnData _spawnData)
         {

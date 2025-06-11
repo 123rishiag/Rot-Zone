@@ -12,6 +12,7 @@ namespace Game.Vision
         private PlayerService playerService;
 
         private CinemachinePositionComposer positionComposer;
+        public Transform CameraTransform { get; private set; }
 
         public CameraService(CameraConfig _cameraConfig, CinemachineCamera _cinemachineCamera)
         {
@@ -34,6 +35,7 @@ namespace Game.Vision
             {
                 Debug.LogError("Position Composer not found!!!");
             }
+            CameraTransform = cmCamera.transform;
         }
 
         public void Reset()
@@ -50,8 +52,8 @@ namespace Game.Vision
 
             // Setting Camera Rotation
             cmCamera.transform.rotation = Quaternion.Euler(
-                cameraConfig.isometricPitch,
-                0f,
+                cameraConfig.cameraPitch,
+                cameraConfig.cameraYaw,
                 0f
             );
 

@@ -31,7 +31,7 @@ namespace Game.Main
                 // Sound Service
                 // UI Service
                 Owner.GetProjectileService().Update();
-                // Weapon Service
+                Owner.GetWeaponService().Update();
                 Owner.GetPlayerService().Update();
                 Owner.GetEnemyService().Update();
                 // Spawn Service
@@ -66,7 +66,7 @@ namespace Game.Main
                 // UI Service
                 // Projectile Service
                 Owner.GetWeaponService().LateUpdate();
-                // Player Service
+                Owner.GetPlayerService().LateUpdate();
                 // Enemy Service
                 // Spawn Service
                 // Camera Service

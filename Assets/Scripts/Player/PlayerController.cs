@@ -1,6 +1,7 @@
 using Game.Controls;
 using Game.Event;
 using Game.Utility;
+using Game.Vision;
 using Game.Weapon;
 using System.Collections;
 using UnityEngine;
@@ -37,9 +38,10 @@ namespace Game.Player
         // Private Services
         public EventService EventService { get; private set; }
         public InputService InputService { get; private set; }
+        private CameraService cameraService;
 
         public PlayerController(PlayerData _playerData, PlayerView _playerPrefab, Vector3 _spawnPosition,
-            EventService _eventService, InputService _inputService, WeaponService _weaponService)
+            EventService _eventService, InputService _inputService, WeaponService _weaponService, CameraService _cameraService)
         {
             // Setting Variables
             playerModel = new PlayerModel(_playerData);
@@ -51,6 +53,7 @@ namespace Game.Player
             // Setting Services
             EventService = _eventService;
             InputService = _inputService;
+            cameraService = _cameraService;
 
             // Setting Elements
             CreateStateMachine();
@@ -91,6 +94,11 @@ namespace Game.Player
             playerActionStateMachine.Update();
 
             playerAnimationController.UpdateAnimation();
+        }
+
+        public void LateUpdate()
+        {
+
         }
 
         #region UI
@@ -172,9 +180,9 @@ namespace Game.Player
             // If Player is pressing any movement input, movement direction will be based on movement input
             if (inputDirection.magnitude > 0.1f)
             {
-                // Fetching Target Direction where player is trying to move in world based on input and world location 
-                targetDirection = (GetXZNormalized(Vector3.forward) * inputDirection.z +
-                    GetXZNormalized(Vector3.right) * inputDirection.x).normalized;
+                // Fetching Target Direction where player is trying to move in world based on input and camera 
+                targetDirection = (GetXZNormalized(cameraService.CameraTransform.forward) * inputDirection.z +
+                    GetXZNormalized(cameraService.CameraTransform.right) * inputDirection.x).normalized;
 
                 lastMoveDirection = moveDirection;
             }
@@ -265,8 +273,6 @@ namespace Game.Player
                     hitPoint.y = 0;
                 }
 
-                // playerView.DrawDebugCircle(hitPoint, hit.normal, 1f);
-
                 // Setting Offsets for Weapons
                 Vector3 aimTarget = new Vector3(
                     hitPoint.x,
@@ -276,7 +282,7 @@ namespace Game.Player
                 RotateTowards(GetXZNormalized(aimTarget - playerView.transform.position));
                 playerView.GetAimTransform().position = aimTarget;
 
-                playerWeaponController.GetCurrentWeapon().SetAimTarget(aimTarget);
+                playerView.DrawDebugCircle(hitPoint, hit.normal, 1f);
             }
             else
             {

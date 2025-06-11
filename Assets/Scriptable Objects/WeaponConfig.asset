@@ -20,6 +20,9 @@ MonoBehaviour:
     weaponFireRateInSeconds: 1
     weaponKickBackFactor: 3
     weaponAimLaserMaxDistance: 15
+    weaponGroundLayer:
+      serializedVersion: 2
+      m_Bits: 384
     weaponMaxCapacity: 8
   - weaponType: 2
     weaponPrefab: {fileID: -7221344354335743011, guid: 7444562fe5798e846a4045a93e123308, type: 3}
@@ -28,6 +31,9 @@ MonoBehaviour:
     weaponFireRateInSeconds: 5
     weaponKickBackFactor: 2
     weaponAimLaserMaxDistance: 20
+    weaponGroundLayer:
+      serializedVersion: 2
+      m_Bits: 384
     weaponMaxCapacity: 100
   - weaponType: 3
     weaponPrefab: {fileID: 9203822970734637043, guid: c9841888fa5041d499ada59f73087c6a, type: 3}
@@ -36,4 +42,7 @@ MonoBehaviour:
     weaponFireRateInSeconds: 1
     weaponKickBackFactor: 9
     weaponAimLaserMaxDistance: 5
+    weaponGroundLayer:
+      serializedVersion: 2
+      m_Bits: 384
     weaponMaxCapacity: 5
