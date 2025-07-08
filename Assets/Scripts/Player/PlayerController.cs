@@ -259,19 +259,23 @@ namespace Game.Player
             // Setting Aim Based on Mouse Position
             Ray ray = Camera.main.ScreenPointToRay(aimPosition);
             Vector3 hitPoint;
+            Vector3 offset;
 
             if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, playerModel.AimLayer))
             {
                 hitPoint = hit.point;
+                offset = hit.normal;
             }
             else
             {
                 hitPoint = aimPosition;
+                offset = Vector3.zero;
                 hitPoint.y = 0;
             }
 
             RotateTowards(GetXZNormalized(hitPoint - playerView.transform.position));
-            playerView.GetAimTransform().position = hitPoint;
+            playerView.GetAimTransform().position = hitPoint + offset * 0.01f;
+            playerView.GetAimTransform().forward = offset;
 
             playerView.DrawDebugCircle(hitPoint, hit.normal, 1f);
 
