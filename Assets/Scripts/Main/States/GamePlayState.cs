@@ -31,7 +31,7 @@ namespace Game.Main
                 // Sound Service
                 // UI Service
                 Owner.GetProjectileService().Update();
-                Owner.GetWeaponService().Update();
+                // Weapon Service
                 Owner.GetPlayerService().Update();
                 Owner.GetEnemyService().Update();
                 // Spawn Service

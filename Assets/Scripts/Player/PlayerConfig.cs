@@ -34,5 +34,6 @@ namespace Game.Player
 
         [Header("Aim Settings")]
         public Vector3 aimTransformDefaultPosition = new Vector3(0f, 1.5f, 1f);
+        public LayerMask aimLayer;
     }
 }

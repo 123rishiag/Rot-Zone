@@ -19,8 +19,8 @@ MonoBehaviour:
     runSpeed: 5
     accelerationFactor: 5
     decelerationFactor: 2.5
-    directionSmoothSpeed: 10
-    rotationSpeed: 3
+    directionSmoothSpeed: 20
+    rotationSpeed: 10
     gravityFactor: 9.81
     groundCheckDistance: 0.2
     groundLayer:
@@ -28,3 +28,6 @@ MonoBehaviour:
       m_Bits: 384
     weaponLayerWeightChangeFactor: 10
     aimTransformDefaultPosition: {x: 0, y: 1.5, z: 1}
+    aimLayer:
+      serializedVersion: 2
+      m_Bits: 2432
