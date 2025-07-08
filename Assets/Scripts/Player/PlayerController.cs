@@ -270,20 +270,14 @@ namespace Game.Player
                 hitPoint.y = 0;
             }
 
-            // Setting Offsets for Weapons
-            Vector3 aimTarget = new Vector3(
-                hitPoint.x,
-                hitPoint.y,
-                hitPoint.z);
-
-            RotateTowards(GetXZNormalized(aimTarget - playerView.transform.position));
-            playerView.GetAimTransform().position = aimTarget;
+            RotateTowards(GetXZNormalized(hitPoint - playerView.transform.position));
+            playerView.GetAimTransform().position = hitPoint;
 
             playerView.DrawDebugCircle(hitPoint, hit.normal, 1f);
 
             if (playerWeaponController.GetCurrentWeaponType() != WeaponType.NONE)
             {
-                playerWeaponController.GetCurrentWeapon().UpdateWeaponAimPoint(aimTarget);
+                playerWeaponController.GetCurrentWeapon().UpdateWeaponAimPoint(hitPoint);
             }
         }
         #endregion
