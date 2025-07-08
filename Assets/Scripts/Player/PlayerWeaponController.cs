@@ -81,7 +81,7 @@ namespace Game.Player
 
             if (currentWeaponType != WeaponType.NONE)
             {
-                weapons[currentWeaponType].EnableWeapon();
+                weapons[currentWeaponType].EnableWeapon(playerController.GetModel().AimLayer);
 
                 WeaponIKData weaponIKData = GetWeaponIKData(currentWeaponType);
                 currentWeaponTransform = weaponIKData.weaponTransform;

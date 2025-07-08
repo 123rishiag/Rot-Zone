@@ -10,6 +10,8 @@ namespace Game.Weapon
         private WeaponModel weaponModel;
         private WeaponView weaponView;
 
+        private LayerMask aimLayer;
+
         private Vector3 cachedFirePosition;
         private Vector3 cachedFireDirection;
         private Vector3 aimTarget;
@@ -42,11 +44,26 @@ namespace Game.Weapon
         public void LateUpdate()
         {
             cachedFirePosition = weaponView.GetFirePoint().position;
-            cachedFireDirection = weaponView.GetFirePoint().forward;
-            weaponView.UpdateAimLaser(aimTarget);
+            cachedFireDirection = (aimTarget - cachedFirePosition).normalized;
+            UpdateAimLaser();
+        }
+
+        private void UpdateAimLaser()
+        {
+            Vector3 hitPoint;
+            if (Physics.Raycast(cachedFirePosition, cachedFireDirection, out RaycastHit hit,
+                weaponModel.WeaponAimLaserMaxDistance, aimLayer))
+            {
+                hitPoint = hit.point;
+            }
+            else
+            {
+                hitPoint = cachedFirePosition + cachedFireDirection * weaponModel.WeaponAimLaserMaxDistance;
+            }
+            weaponView.UpdateAimLaser(hitPoint);
 
             // For Debug
-            Debug.DrawLine(cachedFirePosition, aimTarget, Color.green, 0.1f);
+            // Debug.DrawLine(cachedFirePosition, hitPoint, Color.cyan, 0.1f);
         }
 
         public void ReloadWeapon()
@@ -82,8 +99,15 @@ namespace Game.Weapon
             ReloadWeapon();
         }
 
-        public void EnableWeapon() => weaponView.gameObject.SetActive(true);
-        public void DisableWeapon() => weaponView.gameObject.SetActive(false);
+        public void EnableWeapon(LayerMask _aimLayer)
+        {
+            aimLayer = _aimLayer;
+            weaponView.gameObject.SetActive(true);
+        }
+        public void DisableWeapon()
+        {
+            weaponView.gameObject.SetActive(false);
+        }
 
         // Setters
         public void SetTransform(Transform _transform)
