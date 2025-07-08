@@ -262,7 +262,6 @@ namespace Game.Player
 
             if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, playerModel.AimLayer))
             {
-                // Getting rayPoint near player
                 hitPoint = hit.point;
             }
             else
