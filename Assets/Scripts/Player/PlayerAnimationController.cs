@@ -6,7 +6,8 @@ namespace Game.Player
     public class PlayerAnimationController
     {
         // Animation Parameters
-        public readonly int movementLocomotionHash = Animator.StringToHash("Movement Locomotion");
+        public readonly int movementUnarmedLocomotionHash = Animator.StringToHash("Movement Unarmed Locomotion");
+        public readonly int movementArmedLocomotionHash = Animator.StringToHash("Movement Armed Locomotion");
         public readonly int fallHash = Animator.StringToHash("Fall");
         public readonly int hurtHash = Animator.StringToHash("Hurt");
 
@@ -125,6 +126,20 @@ namespace Game.Player
                 Mathf.Lerp(currentLeftHandIKWeight, targetIKWeight, Time.deltaTime * 10f);
             playerController.GetView().GetRightHandAimConstraint().weight =
                 Mathf.Lerp(currentRightHandConstraintWeight, targetIKWeight, Time.deltaTime * 10f);
+        }
+
+        public void SelectLocomotionHash()
+        {
+            if (playerController.GetWeaponController().GetCurrentWeaponType() != WeaponType.NONE)
+            {
+                playerController.GetView().GetAnimator().CrossFade(
+                    playerController.GetAnimationController().movementArmedLocomotionHash, 0.2f);
+            }
+            else
+            {
+                playerController.GetView().GetAnimator().CrossFade(
+                    playerController.GetAnimationController().movementUnarmedLocomotionHash, 0.2f);
+            }
         }
 
         // Setters

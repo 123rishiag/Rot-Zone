@@ -72,8 +72,9 @@ namespace Game.Player
                 currentWeaponType = _weaponType;
             }
 
-            // Resetting Action State to None while equipment changes,
+            // Resetting Movement State and Action State  while equipment changes,
             // as to avoid unwanted behaviours
+            playerController.GetMovementStateMachine().ChangeState(PlayerMovementState.IDLE);
             playerController.GetActionStateMachine().ChangeState(PlayerActionState.NONE);
 
             SwitchOffWeapons();
