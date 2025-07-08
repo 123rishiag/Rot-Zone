@@ -27,6 +27,7 @@ namespace Game.Player
             WeaponLayerWeightChangeFactor = _playerData.weaponLayerWeightChangeFactor;
 
             AimTransformDefaultPosition = _playerData.aimTransformDefaultPosition;
+            AimLayer = _playerData.aimLayer;
         }
 
         // Getters
@@ -46,5 +47,6 @@ namespace Game.Player
         public float WeaponLayerWeightChangeFactor { get; private set; }
 
         public Vector3 AimTransformDefaultPosition { get; private set; }
+        public LayerMask AimLayer { get; private set; }
     }
 }

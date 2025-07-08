@@ -12,7 +12,7 @@ namespace Game.Weapon
 
         private Vector3 cachedFirePosition;
         private Vector3 cachedFireDirection;
-        public Vector3 WeaponLaserEndPoint;
+        private Vector3 aimTarget;
 
         private float lastFireTime;
         public int CurrentAmmo { get; private set; }
@@ -39,17 +39,14 @@ namespace Game.Weapon
             projectileService = _projectileService;
         }
 
-        public void Update()
-        {
-            UpdateLaserEndPoint();
-        }
-
         public void LateUpdate()
         {
             cachedFirePosition = weaponView.GetFirePoint().position;
             cachedFireDirection = weaponView.GetFirePoint().forward;
-            weaponView.UpdateAimLaser(WeaponLaserEndPoint);
-            DrawLaserEndPoint();
+            weaponView.UpdateAimLaser(aimTarget);
+
+            // For Debug
+            Debug.DrawLine(cachedFirePosition, aimTarget, Color.green, 0.1f);
         }
 
         public void ReloadWeapon()
@@ -71,23 +68,9 @@ namespace Game.Weapon
             }
             lastFireTime = Time.time;
         }
-        private void UpdateLaserEndPoint()
+        public void UpdateWeaponAimPoint(Vector3 _target)
         {
-            if (Physics.Raycast(cachedFirePosition, cachedFireDirection, out RaycastHit hit,
-                weaponModel.WeaponAimLaserMaxDistance, weaponModel.WeaponGroundLayer))
-            {
-                WeaponLaserEndPoint = hit.point;
-            }
-            else
-            {
-                WeaponLaserEndPoint = cachedFirePosition + cachedFireDirection * weaponModel.WeaponAimLaserMaxDistance;
-            }
-        }
-
-        private void DrawLaserEndPoint()
-        {
-            // For Debug
-            Debug.DrawLine(cachedFirePosition, WeaponLaserEndPoint, Color.green, 0.1f);
+            aimTarget = Vector3.Lerp(aimTarget, _target, Time.deltaTime * 50f);
         }
 
         public abstract void PlayFireSound();

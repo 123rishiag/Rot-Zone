@@ -262,7 +262,7 @@ namespace Game.Player
                 Ray ray = Camera.main.ScreenPointToRay(aimPosition);
                 Vector3 hitPoint;
 
-                if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, playerModel.GroundLayer))
+                if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, playerModel.AimLayer))
                 {
                     // Getting rayPoint near player
                     hitPoint = hit.point;
@@ -276,11 +276,12 @@ namespace Game.Player
                 // Setting Offsets for Weapons
                 Vector3 aimTarget = new Vector3(
                     hitPoint.x,
-                    hitPoint.y + playerView.GetCharacterController().height / 2,
+                    hitPoint.y,
                     hitPoint.z);
 
                 RotateTowards(GetXZNormalized(aimTarget - playerView.transform.position));
                 playerView.GetAimTransform().position = aimTarget;
+                playerWeaponController.GetCurrentWeapon().UpdateWeaponAimPoint(aimTarget);
 
                 playerView.DrawDebugCircle(hitPoint, hit.normal, 1f);
             }
