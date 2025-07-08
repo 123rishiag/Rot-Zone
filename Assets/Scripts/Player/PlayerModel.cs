@@ -26,7 +26,6 @@ namespace Game.Player
 
             WeaponLayerWeightChangeFactor = _playerData.weaponLayerWeightChangeFactor;
 
-            AimTransformDefaultPosition = _playerData.aimTransformDefaultPosition;
             AimLayer = _playerData.aimLayer;
         }
 

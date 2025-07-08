@@ -11,8 +11,9 @@ namespace Game.Player
 
         public void OnStateEnter()
         {
-            Owner.GetView().GetAnimator().Play(Owner.GetAnimationController().movementLocomotionHash);
+            Owner.GetAnimationController().SelectLocomotionHash();
         }
+
         public void Update()
         {
             CheckTransitionConditions();

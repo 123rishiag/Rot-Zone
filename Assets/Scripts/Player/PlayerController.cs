@@ -256,39 +256,35 @@ namespace Game.Player
         }
         private void AimPlayer()
         {
-            if (playerWeaponController.GetCurrentWeaponType() != WeaponType.NONE)
+            // Setting Aim Based on Mouse Position
+            Ray ray = Camera.main.ScreenPointToRay(aimPosition);
+            Vector3 hitPoint;
+
+            if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, playerModel.AimLayer))
             {
-                // Setting Aim Based on Mouse Position
-                Ray ray = Camera.main.ScreenPointToRay(aimPosition);
-                Vector3 hitPoint;
-
-                if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, playerModel.AimLayer))
-                {
-                    // Getting rayPoint near player
-                    hitPoint = hit.point;
-                }
-                else
-                {
-                    hitPoint = aimPosition;
-                    hitPoint.y = 0;
-                }
-
-                // Setting Offsets for Weapons
-                Vector3 aimTarget = new Vector3(
-                    hitPoint.x,
-                    hitPoint.y,
-                    hitPoint.z);
-
-                RotateTowards(GetXZNormalized(aimTarget - playerView.transform.position));
-                playerView.GetAimTransform().position = aimTarget;
-                playerWeaponController.GetCurrentWeapon().UpdateWeaponAimPoint(aimTarget);
-
-                playerView.DrawDebugCircle(hitPoint, hit.normal, 1f);
+                // Getting rayPoint near player
+                hitPoint = hit.point;
             }
             else
             {
-                RotateTowards(GetXZNormalized(moveDirection));
-                playerView.GetAimTransform().localPosition = playerModel.AimTransformDefaultPosition;
+                hitPoint = aimPosition;
+                hitPoint.y = 0;
+            }
+
+            // Setting Offsets for Weapons
+            Vector3 aimTarget = new Vector3(
+                hitPoint.x,
+                hitPoint.y,
+                hitPoint.z);
+
+            RotateTowards(GetXZNormalized(aimTarget - playerView.transform.position));
+            playerView.GetAimTransform().position = aimTarget;
+
+            playerView.DrawDebugCircle(hitPoint, hit.normal, 1f);
+
+            if (playerWeaponController.GetCurrentWeaponType() != WeaponType.NONE)
+            {
+                playerWeaponController.GetCurrentWeapon().UpdateWeaponAimPoint(aimTarget);
             }
         }
         #endregion

@@ -1,5 +1,4 @@
 using Game.Projectile;
-using UnityEngine;
 
 namespace Game.Weapon
 {
