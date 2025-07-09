@@ -12,7 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 542f96ee1f831a84fbb1dddd155af1ef, type: 3}
   m_Name: CameraConfig
   m_EditorClassIdentifier: 
-  isometricPitch: 45
+  cameraPitch: 65
+  cameraYaw: 180
   cameraDistanceOffset: 9
   cameraHeightOffset: 1
+  cameraDeadZoneDepth: 3
   cameraDamping: 0.75
+  cameraDeadZoneEnabled: 1
+  cameraDeadZoneSize: {x: 0.4, y: 0.3}
+  cameraHardLimitEnabled: 1
+  cameraHardLimitSize: {x: 0.8, y: 0.6}
+  playerCameraWeight: {x: 2, y: 3}
+  aimCameraWeight: {x: 1, y: 1}
