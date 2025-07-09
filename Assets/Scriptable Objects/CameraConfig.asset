@@ -15,12 +15,17 @@ MonoBehaviour:
   cameraPitch: 65
   cameraYaw: 180
   cameraDistanceOffset: 9
-  cameraHeightOffset: 1
   cameraDeadZoneDepth: 3
-  cameraDamping: 0.75
   cameraDeadZoneEnabled: 1
   cameraDeadZoneSize: {x: 0.4, y: 0.3}
   cameraHardLimitEnabled: 1
   cameraHardLimitSize: {x: 0.8, y: 0.6}
+  cameraCentreActivateEnabled: 1
+  cameraHeightOffset: 0
+  cameraDamping: 0.75
+  cameraLookAheadEnabled: 1
+  lookAheadTimeFactor: 0.5
+  lookAheadSmoothingRate: 20
+  lookAheadIgnoreY: 1
   playerCameraWeight: {x: 2, y: 3}
   aimCameraWeight: {x: 1, y: 1}
