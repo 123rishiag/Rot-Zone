@@ -28,6 +28,7 @@ namespace Game.Player
 
         private Vector3 inputDirection;
 
+        private RaycastHit lastHit;
         private Vector2 aimPosition;
 
         private int currentHealth;
@@ -257,20 +258,24 @@ namespace Game.Player
         private void AimPlayer()
         {
             // Setting Aim Based on Mouse Position
-            Ray ray = Camera.main.ScreenPointToRay(aimPosition);
+            Vector2 clampedAimPosition = new Vector2(
+                Mathf.Clamp(aimPosition.x, 0, Screen.width),
+                Mathf.Clamp(aimPosition.y, 0, Screen.height)
+                );
+            Ray ray = Camera.main.ScreenPointToRay(clampedAimPosition);
+
             Vector3 hitPoint;
             Vector3 offset;
-
             if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, playerModel.AimLayer))
             {
                 hitPoint = hit.point;
                 offset = hit.normal;
+                lastHit = hit;
             }
             else
             {
-                hitPoint = aimPosition;
-                offset = Vector3.zero;
-                hitPoint.y = 0;
+                hitPoint = lastHit.point;
+                offset = lastHit.normal;
             }
 
             RotateTowards(GetXZNormalized(hitPoint - playerView.transform.position));
@@ -354,6 +359,7 @@ namespace Game.Player
         public PlayerActionStateMachine GetActionStateMachine() => playerActionStateMachine;
 
         public Transform GetTransform() => playerView.transform;
+        public Transform GetAimTransform() => playerView.GetAimTransform();
         public Vector3 GetMoveDirection() => moveDirection;
         public float GetCurrentSpeed() => currentSpeed;
         public Vector3 GetXZNormalized(Vector3 _direction)

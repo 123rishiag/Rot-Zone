@@ -8,6 +8,7 @@ namespace Game.Vision
     {
         private CameraConfig cameraConfig;
         private CinemachineCamera cmCamera;
+        private CinemachineTargetGroup cinemachineTargetGroup;
 
         private PlayerService playerService;
 
@@ -35,6 +36,11 @@ namespace Game.Vision
             {
                 Debug.LogError("Position Composer not found!!!");
             }
+            cinemachineTargetGroup = cmCamera.GetComponentInChildren<CinemachineTargetGroup>();
+            if (cinemachineTargetGroup == null)
+            {
+                Debug.LogError("Tracking Target Group not found!!!");
+            }
             CameraTransform = cmCamera.transform;
         }
 
@@ -45,11 +51,6 @@ namespace Game.Vision
 
         private void SetupCinemachineCamera()
         {
-            // Setting Camera Targets
-            Transform playerTransform = playerService.GetController().GetTransform();
-            cmCamera.Follow = playerTransform;
-            //cmCamera.LookAt = playerTransform;
-
             // Setting Camera Rotation
             cmCamera.transform.rotation = Quaternion.Euler(
                 cameraConfig.cameraPitch,
@@ -57,11 +58,49 @@ namespace Game.Vision
                 0f
             );
 
-            // Setting Position Composer Settigns
-            positionComposer.TargetOffset = Vector3.up * cameraConfig.cameraHeightOffset;
+            // Setting Position Composer Settings
             positionComposer.CameraDistance = cameraConfig.cameraDistanceOffset;
+            positionComposer.DeadZoneDepth = cameraConfig.cameraDeadZoneDepth;
+
+            if (cameraConfig.cameraDeadZoneEnabled)
+            {
+                positionComposer.Composition.DeadZone.Enabled = true;
+                positionComposer.Composition.DeadZone.Size = cameraConfig.cameraDeadZoneSize;
+            }
+            else
+            {
+                positionComposer.Composition.DeadZone.Enabled = false;
+            }
+            if (cameraConfig.cameraHardLimitEnabled)
+            {
+                positionComposer.Composition.HardLimits.Enabled = true;
+                positionComposer.Composition.HardLimits.Size = cameraConfig.cameraHardLimitSize;
+            }
+            else
+            {
+                positionComposer.Composition.HardLimits.Enabled = false;
+            }
+
+            positionComposer.CenterOnActivate = cameraConfig.cameraCentreActivateEnabled;
+
+            positionComposer.TargetOffset = Vector3.up * cameraConfig.cameraHeightOffset;
             positionComposer.Damping =
                 new Vector3(cameraConfig.cameraDamping, cameraConfig.cameraDamping, cameraConfig.cameraDamping);
+
+            positionComposer.Lookahead.Enabled = cameraConfig.cameraLookAheadEnabled;
+            positionComposer.Lookahead.Time = cameraConfig.lookAheadTimeFactor;
+            positionComposer.Lookahead.Smoothing = cameraConfig.lookAheadSmoothingRate;
+            positionComposer.Lookahead.IgnoreY = cameraConfig.lookAheadIgnoreY;
+
+            // Setting Camera Targets
+            Transform playerTransform = playerService.GetController().GetTransform();
+            Transform aimTransform = playerService.GetController().GetAimTransform();
+            cinemachineTargetGroup.Targets.Clear();
+            cinemachineTargetGroup.AddMember(playerTransform,
+                cameraConfig.playerCameraWeight.y, cameraConfig.playerCameraWeight.x);
+            cinemachineTargetGroup.AddMember(aimTransform,
+                cameraConfig.aimCameraWeight.y, cameraConfig.aimCameraWeight.x);
+            cmCamera.Follow = cinemachineTargetGroup.transform;
         }
     }
 }
