@@ -67,7 +67,7 @@ namespace Game.Main
                 // UI Service
                 // Projectile Service
                 Owner.GetWeaponService().LateUpdate();
-                Owner.GetPlayerService().LateUpdate();
+                // Player Service
                 // Enemy Service
                 // Spawn Service
                 // Camera Service

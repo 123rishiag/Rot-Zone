@@ -55,6 +55,15 @@ public partial class @InputControls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""Lock"",
+                    ""type"": ""Button"",
+                    ""id"": ""583de685-b003-4f9d-b5f1-9f0f836b0d2f"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""WeaponOne"",
                     ""type"": ""Button"",
                     ""id"": ""798b865f-55eb-4cca-8eb3-7bf3c1dd6dce"",
@@ -307,6 +316,17 @@ public partial class @InputControls: IInputActionCollection2, IDisposable
                     ""action"": ""WeaponReload"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""de1de158-15c4-448a-b966-92f64461c65f"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Lock"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -374,6 +394,7 @@ public partial class @InputControls: IInputActionCollection2, IDisposable
         m_Player_Movement = m_Player.FindAction("Movement", throwIfNotFound: true);
         m_Player_Run = m_Player.FindAction("Run", throwIfNotFound: true);
         m_Player_Fire = m_Player.FindAction("Fire", throwIfNotFound: true);
+        m_Player_Lock = m_Player.FindAction("Lock", throwIfNotFound: true);
         m_Player_WeaponOne = m_Player.FindAction("WeaponOne", throwIfNotFound: true);
         m_Player_WeaponTwo = m_Player.FindAction("WeaponTwo", throwIfNotFound: true);
         m_Player_WeaponThree = m_Player.FindAction("WeaponThree", throwIfNotFound: true);
@@ -457,6 +478,7 @@ public partial class @InputControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Movement;
     private readonly InputAction m_Player_Run;
     private readonly InputAction m_Player_Fire;
+    private readonly InputAction m_Player_Lock;
     private readonly InputAction m_Player_WeaponOne;
     private readonly InputAction m_Player_WeaponTwo;
     private readonly InputAction m_Player_WeaponThree;
@@ -470,6 +492,7 @@ public partial class @InputControls: IInputActionCollection2, IDisposable
         public InputAction @Movement => m_Wrapper.m_Player_Movement;
         public InputAction @Run => m_Wrapper.m_Player_Run;
         public InputAction @Fire => m_Wrapper.m_Player_Fire;
+        public InputAction @Lock => m_Wrapper.m_Player_Lock;
         public InputAction @WeaponOne => m_Wrapper.m_Player_WeaponOne;
         public InputAction @WeaponTwo => m_Wrapper.m_Player_WeaponTwo;
         public InputAction @WeaponThree => m_Wrapper.m_Player_WeaponThree;
@@ -494,6 +517,9 @@ public partial class @InputControls: IInputActionCollection2, IDisposable
             @Fire.started += instance.OnFire;
             @Fire.performed += instance.OnFire;
             @Fire.canceled += instance.OnFire;
+            @Lock.started += instance.OnLock;
+            @Lock.performed += instance.OnLock;
+            @Lock.canceled += instance.OnLock;
             @WeaponOne.started += instance.OnWeaponOne;
             @WeaponOne.performed += instance.OnWeaponOne;
             @WeaponOne.canceled += instance.OnWeaponOne;
@@ -525,6 +551,9 @@ public partial class @InputControls: IInputActionCollection2, IDisposable
             @Fire.started -= instance.OnFire;
             @Fire.performed -= instance.OnFire;
             @Fire.canceled -= instance.OnFire;
+            @Lock.started -= instance.OnLock;
+            @Lock.performed -= instance.OnLock;
+            @Lock.canceled -= instance.OnLock;
             @WeaponOne.started -= instance.OnWeaponOne;
             @WeaponOne.performed -= instance.OnWeaponOne;
             @WeaponOne.canceled -= instance.OnWeaponOne;
@@ -657,6 +686,7 @@ public partial class @InputControls: IInputActionCollection2, IDisposable
         void OnMovement(InputAction.CallbackContext context);
         void OnRun(InputAction.CallbackContext context);
         void OnFire(InputAction.CallbackContext context);
+        void OnLock(InputAction.CallbackContext context);
         void OnWeaponOne(InputAction.CallbackContext context);
         void OnWeaponTwo(InputAction.CallbackContext context);
         void OnWeaponThree(InputAction.CallbackContext context);

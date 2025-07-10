@@ -27,6 +27,7 @@ namespace Game.Player
             WeaponLayerWeightChangeFactor = _playerData.weaponLayerWeightChangeFactor;
 
             AimLayer = _playerData.aimLayer;
+            LockLayer = _playerData.lockLayer;
         }
 
         // Getters
@@ -47,5 +48,6 @@ namespace Game.Player
 
         public Vector3 AimTransformDefaultPosition { get; private set; }
         public LayerMask AimLayer { get; private set; }
+        public LayerMask LockLayer { get; private set; }
     }
 }
