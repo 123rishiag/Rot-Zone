@@ -31,6 +31,8 @@ namespace Game.Player
         private bool isLocking;
 
         private RaycastHit lastHit;
+        private Vector3 hitPoint;
+
         private Vector2 aimPosition;
 
         private int currentHealth;
@@ -258,10 +260,9 @@ namespace Game.Player
         }
         private void AimPlayer()
         {
-            Vector3 hitPoint;
-            Vector3 offset;
-
-            if (!TryUseLockedTarget(out hitPoint, out offset))
+            Vector3 newHitPoint;
+            Vector3 newOffset;
+            if (!TryUseLockedTarget(out newHitPoint, out newOffset))
             {
                 // Setting Aim Based on Mouse Position & Clamping aim at screen bounds
                 Vector2 clampedAimPosition = new Vector2(
@@ -271,23 +272,24 @@ namespace Game.Player
 
                 Ray ray = Camera.main.ScreenPointToRay(clampedAimPosition);
                 int combinedLayerMask = playerModel.AimLayer | playerModel.LockLayer;
-
                 if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, combinedLayerMask))
                 {
-                    hitPoint = hit.point;
-                    offset = hit.normal;
+                    newHitPoint = hit.point;
+                    newOffset = hit.normal;
                     lastHit = hit;
                 }
                 else
                 {
-                    hitPoint = lastHit.point;
-                    offset = lastHit.normal;
+                    newHitPoint = lastHit.point;
+                    newOffset = lastHit.normal;
                 }
             }
 
+            hitPoint = Vector3.Lerp(hitPoint, newHitPoint, Time.deltaTime * playerModel.RotationSpeed);
+
             RotateTowards(GetXZNormalized(hitPoint - playerView.transform.position));
-            playerView.GetAimTransform().position = hitPoint + offset * 0.01f;
-            playerView.GetAimTransform().forward = offset;
+            playerView.GetAimTransform().position = hitPoint + newOffset * 0.01f;
+            playerView.GetAimTransform().forward = newOffset;
 
             playerView.DrawDebugCircle(hitPoint, lastHit.normal, 1f);
 
@@ -301,16 +303,27 @@ namespace Game.Player
             _hitPoint = Vector3.zero;
             _offset = Vector3.up;
 
-            if (!isLocking || lastHit.collider == null) return false;
+            if (!isLocking || lastHit.collider == null)
+            {
+                return false;
+            }
 
+            if (!lastHit.collider.gameObject.activeInHierarchy)
+            {
+                return false;
+            }
             int lastHitLayer = lastHit.collider.gameObject.layer;
-            if (((1 << lastHitLayer) & playerModel.LockLayer) == 0) return false;
-
+            if (((1 << lastHitLayer) & playerModel.LockLayer) == 0)
+            {
+                return false;
+            }
             Vector3 screenPos = Camera.main.WorldToScreenPoint(lastHit.transform.position);
             if (screenPos.z <= 0 ||
                 screenPos.x < 0 || screenPos.x > Screen.width ||
                 screenPos.y < 0 || screenPos.y > Screen.height)
+            {
                 return false;
+            }
 
             _hitPoint = lastHit.collider.bounds.center;
             _offset = lastHit.normal;
