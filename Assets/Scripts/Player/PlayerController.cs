@@ -28,6 +28,8 @@ namespace Game.Player
 
         private Vector3 inputDirection;
 
+        private bool isLocking;
+
         private RaycastHit lastHit;
         private Vector2 aimPosition;
 
@@ -79,6 +81,7 @@ namespace Game.Player
             lastMoveDirection = Vector3.zero;
             verticalVelocity = 0f;
             currentSpeed = 0f;
+            isLocking = false;
             currentHealth = 0;
             IsAlive = true;
             isRecentlyAttacked = false;
@@ -95,11 +98,6 @@ namespace Game.Player
             playerActionStateMachine.Update();
 
             playerAnimationController.UpdateAnimation();
-        }
-
-        public void LateUpdate()
-        {
-
         }
 
         #region UI
@@ -151,6 +149,9 @@ namespace Game.Player
 
             inputControls.Player.Fire.performed += ctx => IsFiring = true;
             inputControls.Player.Fire.canceled += ctx => IsFiring = false;
+
+            inputControls.Player.Lock.performed += ctx => isLocking = true;
+            inputControls.Player.Lock.canceled += ctx => isLocking = false;
 
             inputControls.Player.WeaponOne.started += ctx => playerWeaponController.EquipWeapon(WeaponType.PISTOL);
             inputControls.Player.WeaponTwo.started += ctx => playerWeaponController.EquipWeapon(WeaponType.RIFLE);
@@ -257,37 +258,63 @@ namespace Game.Player
         }
         private void AimPlayer()
         {
-            // Setting Aim Based on Mouse Position
-            Vector2 clampedAimPosition = new Vector2(
-                Mathf.Clamp(aimPosition.x, 0, Screen.width),
-                Mathf.Clamp(aimPosition.y, 0, Screen.height)
-                );
-            Ray ray = Camera.main.ScreenPointToRay(clampedAimPosition);
-
             Vector3 hitPoint;
             Vector3 offset;
-            if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, playerModel.AimLayer))
+
+            if (!TryUseLockedTarget(out hitPoint, out offset))
             {
-                hitPoint = hit.point;
-                offset = hit.normal;
-                lastHit = hit;
-            }
-            else
-            {
-                hitPoint = lastHit.point;
-                offset = lastHit.normal;
+                // Setting Aim Based on Mouse Position & Clamping aim at screen bounds
+                Vector2 clampedAimPosition = new Vector2(
+                    Mathf.Clamp(aimPosition.x, 0, Screen.width),
+                    Mathf.Clamp(aimPosition.y, 0, Screen.height)
+                    );
+
+                Ray ray = Camera.main.ScreenPointToRay(clampedAimPosition);
+                int combinedLayerMask = playerModel.AimLayer | playerModel.LockLayer;
+
+                if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, combinedLayerMask))
+                {
+                    hitPoint = hit.point;
+                    offset = hit.normal;
+                    lastHit = hit;
+                }
+                else
+                {
+                    hitPoint = lastHit.point;
+                    offset = lastHit.normal;
+                }
             }
 
             RotateTowards(GetXZNormalized(hitPoint - playerView.transform.position));
             playerView.GetAimTransform().position = hitPoint + offset * 0.01f;
             playerView.GetAimTransform().forward = offset;
 
-            playerView.DrawDebugCircle(hitPoint, hit.normal, 1f);
+            playerView.DrawDebugCircle(hitPoint, lastHit.normal, 1f);
 
             if (playerWeaponController.GetCurrentWeaponType() != WeaponType.NONE)
             {
                 playerWeaponController.GetCurrentWeapon().UpdateWeaponAimPoint(hitPoint);
             }
+        }
+        private bool TryUseLockedTarget(out Vector3 _hitPoint, out Vector3 _offset)
+        {
+            _hitPoint = Vector3.zero;
+            _offset = Vector3.up;
+
+            if (!isLocking || lastHit.collider == null) return false;
+
+            int lastHitLayer = lastHit.collider.gameObject.layer;
+            if (((1 << lastHitLayer) & playerModel.LockLayer) == 0) return false;
+
+            Vector3 screenPos = Camera.main.WorldToScreenPoint(lastHit.transform.position);
+            if (screenPos.z <= 0 ||
+                screenPos.x < 0 || screenPos.x > Screen.width ||
+                screenPos.y < 0 || screenPos.y > Screen.height)
+                return false;
+
+            _hitPoint = lastHit.collider.bounds.center;
+            _offset = lastHit.normal;
+            return true;
         }
         #endregion
 

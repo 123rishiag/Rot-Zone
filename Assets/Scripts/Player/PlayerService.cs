@@ -39,7 +39,6 @@ namespace Game.Player
         }
 
         public void Update() => playerController.Update();
-        public void LateUpdate() => playerController.LateUpdate();
 
         public void OnSpawn(Func<Vector3> _spawnPositionFunc, PlayerSpawnData _spawnData)
         {

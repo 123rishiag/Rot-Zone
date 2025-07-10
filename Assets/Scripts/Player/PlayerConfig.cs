@@ -34,5 +34,6 @@ namespace Game.Player
 
         [Header("Aim Settings")]
         public LayerMask aimLayer;
+        public LayerMask lockLayer;
     }
 }
