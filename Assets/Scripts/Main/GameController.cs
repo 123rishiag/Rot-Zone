@@ -85,7 +85,7 @@ namespace Game.Main
             playerService.Init(eventService, inputService, weaponService, cameraService);
             enemyService.Init(eventService, playerService);
             spawnService.Init(playerService, enemyService);
-            cameraService.Init(playerService);
+            cameraService.Init(inputService, playerService);
             waveService.Init(eventService, inputService, spawnService, playerService, enemyService);
         }
         private void CreateStateMachine()

@@ -841,7 +841,7 @@ MonoBehaviour:
       leftHand_HintTransform: {fileID: 15097190717707419}
   rightHandAimConstraint: {fileID: 8310985297325246404}
   leftHandIK: {fileID: 6056014414725304192}
-  aimTransform: {fileID: 5103283510018147113}
+  aimCrosshairTransform: {fileID: 5103283510018147113}
 --- !u!1 &1805613497281703086
 GameObject:
   m_ObjectHideFlags: 0
@@ -2184,7 +2184,7 @@ GameObject:
   - component: {fileID: 5103283510018147113}
   - component: {fileID: 7460907982511181929}
   m_Layer: 6
-  m_Name: AimTransform
+  m_Name: AimCrosshairTransform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
