@@ -1,6 +1,8 @@
+using Game.Controls;
 using Game.Player;
 using Unity.Cinemachine;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace Game.Vision
 {
@@ -8,12 +10,18 @@ namespace Game.Vision
     {
         private CameraConfig cameraConfig;
         private CinemachineCamera cmCamera;
-        private CinemachineTargetGroup cinemachineTargetGroup;
 
+        private InputService inputService;
         private PlayerService playerService;
 
-        private CinemachinePositionComposer positionComposer;
-        public Transform CameraTransform { get; private set; }
+        private CinemachineTargetGroup cinemachineTargetGroup;
+        private CinemachineOrbitalFollow cinemachineOrbitalFollow;
+        private CinemachineRotationComposer cinemachineRotationComposer;
+        private CinemachineInputAxisController cinemachineInputAxisController;
+        private CinemachineRecomposer cinemachineRecomposer;
+        private CinemachineDecollider cinemachineDecollider;
+
+        private Vector2 mouseDelta;
 
         public CameraService(CameraConfig _cameraConfig, CinemachineCamera _cinemachineCamera)
         {
@@ -21,27 +29,60 @@ namespace Game.Vision
             cmCamera = _cinemachineCamera;
         }
 
-        public void Init(PlayerService _playerService)
+        public void Init(InputService _inputService, PlayerService _playerService)
         {
+            inputService = _inputService;
             playerService = _playerService;
 
             InitializeVariables();
+            AssignInputs();
+
             Reset();
         }
 
         private void InitializeVariables()
         {
-            positionComposer = cmCamera.GetComponent<CinemachinePositionComposer>();
-            if (positionComposer == null)
-            {
-                Debug.LogError("Position Composer not found!!!");
-            }
             cinemachineTargetGroup = cmCamera.GetComponentInChildren<CinemachineTargetGroup>();
             if (cinemachineTargetGroup == null)
             {
                 Debug.LogError("Tracking Target Group not found!!!");
             }
-            CameraTransform = cmCamera.transform;
+
+            cinemachineOrbitalFollow = cmCamera.GetComponent<CinemachineOrbitalFollow>();
+            if (cinemachineOrbitalFollow == null)
+            {
+                Debug.LogError("Cinemachine Orbital Person follow not found!!!");
+            }
+            cinemachineRotationComposer = cmCamera.GetComponent<CinemachineRotationComposer>();
+            if (cinemachineRotationComposer == null)
+            {
+                Debug.LogError("Cinemachine Rotation Composer not found!!!");
+            }
+            cinemachineInputAxisController = cmCamera.GetComponent<CinemachineInputAxisController>();
+            if (cinemachineInputAxisController == null)
+            {
+                Debug.LogError("Cinemachine Input Axis Controller not found!!!");
+            }
+            cinemachineRecomposer = cmCamera.GetComponent<CinemachineRecomposer>();
+            if (cinemachineRecomposer == null)
+            {
+                Debug.LogError("Cinemachine Recomposer not found!!!");
+            }
+            cinemachineDecollider = cmCamera.GetComponent<CinemachineDecollider>();
+            if (cinemachineDecollider == null)
+            {
+                Debug.LogError("Cinemachine Decollider not found!!!");
+            }
+
+            mouseDelta = Vector2.zero;
+        }
+
+        private void AssignInputs()
+        {
+            InputControls inputControls = inputService.GetInputControls();
+
+            inputControls.Camera.MouseDelta.performed += ctx => mouseDelta = ctx.ReadValue<Vector2>();
+            inputControls.Camera.MouseDelta.canceled += ctx => mouseDelta = Vector2.zero;
         }
 
         public void Reset()
@@ -51,56 +92,31 @@ namespace Game.Vision
 
         private void SetupCinemachineCamera()
         {
-            // Setting Camera Rotation
-            cmCamera.transform.rotation = Quaternion.Euler(
-                cameraConfig.cameraPitch,
-                cameraConfig.cameraYaw,
-                0f
-            );
-
-            // Setting Position Composer Settings
-            positionComposer.CameraDistance = cameraConfig.cameraDistanceOffset;
-            positionComposer.DeadZoneDepth = cameraConfig.cameraDeadZoneDepth;
-
-            if (cameraConfig.cameraDeadZoneEnabled)
-            {
-                positionComposer.Composition.DeadZone.Enabled = true;
-                positionComposer.Composition.DeadZone.Size = cameraConfig.cameraDeadZoneSize;
-            }
-            else
-            {
-                positionComposer.Composition.DeadZone.Enabled = false;
-            }
-            if (cameraConfig.cameraHardLimitEnabled)
-            {
-                positionComposer.Composition.HardLimits.Enabled = true;
-                positionComposer.Composition.HardLimits.Size = cameraConfig.cameraHardLimitSize;
-            }
-            else
-            {
-                positionComposer.Composition.HardLimits.Enabled = false;
-            }
-
-            positionComposer.CenterOnActivate = cameraConfig.cameraCentreActivateEnabled;
-
-            positionComposer.TargetOffset = Vector3.up * cameraConfig.cameraHeightOffset;
-            positionComposer.Damping =
-                new Vector3(cameraConfig.cameraDamping, cameraConfig.cameraDamping, cameraConfig.cameraDamping);
-
-            positionComposer.Lookahead.Enabled = cameraConfig.cameraLookAheadEnabled;
-            positionComposer.Lookahead.Time = cameraConfig.lookAheadTimeFactor;
-            positionComposer.Lookahead.Smoothing = cameraConfig.lookAheadSmoothingRate;
-            positionComposer.Lookahead.IgnoreY = cameraConfig.lookAheadIgnoreY;
+            InputControls inputControls = inputService.GetInputControls();
 
             // Setting Camera Targets
             Transform playerTransform = playerService.GetController().GetTransform();
             Transform aimTransform = playerService.GetController().GetAimTransform();
             cinemachineTargetGroup.Targets.Clear();
             cinemachineTargetGroup.AddMember(playerTransform,
-                cameraConfig.playerCameraWeight.y, cameraConfig.playerCameraWeight.x);
-            cinemachineTargetGroup.AddMember(aimTransform,
-                cameraConfig.aimCameraWeight.y, cameraConfig.aimCameraWeight.x);
+                1f, 1f);
             cmCamera.Follow = cinemachineTargetGroup.transform;
+
+            // Setting Input Axis Controller Settings for Camera
+            var lookRef = InputActionReference.Create(inputControls.Camera.MouseDelta);
+
+            var lookOrbitXController = cinemachineInputAxisController.Controllers[0];
+            lookOrbitXController.Enabled = true;
+            lookOrbitXController.Input.InputAction = lookRef;
+            lookOrbitXController.Input.Gain = cameraConfig.mouseSensitivity;
+
+            var lookOrbitYController = cinemachineInputAxisController.Controllers[1];
+            lookOrbitYController.Enabled = true;
+            lookOrbitYController.Input.InputAction = lookRef;
+            lookOrbitYController.Input.Gain = -cameraConfig.mouseSensitivity;
         }
+
+        // Getters
+        public Transform GetCameraTransform() => cmCamera.transform;
     }
 }

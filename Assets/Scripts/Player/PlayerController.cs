@@ -133,7 +133,6 @@ namespace Game.Player
             if (playerMovementStateMachine.GetCurrentState() == PlayerMovementState.FALL)
                 return;
 
-            // Camera Inputs
             InputControls inputControls = InputService.GetInputControls();
 
             inputControls.Player.Movement.performed += ctx =>
@@ -170,6 +169,7 @@ namespace Game.Player
         public void UpdateMovementVariables()
         {
             UpdateDirection();
+            RotateTowards(cameraService.GetCameraTransform().forward);
             ApplyGravity();
             UpdateSpeed();
         }
@@ -185,8 +185,8 @@ namespace Game.Player
             if (inputDirection.magnitude > 0.1f)
             {
                 // Fetching Target Direction where player is trying to move in world based on input and camera 
-                targetDirection = (GetXZNormalized(cameraService.CameraTransform.forward) * inputDirection.z +
-                    GetXZNormalized(cameraService.CameraTransform.right) * inputDirection.x).normalized;
+                targetDirection = (GetXZNormalized(cameraService.GetCameraTransform().forward) * inputDirection.z +
+                    GetXZNormalized(cameraService.GetCameraTransform().right) * inputDirection.x).normalized;
 
                 lastMoveDirection = moveDirection;
             }
@@ -207,6 +207,8 @@ namespace Game.Player
 
             if (_direction == Vector3.zero) return;
 
+            _direction.Normalize();
+            _direction.y = 0;
             Quaternion targetRotation = Quaternion.LookRotation(_direction);
 
             playerView.transform.rotation = Quaternion.Slerp(playerView.transform.rotation, targetRotation,
@@ -270,9 +272,18 @@ namespace Game.Player
                     Mathf.Clamp(aimPosition.y, 0, Screen.height)
                     );
 
-                Ray ray = Camera.main.ScreenPointToRay(clampedAimPosition);
+                //Ray ray = Camera.main.ScreenPointToRay(clampedAimPosition);
+                Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
                 int combinedLayerMask = playerModel.AimLayer | playerModel.LockLayer;
-                if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, combinedLayerMask))
+
+                RaycastHit hit;
+                if (Physics.Raycast(ray, out hit, Mathf.Infinity, playerModel.LockLayer))
+                {
+                    newHitPoint = hit.point;
+                    newOffset = hit.normal;
+                    lastHit = hit;
+                }
+                else if (Physics.Raycast(ray, out hit, Mathf.Infinity, playerModel.AimLayer))
                 {
                     newHitPoint = hit.point;
                     newOffset = hit.normal;
@@ -280,16 +291,14 @@ namespace Game.Player
                 }
                 else
                 {
-                    newHitPoint = lastHit.point;
-                    newOffset = lastHit.normal;
+                    newHitPoint = ray.GetPoint(10f);
+                    newOffset = ray.direction;
                 }
             }
 
             hitPoint = Vector3.Lerp(hitPoint, newHitPoint, Time.deltaTime * playerModel.RotationSpeed);
 
-            RotateTowards(GetXZNormalized(hitPoint - playerView.transform.position));
-            playerView.GetAimTransform().position = hitPoint + newOffset * 0.01f;
-            playerView.GetAimTransform().forward = newOffset;
+            UpdateAimCrosshair();
 
             playerView.DrawDebugCircle(hitPoint, lastHit.normal, 1f);
 
@@ -298,6 +307,17 @@ namespace Game.Player
                 playerWeaponController.GetCurrentWeapon().UpdateWeaponAimPoint(hitPoint);
             }
         }
+
+        private void UpdateAimCrosshair()
+        {
+            Transform cameraTransform = Camera.main.transform;
+            float crosshairDistance = Vector3.Distance(playerView.transform.position, cameraTransform.position) + 2f;
+            Vector3 direction = (hitPoint - cameraTransform.position).normalized;
+
+            playerView.GetAimCrosshairTransform().position = cameraTransform.position + direction * crosshairDistance;
+            playerView.GetAimCrosshairTransform().forward = cameraTransform.forward;
+        }
+
         private bool TryUseLockedTarget(out Vector3 _hitPoint, out Vector3 _offset)
         {
             _hitPoint = Vector3.zero;
@@ -399,7 +419,7 @@ namespace Game.Player
         public PlayerActionStateMachine GetActionStateMachine() => playerActionStateMachine;
 
         public Transform GetTransform() => playerView.transform;
-        public Transform GetAimTransform() => playerView.GetAimTransform();
+        public Transform GetAimTransform() => playerView.GetAimCrosshairTransform();
         public Vector3 GetMoveDirection() => moveDirection;
         public float GetCurrentSpeed() => currentSpeed;
         public Vector3 GetXZNormalized(Vector3 _direction)
