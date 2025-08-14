@@ -841,7 +841,7 @@ MonoBehaviour:
       leftHand_HintTransform: {fileID: 15097190717707419}
   rightHandAimConstraint: {fileID: 8310985297325246404}
   leftHandIK: {fileID: 6056014414725304192}
-  aimCrosshairTransform: {fileID: 5103283510018147113}
+  aimTransform: {fileID: 5103283510018147113}
 --- !u!1 &1805613497281703086
 GameObject:
   m_ObjectHideFlags: 0
@@ -2184,12 +2184,12 @@ GameObject:
   - component: {fileID: 5103283510018147113}
   - component: {fileID: 7460907982511181929}
   m_Layer: 6
-  m_Name: AimCrosshairTransform
+  m_Name: AimTransform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &5103283510018147113
 Transform:
   m_ObjectHideFlags: 0
@@ -2249,7 +2249,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 963fba3eefb97614f986d88a797c1054, type: 3}
+  m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -2257,7 +2257,7 @@ SpriteRenderer:
   m_Size: {x: 1.5, y: 1.5}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &4486885079756400945

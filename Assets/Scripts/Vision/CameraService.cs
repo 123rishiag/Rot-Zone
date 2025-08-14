@@ -2,7 +2,6 @@ using Game.Controls;
 using Game.Player;
 using Unity.Cinemachine;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 namespace Game.Vision
 {
@@ -15,13 +14,9 @@ namespace Game.Vision
         private PlayerService playerService;
 
         private CinemachineTargetGroup cinemachineTargetGroup;
-        private CinemachineOrbitalFollow cinemachineOrbitalFollow;
+        private CinemachineThirdPersonFollow cinemachineThirdPersonFollow;
         private CinemachineRotationComposer cinemachineRotationComposer;
-        private CinemachineInputAxisController cinemachineInputAxisController;
-        private CinemachineRecomposer cinemachineRecomposer;
-        private CinemachineDecollider cinemachineDecollider;
-
-        private Vector2 mouseDelta;
+        private CinemachineThirdPersonAim cinemachineThirdPersonAim;
 
         public CameraService(CameraConfig _cameraConfig, CinemachineCamera _cinemachineCamera)
         {
@@ -48,41 +43,26 @@ namespace Game.Vision
                 Debug.LogError("Tracking Target Group not found!!!");
             }
 
-            cinemachineOrbitalFollow = cmCamera.GetComponent<CinemachineOrbitalFollow>();
-            if (cinemachineOrbitalFollow == null)
+            cinemachineThirdPersonFollow = cmCamera.GetComponent<CinemachineThirdPersonFollow>();
+            if (cinemachineThirdPersonFollow == null)
             {
-                Debug.LogError("Cinemachine Orbital Person follow not found!!!");
+                Debug.LogError("Cinemachine Third Person Follow not found!!!");
             }
             cinemachineRotationComposer = cmCamera.GetComponent<CinemachineRotationComposer>();
             if (cinemachineRotationComposer == null)
             {
                 Debug.LogError("Cinemachine Rotation Composer not found!!!");
             }
-            cinemachineInputAxisController = cmCamera.GetComponent<CinemachineInputAxisController>();
-            if (cinemachineInputAxisController == null)
+            cinemachineThirdPersonAim = cmCamera.GetComponent<CinemachineThirdPersonAim>();
+            if (cinemachineThirdPersonAim == null)
             {
-                Debug.LogError("Cinemachine Input Axis Controller not found!!!");
+                Debug.LogError("Cinemachine Third Person Aim not found!!!");
             }
-            cinemachineRecomposer = cmCamera.GetComponent<CinemachineRecomposer>();
-            if (cinemachineRecomposer == null)
-            {
-                Debug.LogError("Cinemachine Recomposer not found!!!");
-            }
-            cinemachineDecollider = cmCamera.GetComponent<CinemachineDecollider>();
-            if (cinemachineDecollider == null)
-            {
-                Debug.LogError("Cinemachine Decollider not found!!!");
-            }
-
-            mouseDelta = Vector2.zero;
         }
 
         private void AssignInputs()
         {
             InputControls inputControls = inputService.GetInputControls();
-
-            inputControls.Camera.MouseDelta.performed += ctx => mouseDelta = ctx.ReadValue<Vector2>();
-            inputControls.Camera.MouseDelta.canceled += ctx => mouseDelta = Vector2.zero;
         }
 
         public void Reset()
@@ -101,20 +81,10 @@ namespace Game.Vision
             cinemachineTargetGroup.AddMember(playerTransform,
                 1f, 1f);
             cmCamera.Follow = cinemachineTargetGroup.transform;
-
-            // Setting Input Axis Controller Settings for Camera
-            var lookRef = InputActionReference.Create(inputControls.Camera.MouseDelta);
-
-            var lookOrbitXController = cinemachineInputAxisController.Controllers[0];
-            lookOrbitXController.Enabled = true;
-            lookOrbitXController.Input.InputAction = lookRef;
-            lookOrbitXController.Input.Gain = cameraConfig.mouseSensitivity;
-
-            var lookOrbitYController = cinemachineInputAxisController.Controllers[1];
-            lookOrbitYController.Enabled = true;
-            lookOrbitYController.Input.InputAction = lookRef;
-            lookOrbitYController.Input.Gain = -cameraConfig.mouseSensitivity;
         }
+
+        // Setters
+        public void SetCameraFOV(int _fov) => cmCamera.Lens.FieldOfView = _fov;
 
         // Getters
         public Transform GetCameraTransform() => cmCamera.transform;

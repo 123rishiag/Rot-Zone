@@ -83,9 +83,14 @@ namespace Game.Player
             lastMoveDirection = Vector3.zero;
             verticalVelocity = 0f;
             currentSpeed = 0f;
+
             isLocking = false;
+
+            aimPosition = Vector2.zero;
+
             currentHealth = 0;
             IsAlive = true;
+
             isRecentlyAttacked = false;
 
             playerView.SetPosition(_spawnPosition);
@@ -169,7 +174,7 @@ namespace Game.Player
         public void UpdateMovementVariables()
         {
             UpdateDirection();
-            RotateTowards(cameraService.GetCameraTransform().forward);
+            RotatePlayer();
             ApplyGravity();
             UpdateSpeed();
         }
@@ -199,20 +204,30 @@ namespace Game.Player
             moveDirection = Vector3.Lerp(moveDirection, targetDirection,
                 Time.deltaTime * playerModel.DirectionSmoothSpeed);
         }
-        private void RotateTowards(Vector3 _direction)
+        private void RotatePlayer()
         {
             // Rotate Player Towards Camera, when player is not falling
             if (playerMovementStateMachine.GetCurrentState() == PlayerMovementState.FALL)
                 return;
 
-            if (_direction == Vector3.zero) return;
+            // Direction from player to hit point
+            Vector3 targetLocation = (hitPoint - playerView.transform.position);
+            targetLocation.y = 0f;
+            targetLocation.Normalize();
 
-            _direction.Normalize();
-            _direction.y = 0;
-            Quaternion targetRotation = Quaternion.LookRotation(_direction);
+            // Current Player forward
+            Vector3 playerForward = playerView.transform.forward;
+            playerForward.y = 0f;
+            playerForward.Normalize();
 
-            playerView.transform.rotation = Quaternion.Slerp(playerView.transform.rotation, targetRotation,
-                Time.deltaTime * playerModel.RotationSpeed);
+            float angle = Vector3.Angle(playerForward, targetLocation);
+            if (angle < 25f)
+            {
+                return;
+            }
+            Quaternion targetRotation = Quaternion.LookRotation(targetLocation);
+            playerView.transform.rotation = Quaternion.RotateTowards(
+                playerView.transform.rotation, targetRotation, Time.deltaTime * playerModel.RotationSpeed * 10f);
         }
         private void ApplyGravity()
         {
@@ -272,18 +287,10 @@ namespace Game.Player
                     Mathf.Clamp(aimPosition.y, 0, Screen.height)
                     );
 
-                //Ray ray = Camera.main.ScreenPointToRay(clampedAimPosition);
-                Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
+                Ray ray = Camera.main.ScreenPointToRay(clampedAimPosition);
                 int combinedLayerMask = playerModel.AimLayer | playerModel.LockLayer;
 
-                RaycastHit hit;
-                if (Physics.Raycast(ray, out hit, Mathf.Infinity, playerModel.LockLayer))
-                {
-                    newHitPoint = hit.point;
-                    newOffset = hit.normal;
-                    lastHit = hit;
-                }
-                else if (Physics.Raycast(ray, out hit, Mathf.Infinity, playerModel.AimLayer))
+                if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, combinedLayerMask))
                 {
                     newHitPoint = hit.point;
                     newOffset = hit.normal;
@@ -291,33 +298,17 @@ namespace Game.Player
                 }
                 else
                 {
-                    newHitPoint = ray.GetPoint(10f);
+                    newHitPoint = ray.GetPoint(100f);
                     newOffset = ray.direction;
                 }
             }
 
             hitPoint = Vector3.Lerp(hitPoint, newHitPoint, Time.deltaTime * playerModel.RotationSpeed);
 
-            UpdateAimCrosshair();
+            UpdateAim();
 
             playerView.DrawDebugCircle(hitPoint, lastHit.normal, 1f);
-
-            if (playerWeaponController.GetCurrentWeaponType() != WeaponType.NONE)
-            {
-                playerWeaponController.GetCurrentWeapon().UpdateWeaponAimPoint(hitPoint);
-            }
         }
-
-        private void UpdateAimCrosshair()
-        {
-            Transform cameraTransform = Camera.main.transform;
-            float crosshairDistance = Vector3.Distance(playerView.transform.position, cameraTransform.position) + 2f;
-            Vector3 direction = (hitPoint - cameraTransform.position).normalized;
-
-            playerView.GetAimCrosshairTransform().position = cameraTransform.position + direction * crosshairDistance;
-            playerView.GetAimCrosshairTransform().forward = cameraTransform.forward;
-        }
-
         private bool TryUseLockedTarget(out Vector3 _hitPoint, out Vector3 _offset)
         {
             _hitPoint = Vector3.zero;
@@ -348,6 +339,23 @@ namespace Game.Player
             _hitPoint = lastHit.collider.bounds.center;
             _offset = lastHit.normal;
             return true;
+        }
+        private void UpdateAim()
+        {
+            Transform cameraTransform = Camera.main.transform;
+            float crosshairDistance = Vector3.Distance(playerView.transform.position, cameraTransform.position) + 0.1f;
+
+            Vector3 aimDirection = (hitPoint - cameraTransform.position).normalized;
+            Vector3 aimPosition = cameraTransform.position + aimDirection * crosshairDistance;
+            playerView.GetAimTransform().position = aimPosition;
+            playerView.GetAimTransform().forward = aimDirection;
+
+
+            if (playerWeaponController.GetCurrentWeaponType() != WeaponType.NONE)
+            {
+                playerWeaponController.GetCurrentWeapon().UpdateWeaponAimPoint(hitPoint);
+                playerWeaponController.GetCurrentWeapon().UpdateWeaponAimCrosshairPoint(aimPosition, aimDirection);
+            }
         }
         #endregion
 
@@ -419,7 +427,7 @@ namespace Game.Player
         public PlayerActionStateMachine GetActionStateMachine() => playerActionStateMachine;
 
         public Transform GetTransform() => playerView.transform;
-        public Transform GetAimTransform() => playerView.GetAimCrosshairTransform();
+        public Transform GetAimTransform() => playerView.GetAimTransform();
         public Vector3 GetMoveDirection() => moveDirection;
         public float GetCurrentSpeed() => currentSpeed;
         public Vector3 GetXZNormalized(Vector3 _direction)

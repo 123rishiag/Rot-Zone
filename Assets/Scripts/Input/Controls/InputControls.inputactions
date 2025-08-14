@@ -1,4 +1,5 @@
 {
+    "version": 1,
     "name": "InputControls",
     "maps": [
         {
@@ -303,34 +304,6 @@
                     "processors": "",
                     "groups": "",
                     "action": "Lock",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                }
-            ]
-        },
-        {
-            "name": "Camera",
-            "id": "c68dbe5a-fb1b-4c57-b2ad-a32ce8a8b46e",
-            "actions": [
-                {
-                    "name": "MouseDelta",
-                    "type": "Value",
-                    "id": "18216bb1-186b-4370-afb7-ad155fcced18",
-                    "expectedControlType": "Vector2",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": true
-                }
-            ],
-            "bindings": [
-                {
-                    "name": "",
-                    "id": "81ab7f5b-55d7-4994-96d2-74e0483b36f7",
-                    "path": "<Mouse>/delta",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "MouseDelta",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
