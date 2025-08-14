@@ -1327,8 +1327,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6907601669313249316}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.17101009, y: 0.17101009, z: 0.030153697, w: 0.9698463}
-  m_LocalPosition: {x: 0, y: 0.40019974, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1577,7 +1577,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9194885045151128066, guid: e1e3e7ba406f8a8429fb88c35882e9a8, type: 3}
       propertyPath: m_Name
-      value: CM_IsometricCamera
+      value: CM_ThirdPersonCamera
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

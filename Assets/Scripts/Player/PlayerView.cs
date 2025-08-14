@@ -13,7 +13,7 @@ namespace Game.Player
         [SerializeField] private TwoBoneIKConstraint leftHandIK;
 
         [Header("Aim Settings")]
-        [SerializeField] private Transform aimCrosshairTransform;
+        [SerializeField] private Transform aimTransform;
 
         [Header("Physics Settings")]
         private Collider[] ragDollColliders;
@@ -109,7 +109,7 @@ namespace Game.Player
         // Getters
         public CharacterController GetCharacterController() => characterController;
         public Animator GetAnimator() => animator;
-        public Transform GetAimCrosshairTransform() => aimCrosshairTransform;
+        public Transform GetAimTransform() => aimTransform;
         public WeaponIKData[] GetWeaponIKDatas() => weaponIKDatas;
         public MultiAimConstraint GetRightHandAimConstraint() => rightHandAimConstraint;
         public TwoBoneIKConstraint GetLeftHandIK() => leftHandIK;
