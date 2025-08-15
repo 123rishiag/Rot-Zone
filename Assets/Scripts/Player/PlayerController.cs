@@ -227,7 +227,8 @@ namespace Game.Player
             }
             Quaternion targetRotation = Quaternion.LookRotation(targetLocation);
             playerView.transform.rotation = Quaternion.RotateTowards(
-                playerView.transform.rotation, targetRotation, Time.deltaTime * playerModel.RotationSpeed * 10f);
+                playerView.transform.rotation, targetRotation,  Time.deltaTime * 
+                playerModel.RotationSpeed * cameraService.GetCurrentCameraController().GetModel().CameraSensitivity);
         }
         private void ApplyGravity()
         {
@@ -300,19 +301,20 @@ namespace Game.Player
                 }
             }
 
-            hitPoint = Vector3.Lerp(hitPoint, newHitPoint, Time.deltaTime * playerModel.RotationSpeed);
+            hitPoint = Vector3.Lerp(hitPoint, newHitPoint, Time.deltaTime * 
+                cameraService.GetCurrentCameraController().GetModel().CameraSensitivity);
 
             UpdateAim();
 
             playerView.DrawDebugCircle(hitPoint, lastHit.normal, 1f);
         }
-        private Vector2 ClampToCenterOffset(Vector2 pos)
+        private Vector2 ClampToCenterOffset(Vector2 _position)
         {
             Vector2 center = new Vector2(Screen.width * 0.5f, Screen.height * 0.5f);
-            Vector2 offset = pos - center;
+            Vector2 offset = _position - center;
 
-            float maxX = Screen.width * 0.35f;
-            float maxY = Screen.height * 0.35f;
+            float maxX = Screen.width * 1f;
+            float maxY = Screen.height * 1f;
 
             offset.x = Mathf.Clamp(offset.x, -maxX, maxX);
             offset.y = Mathf.Clamp(offset.y, -maxY, maxY);
