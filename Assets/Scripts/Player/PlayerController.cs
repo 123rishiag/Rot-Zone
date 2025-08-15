@@ -190,8 +190,8 @@ namespace Game.Player
             if (inputDirection.magnitude > 0.1f)
             {
                 // Fetching Target Direction where player is trying to move in world based on input and camera 
-                targetDirection = (GetXZNormalized(cameraService.GetCameraTransform().forward) * inputDirection.z +
-                    GetXZNormalized(cameraService.GetCameraTransform().right) * inputDirection.x).normalized;
+                targetDirection = (GetXZNormalized(cameraService.GetCurrentCameraTransform().forward) * inputDirection.z +
+                    GetXZNormalized(cameraService.GetCurrentCameraTransform().right) * inputDirection.x).normalized;
 
                 lastMoveDirection = moveDirection;
             }
@@ -282,10 +282,7 @@ namespace Game.Player
             if (!TryUseLockedTarget(out newHitPoint, out newOffset))
             {
                 // Setting Aim Based on Mouse Position & Clamping aim at screen bounds
-                Vector2 clampedAimPosition = new Vector2(
-                    Mathf.Clamp(aimPosition.x, 0, Screen.width),
-                    Mathf.Clamp(aimPosition.y, 0, Screen.height)
-                    );
+                Vector2 clampedAimPosition = ClampToCenterOffset(aimPosition);
 
                 Ray ray = Camera.main.ScreenPointToRay(clampedAimPosition);
                 int combinedLayerMask = playerModel.AimLayer | playerModel.LockLayer;
@@ -308,6 +305,19 @@ namespace Game.Player
             UpdateAim();
 
             playerView.DrawDebugCircle(hitPoint, lastHit.normal, 1f);
+        }
+        private Vector2 ClampToCenterOffset(Vector2 pos)
+        {
+            Vector2 center = new Vector2(Screen.width * 0.5f, Screen.height * 0.5f);
+            Vector2 offset = pos - center;
+
+            float maxX = Screen.width * 0.35f;
+            float maxY = Screen.height * 0.35f;
+
+            offset.x = Mathf.Clamp(offset.x, -maxX, maxX);
+            offset.y = Mathf.Clamp(offset.y, -maxY, maxY);
+
+            return center + offset;
         }
         private bool TryUseLockedTarget(out Vector3 _hitPoint, out Vector3 _offset)
         {
