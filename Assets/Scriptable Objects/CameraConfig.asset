@@ -16,9 +16,12 @@ MonoBehaviour:
   - cameraType: 0
     cameraPrefab: {fileID: -4930495854644106697, guid: 793690a496bcbf443ad8134a24ea6084, type: 3}
     cameraAnimationClip: {fileID: 7400000, guid: 300d84f309f3823418ae2d7922140d75, type: 2}
+    cameraSensitivity: 20
   - cameraType: 1
     cameraPrefab: {fileID: -986956889790334268, guid: e1e3e7ba406f8a8429fb88c35882e9a8, type: 3}
     cameraAnimationClip: {fileID: 7400000, guid: ff3a2127fac339145bed2a1216b9d800, type: 2}
+    cameraSensitivity: 100
   - cameraType: 2
     cameraPrefab: {fileID: -8153380026801503813, guid: 4c9103920ee357e4d8d81ddd7dcf01c9, type: 3}
     cameraAnimationClip: {fileID: 7400000, guid: c49956b8e088f6b4392b8a8175ab522b, type: 2}
+    cameraSensitivity: 10
