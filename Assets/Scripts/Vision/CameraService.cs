@@ -1,5 +1,6 @@
 using Game.Controls;
 using Game.Player;
+using System.Collections.Generic;
 using Unity.Cinemachine;
 using UnityEngine;
 
@@ -7,86 +8,99 @@ namespace Game.Vision
 {
     public class CameraService
     {
+        // Private Variables
         private CameraConfig cameraConfig;
-        private CinemachineCamera cmCamera;
+        private CinemachineStateDrivenCamera cmCamera;
 
+        private Camera mainCamera;
+        private CinemachineBrain cmBrain;
+
+        private List<CameraController> cameraControllers;
+
+        // Private Services
         private InputService inputService;
         private PlayerService playerService;
 
-        private CinemachineTargetGroup cinemachineTargetGroup;
-        private CinemachineThirdPersonFollow cinemachineThirdPersonFollow;
-        private CinemachineRotationComposer cinemachineRotationComposer;
-        private CinemachineThirdPersonAim cinemachineThirdPersonAim;
-
-        public CameraService(CameraConfig _cameraConfig, CinemachineCamera _cinemachineCamera)
+        public CameraService(CameraConfig _cameraConfig, CinemachineStateDrivenCamera _cinemachineCamera)
         {
+            // Setting Variables
             cameraConfig = _cameraConfig;
             cmCamera = _cinemachineCamera;
         }
 
         public void Init(InputService _inputService, PlayerService _playerService)
         {
+            // Setting Services
             inputService = _inputService;
             playerService = _playerService;
 
+            // Setting Elements
+            cameraControllers = new List<CameraController>();
+
             InitializeVariables();
+            CreateControllers();
+            SetStateCameras();
             AssignInputs();
 
             Reset();
         }
 
-        private void InitializeVariables()
+        public void Reset()
         {
-            cinemachineTargetGroup = cmCamera.GetComponentInChildren<CinemachineTargetGroup>();
-            if (cinemachineTargetGroup == null)
-            {
-                Debug.LogError("Tracking Target Group not found!!!");
-            }
 
-            cinemachineThirdPersonFollow = cmCamera.GetComponent<CinemachineThirdPersonFollow>();
-            if (cinemachineThirdPersonFollow == null)
-            {
-                Debug.LogError("Cinemachine Third Person Follow not found!!!");
-            }
-            cinemachineRotationComposer = cmCamera.GetComponent<CinemachineRotationComposer>();
-            if (cinemachineRotationComposer == null)
-            {
-                Debug.LogError("Cinemachine Rotation Composer not found!!!");
-            }
-            cinemachineThirdPersonAim = cmCamera.GetComponent<CinemachineThirdPersonAim>();
-            if (cinemachineThirdPersonAim == null)
-            {
-                Debug.LogError("Cinemachine Third Person Aim not found!!!");
-            }
         }
 
+        private void InitializeVariables()
+        {
+            mainCamera = Camera.main;
+            if (mainCamera == null)
+            {
+                Debug.LogError("Cinemachine Brain not found!!!");
+            }
+            cmBrain = mainCamera.GetComponent<CinemachineBrain>();
+
+            Transform playerTransform = playerService.GetController().GetTransform();
+            cmCamera.Follow = playerTransform;
+        }
+
+        private void CreateControllers()
+        {
+            Transform playerTransform = playerService.GetController().GetTransform();
+            foreach (var cameraData in cameraConfig.cameraDatas)
+            {
+                CameraController cameraController = new CameraController(cameraData, cmCamera.transform, playerTransform);
+                cameraControllers.Add(cameraController);
+            }
+        }
+        private void SetStateCameras()
+        {
+            var instructionList = new List<CinemachineStateDrivenCamera.Instruction>(cmCamera.Instructions);
+
+            // Setting Camera States
+            foreach (var cameraController in cameraControllers)
+            {
+                int fullHash = (cameraController.GetModel().CameraType == CameraType.DEFAULT) ? 0 :
+                    Animator.StringToHash("Base Layer." + cameraController.GetModel().CameraAnimationClip.name);
+
+                var instruction = new CinemachineStateDrivenCamera.Instruction
+                {
+                    FullHash = fullHash,
+                    Camera = cameraController.GetView().CmCamera,
+                    ActivateAfter = 0f,
+                    MinDuration = 0f
+                };
+                instructionList.Add(instruction);
+            }
+
+            // Adding all States
+            cmCamera.Instructions = instructionList.ToArray();
+        }
         private void AssignInputs()
         {
             InputControls inputControls = inputService.GetInputControls();
         }
 
-        public void Reset()
-        {
-            SetupCinemachineCamera();
-        }
-
-        private void SetupCinemachineCamera()
-        {
-            InputControls inputControls = inputService.GetInputControls();
-
-            // Setting Camera Targets
-            Transform playerTransform = playerService.GetController().GetTransform();
-            Transform aimTransform = playerService.GetController().GetAimTransform();
-            cinemachineTargetGroup.Targets.Clear();
-            cinemachineTargetGroup.AddMember(playerTransform,
-                1f, 1f);
-            cmCamera.Follow = cinemachineTargetGroup.transform;
-        }
-
-        // Setters
-        public void SetCameraFOV(int _fov) => cmCamera.Lens.FieldOfView = _fov;
-
         // Getters
-        public Transform GetCameraTransform() => cmCamera.transform;
+        public Transform GetCurrentCameraTransform() => cmCamera.transform;
     }
 }

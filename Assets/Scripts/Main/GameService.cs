@@ -15,7 +15,7 @@ namespace Game.Main
     {
         [Header("Camera Variables")]
         public CameraConfig cameraConfig;
-        public CinemachineCamera cmCamera;
+        public CinemachineStateDrivenCamera cmCamera;
 
         [Header("Sound Variables")]
         [SerializeField] public SoundConfig soundConfig;
