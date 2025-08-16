@@ -18,8 +18,8 @@ namespace Game.Vision
 
         private Animator cmCameraAnimator;
 
-        private CameraType currentCameraType;
         private List<CameraController> cameraControllers;
+        private CameraController currentCameraController;
 
         // Private Services
         private InputService inputService;
@@ -39,7 +39,6 @@ namespace Game.Vision
             playerService = _playerService;
 
             // Setting Elements
-            currentCameraType = CameraType.DEFAULT;
             cameraControllers = new List<CameraController>();
 
             AssignInputs();
@@ -47,12 +46,19 @@ namespace Game.Vision
             CreateControllers();
             AddCameraStates();
 
+            SetCamera(CameraType.DEFAULT);
+
             Reset();
         }
 
         public void Reset()
         {
 
+        }
+
+        public void Update()
+        {
+            currentCameraController.Update();
         }
 
         private void AssignInputs()
@@ -88,7 +94,26 @@ namespace Game.Vision
             Transform playerTransform = playerService.GetController().GetTransform();
             foreach (var cameraData in cameraConfig.cameraDatas)
             {
-                CameraController cameraController = new CameraController(cameraData, cmCamera.transform, playerTransform);
+                CameraController cameraController;
+                switch (cameraData.cameraType)
+                {
+                    case CameraType.THIRD_PERSON:
+                        cameraController = new ThirdPersonCameraController(cameraData, cmCamera.transform,
+                            inputService, playerService);
+                        break;
+                    case CameraType.ISOMETRIC:
+                        cameraController = new IsometricCameraController(cameraData, cmCamera.transform,
+                            inputService, playerService);
+                        break;
+                    case CameraType.DEFAULT:
+                        cameraController = new DefaultCameraController(cameraData, cmCamera.transform,
+                            inputService, playerService);
+                        break;
+                    default:
+                        cameraController = new DefaultCameraController(cameraData, cmCamera.transform,
+                            inputService, playerService);
+                        break;
+                }
                 cameraControllers.Add(cameraController);
             }
         }
@@ -118,24 +143,26 @@ namespace Game.Vision
 
         private void SwitchCamera()
         {
+            CameraType currentCameraType = currentCameraController.GetModel().CameraType;
             int currentIndex = Array.IndexOf(Enum.GetValues(typeof(CameraType)), currentCameraType);
             int maxLength = Enum.GetValues(typeof(CameraType)).Length;
             int nextIndex = (currentIndex + 1) % maxLength;
 
             CameraType cameraType = (CameraType)Enum.GetValues(typeof(CameraType)).GetValue(nextIndex);
+
             SetCamera(cameraType);
         }
 
         // Setters
         public void SetCamera(CameraType _cameraType)
         {
-            currentCameraType = _cameraType;
-            cmCameraAnimator.Play(GetCurrentCameraController().GetModel().CameraAnimationClip.name);
+            currentCameraController = cameraControllers.Find(controller => controller.GetModel().CameraType == _cameraType);
+            cmCameraAnimator.Play(currentCameraController.GetModel().CameraAnimationClip.name);
         }
 
         // Getters
         public Transform GetCurrentCameraTransform() => GetCurrentCameraController().GetView().gameObject.transform;
-        public CameraController GetCurrentCameraController() =>
-            cameraControllers.Find(controller => controller.GetModel().CameraType == currentCameraType);
+        public CameraController GetCurrentCameraController() => currentCameraController;
+
     }
 }

@@ -1,23 +1,45 @@
+using Game.Controls;
+using Game.Player;
 using UnityEngine;
 
 namespace Game.Vision
 {
-    public class CameraController
+    public abstract class CameraController
     {
         // Private Variables
-        private CameraModel cameraModel;
-        private CameraView cameraView;
+        protected CameraModel CameraModel;
+        protected CameraView CameraView;
 
-        public CameraController(CameraData _cameraData, Transform _parentPanel, Transform _targetTransform)
+        protected InputControls InputControls;
+
+        // Private Services
+        private InputService inputService;
+        protected PlayerService PlayerService;
+
+        public CameraController(CameraData _cameraData, Transform _parentPanel,
+            InputService _inputService, PlayerService _playerService)
         {
             // Setting Variables
-            cameraModel = new CameraModel(_cameraData);
-            cameraView = Object.Instantiate(_cameraData.cameraPrefab, _parentPanel).GetComponent<CameraView>();
-            cameraView.Init(_targetTransform);
+            CameraModel = new CameraModel(_cameraData);
+            CameraView = Object.Instantiate(_cameraData.cameraPrefab, _parentPanel).GetComponent<CameraView>();
+            CameraView.Init(_playerService.GetController().GetTransform());
+
+            // Setting Services
+            inputService = _inputService;
+
+            // Setting Elements
+            InputControls = inputService.GetInputControls();
+            PlayerService = _playerService;
         }
 
+        public void Update() => AimCamera();
+
+        protected abstract void AimCamera();
+
+        public abstract Ray GetAimRay();
+
         // Getters
-        public CameraModel GetModel() => cameraModel;
-        public CameraView GetView() => cameraView;
+        public CameraModel GetModel() => CameraModel;
+        public CameraView GetView() => CameraView;
     }
 }
