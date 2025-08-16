@@ -36,7 +36,7 @@ namespace Game.Main
                 Owner.GetPlayerService().Update();
                 Owner.GetEnemyService().Update();
                 // Spawn Service
-                // Camera Service
+                Owner.GetCameraService().Update();
             }
             Owner.GetWaveService().Update();
         }

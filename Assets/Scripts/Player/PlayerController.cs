@@ -33,8 +33,6 @@ namespace Game.Player
         private RaycastHit lastHit;
         private Vector3 hitPoint;
 
-        private Vector2 aimPosition;
-
         private int currentHealth;
         public bool IsAlive { get; set; }
 
@@ -85,8 +83,6 @@ namespace Game.Player
             currentSpeed = 0f;
 
             isLocking = false;
-
-            aimPosition = Vector2.zero;
 
             currentHealth = 0;
             IsAlive = true;
@@ -164,9 +160,6 @@ namespace Game.Player
             inputControls.Player.WeaponThree.started += ctx => playerWeaponController.EquipWeapon(WeaponType.SHOTGUN);
             inputControls.Player.WeaponStow.started += ctx => playerWeaponController.EquipWeapon(WeaponType.NONE);
             inputControls.Player.WeaponReload.started += ctx => IsReloading = true;
-
-            inputControls.Player.MousePosition.performed += ctx => aimPosition = ctx.ReadValue<Vector2>();
-            inputControls.Player.MousePosition.canceled += ctx => aimPosition = Vector2.zero;
         }
         #endregion
 
@@ -174,7 +167,6 @@ namespace Game.Player
         public void UpdateMovementVariables()
         {
             UpdateDirection();
-            RotatePlayer();
             ApplyGravity();
             UpdateSpeed();
         }
@@ -203,32 +195,6 @@ namespace Game.Player
             //  Smoothly changing move Direction towards target Direction
             moveDirection = Vector3.Lerp(moveDirection, targetDirection,
                 Time.deltaTime * playerModel.DirectionSmoothSpeed);
-        }
-        private void RotatePlayer()
-        {
-            // Rotate Player Towards Camera, when player is not falling
-            if (playerMovementStateMachine.GetCurrentState() == PlayerMovementState.FALL)
-                return;
-
-            // Direction from player to hit point
-            Vector3 targetLocation = (hitPoint - playerView.transform.position);
-            targetLocation.y = 0f;
-            targetLocation.Normalize();
-
-            // Current Player forward
-            Vector3 playerForward = playerView.transform.forward;
-            playerForward.y = 0f;
-            playerForward.Normalize();
-
-            float angle = Vector3.Angle(playerForward, targetLocation);
-            if (angle < 25f)
-            {
-                return;
-            }
-            Quaternion targetRotation = Quaternion.LookRotation(targetLocation);
-            playerView.transform.rotation = Quaternion.RotateTowards(
-                playerView.transform.rotation, targetRotation,  Time.deltaTime * 
-                playerModel.RotationSpeed * cameraService.GetCurrentCameraController().GetModel().CameraSensitivity);
         }
         private void ApplyGravity()
         {
@@ -282,10 +248,7 @@ namespace Game.Player
             Vector3 newOffset;
             if (!TryUseLockedTarget(out newHitPoint, out newOffset))
             {
-                // Setting Aim Based on Mouse Position & Clamping aim at screen bounds
-                Vector2 clampedAimPosition = ClampToCenterOffset(aimPosition);
-
-                Ray ray = Camera.main.ScreenPointToRay(clampedAimPosition);
+                Ray ray = cameraService.GetCurrentCameraController().GetAimRay();
                 int combinedLayerMask = playerModel.AimLayer | playerModel.LockLayer;
 
                 if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, combinedLayerMask))
@@ -301,25 +264,12 @@ namespace Game.Player
                 }
             }
 
-            hitPoint = Vector3.Lerp(hitPoint, newHitPoint, Time.deltaTime * 
+            hitPoint = Vector3.Lerp(hitPoint, newHitPoint, Time.deltaTime *
                 cameraService.GetCurrentCameraController().GetModel().CameraSensitivity);
 
             UpdateAim();
 
             playerView.DrawDebugCircle(hitPoint, lastHit.normal, 1f);
-        }
-        private Vector2 ClampToCenterOffset(Vector2 _position)
-        {
-            Vector2 center = new Vector2(Screen.width * 0.5f, Screen.height * 0.5f);
-            Vector2 offset = _position - center;
-
-            float maxX = Screen.width * 1f;
-            float maxY = Screen.height * 1f;
-
-            offset.x = Mathf.Clamp(offset.x, -maxX, maxX);
-            offset.y = Mathf.Clamp(offset.y, -maxY, maxY);
-
-            return center + offset;
         }
         private bool TryUseLockedTarget(out Vector3 _hitPoint, out Vector3 _offset)
         {
