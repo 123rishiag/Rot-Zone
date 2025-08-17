@@ -655,10 +655,6 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 778710082748944032, guid: b6523005a248d434981b702e7f5e79dd, type: 3}
-      propertyPath: m_fontSize
-      value: 35.65
-      objectReference: {fileID: 0}
     - target: {fileID: 1521259890493629973, guid: b6523005a248d434981b702e7f5e79dd, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -706,10 +702,6 @@ PrefabInstance:
     - target: {fileID: 2887639272361759880, guid: b6523005a248d434981b702e7f5e79dd, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3647539845667338457, guid: b6523005a248d434981b702e7f5e79dd, type: 3}
-      propertyPath: m_fontSize
-      value: 35.65
       objectReference: {fileID: 0}
     - target: {fileID: 3866596696206459747, guid: b6523005a248d434981b702e7f5e79dd, type: 3}
       propertyPath: m_AnchorMax.y
@@ -839,10 +831,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4288382538697201858, guid: b6523005a248d434981b702e7f5e79dd, type: 3}
-      propertyPath: m_fontSize
-      value: 41
-      objectReference: {fileID: 0}
     - target: {fileID: 4374990211201953430, guid: b6523005a248d434981b702e7f5e79dd, type: 3}
       propertyPath: m_Name
       value: UICanvas
@@ -871,10 +859,6 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4977809116633521079, guid: b6523005a248d434981b702e7f5e79dd, type: 3}
-      propertyPath: m_fontSize
-      value: 20.7
-      objectReference: {fileID: 0}
     - target: {fileID: 6448945906141268050, guid: b6523005a248d434981b702e7f5e79dd, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -898,10 +882,6 @@ PrefabInstance:
     - target: {fileID: 6448945906141268050, guid: b6523005a248d434981b702e7f5e79dd, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6986206108906389551, guid: b6523005a248d434981b702e7f5e79dd, type: 3}
-      propertyPath: m_fontSize
-      value: 35.65
       objectReference: {fileID: 0}
     - target: {fileID: 6987881511671789152, guid: b6523005a248d434981b702e7f5e79dd, type: 3}
       propertyPath: m_AnchorMax.y

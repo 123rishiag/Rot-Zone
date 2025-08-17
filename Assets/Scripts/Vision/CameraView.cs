@@ -5,7 +5,7 @@ namespace Game.Vision
 {
     public class CameraView : MonoBehaviour
     {
-        public void Init(Transform _targetTransform)
+        public void Init(Transform _followTransform, Transform _lookAtTransform)
         {
             CmCamera = GetComponentInChildren<CinemachineCamera>();
             if (CmCamera == null)
@@ -14,7 +14,8 @@ namespace Game.Vision
             }
 
             // Setting Camera Targets
-            CmCamera.Follow = _targetTransform;
+            CmCamera.Follow = _followTransform;
+            CmCamera.LookAt = _lookAtTransform;
         }
 
         // Getters

@@ -27,6 +27,7 @@ namespace Game.Weapon
 
         [Header("Weapon Aim Settings")]
         public float weaponAimLaserMaxDistance = 5f;
+        public float weaponAimSpeed = 100f;
 
         [Header("Weapon Ammo Settings")]
         public int weaponMaxCapacity = 30;
