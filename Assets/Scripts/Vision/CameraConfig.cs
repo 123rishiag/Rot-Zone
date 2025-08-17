@@ -15,6 +15,6 @@ namespace Game.Vision
         public CameraType cameraType;
         public CameraView cameraPrefab;
         public AnimationClip cameraAnimationClip;
-        public int cameraSensitivity = 10;
+        public int cameraSensitivity = 20;
     }
 }

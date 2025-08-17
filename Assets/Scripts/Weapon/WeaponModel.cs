@@ -14,6 +14,7 @@ namespace Game.Weapon
             WeaponKickBackFactor = _weaponData.weaponKickBackFactor;
 
             WeaponAimLaserMaxDistance = _weaponData.weaponAimLaserMaxDistance;
+            WeaponAimSpeed = _weaponData.weaponAimSpeed;
 
             WeaponMaxCapacity = _weaponData.weaponMaxCapacity;
         }
@@ -27,6 +28,7 @@ namespace Game.Weapon
         public int WeaponKickBackFactor { get; private set; }
 
         public float WeaponAimLaserMaxDistance { get; private set; }
+        public float WeaponAimSpeed { get; private set; }
 
         public int WeaponMaxCapacity { get; private set; }
     }

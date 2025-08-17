@@ -15,8 +15,6 @@ namespace Game.Weapon
         private Vector3 cachedFirePosition;
         private Vector3 cachedFireDirection;
         private Vector3 aimTarget;
-        private Vector3 aimCrosshairPosition;
-        private Vector3 aimCrosshairDirection;
 
         private float lastFireTime;
         public int CurrentAmmo { get; private set; }
@@ -48,7 +46,6 @@ namespace Game.Weapon
             cachedFirePosition = weaponView.GetFirePoint().position;
             cachedFireDirection = (aimTarget - cachedFirePosition).normalized;
             UpdateAimLaser();
-            weaponView.UpdateAimCrosshair(aimCrosshairPosition, aimCrosshairDirection);
         }
 
         private void UpdateAimLaser()
@@ -90,12 +87,7 @@ namespace Game.Weapon
         }
         public void UpdateWeaponAimPoint(Vector3 _target)
         {
-            aimTarget = Vector3.Lerp(aimTarget, _target, Time.deltaTime * 50f);
-        }
-        public void UpdateWeaponAimCrosshairPoint(Vector3 _position, Vector3 _direction)
-        {
-            aimCrosshairPosition = _position;
-            aimCrosshairDirection = _direction;
+            aimTarget = Vector3.Lerp(aimTarget, _target, Time.deltaTime * weaponModel.WeaponAimSpeed);
         }
 
         public abstract void PlayFireSound();

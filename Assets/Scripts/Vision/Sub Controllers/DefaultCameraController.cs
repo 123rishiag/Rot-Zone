@@ -12,9 +12,15 @@ namespace Game.Vision
                 _inputService, _playerService)
         { }
 
+        protected override void SetViewInit()
+        {
+            CameraView.Init(PlayerService.GetController().GetTransform(),
+                PlayerService.GetController().GetTransform());
+        }
+
         protected override void AimCamera() { }
 
         // Getters
-        public override Ray GetAimRay() => Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
+        public override Transform GetCameraTransform() => CameraView.CmCamera.Follow.transform;
     }
 }

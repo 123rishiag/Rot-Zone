@@ -248,7 +248,7 @@ namespace Game.Player
             Vector3 newOffset;
             if (!TryUseLockedTarget(out newHitPoint, out newOffset))
             {
-                Ray ray = cameraService.GetCurrentCameraController().GetAimRay();
+                Ray ray = cameraService.GetMainCamera().ViewportPointToRay(Vector3.one * 0.5f);
                 int combinedLayerMask = playerModel.AimLayer | playerModel.LockLayer;
 
                 if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, combinedLayerMask))
@@ -290,7 +290,7 @@ namespace Game.Player
             {
                 return false;
             }
-            Vector3 screenPos = Camera.main.WorldToScreenPoint(lastHit.transform.position);
+            Vector3 screenPos = cameraService.GetMainCamera().WorldToScreenPoint(lastHit.transform.position);
             if (screenPos.z <= 0 ||
                 screenPos.x < 0 || screenPos.x > Screen.width ||
                 screenPos.y < 0 || screenPos.y > Screen.height)
@@ -304,19 +304,18 @@ namespace Game.Player
         }
         private void UpdateAim()
         {
-            Transform cameraTransform = Camera.main.transform;
-            float crosshairDistance = Vector3.Distance(playerView.transform.position, cameraTransform.position) + 0.1f;
+            Transform cameraTransform = cameraService.GetMainCamera().transform;
+            // Adding 1f threshold, so it is atleast away from gun point
+            float crosshairDistance = Vector3.Distance(playerView.transform.position, cameraTransform.position) + 1f;
 
             Vector3 aimDirection = (hitPoint - cameraTransform.position).normalized;
             Vector3 aimPosition = cameraTransform.position + aimDirection * crosshairDistance;
             playerView.GetAimTransform().position = aimPosition;
             playerView.GetAimTransform().forward = aimDirection;
 
-
             if (playerWeaponController.GetCurrentWeaponType() != WeaponType.NONE)
             {
                 playerWeaponController.GetCurrentWeapon().UpdateWeaponAimPoint(hitPoint);
-                playerWeaponController.GetCurrentWeapon().UpdateWeaponAimCrosshairPoint(aimPosition, aimDirection);
             }
         }
         #endregion
@@ -390,6 +389,7 @@ namespace Game.Player
 
         public Transform GetTransform() => playerView.transform;
         public Transform GetAimTransform() => playerView.GetAimTransform();
+        public Transform GetCameraPivotTransform() => playerView.GetCameraPivotTransform();
         public Vector3 GetMoveDirection() => moveDirection;
         public float GetCurrentSpeed() => currentSpeed;
         public Vector3 GetXZNormalized(Vector3 _direction)

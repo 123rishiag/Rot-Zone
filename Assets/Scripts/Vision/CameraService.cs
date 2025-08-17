@@ -46,14 +46,13 @@ namespace Game.Vision
             CreateControllers();
             AddCameraStates();
 
-            SetCamera(CameraType.DEFAULT);
-
             Reset();
         }
 
         public void Reset()
         {
-
+            CameraType cameraType = (CameraType)Enum.GetValues(typeof(CameraType)).GetValue(0);
+            SetCamera(cameraType);
         }
 
         public void Update()
@@ -97,12 +96,16 @@ namespace Game.Vision
                 CameraController cameraController;
                 switch (cameraData.cameraType)
                 {
-                    case CameraType.THIRD_PERSON:
-                        cameraController = new ThirdPersonCameraController(cameraData, cmCamera.transform,
+                    case CameraType.THIRD_PERSON_UNARMED:
+                        cameraController = new ThirdPersonUnarmedCameraController(cameraData, cmCamera.transform,
                             inputService, playerService);
                         break;
-                    case CameraType.ISOMETRIC:
-                        cameraController = new IsometricCameraController(cameraData, cmCamera.transform,
+                    case CameraType.THIRD_PERSON_ARMED:
+                        cameraController = new ThirdPersonArmedCameraController(cameraData, cmCamera.transform,
+                            inputService, playerService);
+                        break;
+                    case CameraType.FIRST_PERSON_ARMED:
+                        cameraController = new FirstPersonArmedCameraController(cameraData, cmCamera.transform,
                             inputService, playerService);
                         break;
                     case CameraType.DEFAULT:
@@ -161,8 +164,9 @@ namespace Game.Vision
         }
 
         // Getters
-        public Transform GetCurrentCameraTransform() => GetCurrentCameraController().GetView().gameObject.transform;
+        public Transform GetCurrentCameraTransform() => GetCurrentCameraController().GetCameraTransform();
         public CameraController GetCurrentCameraController() => currentCameraController;
+        public Camera GetMainCamera() => mainCamera;
 
     }
 }

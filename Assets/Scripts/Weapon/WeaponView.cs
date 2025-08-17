@@ -7,7 +7,6 @@ namespace Game.Weapon
         [Header("Weapon Settings")]
         [SerializeField] private Transform firePoint;
         [SerializeField] private LineRenderer aimLaser;
-        [SerializeField] private Transform aimCrosshair;
 
         // Private Variables
         private WeaponController weaponController;
@@ -22,11 +21,6 @@ namespace Game.Weapon
         {
             aimLaser.SetPosition(0, firePoint.position);
             aimLaser.SetPosition(1, _aimTarget);
-        }
-        public void UpdateAimCrosshair(Vector3 _position, Vector3 _direction)
-        {
-            aimCrosshair.position = _position;
-            aimCrosshair.forward = _direction;
         }
 
         // Getters

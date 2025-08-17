@@ -14,6 +14,7 @@ namespace Game.Player
 
         [Header("Aim Settings")]
         [SerializeField] private Transform aimTransform;
+        [SerializeField] private Transform cameraPivotTransform;
 
         [Header("Physics Settings")]
         private Collider[] ragDollColliders;
@@ -110,6 +111,7 @@ namespace Game.Player
         public CharacterController GetCharacterController() => characterController;
         public Animator GetAnimator() => animator;
         public Transform GetAimTransform() => aimTransform;
+        public Transform GetCameraPivotTransform() => cameraPivotTransform;
         public WeaponIKData[] GetWeaponIKDatas() => weaponIKDatas;
         public MultiAimConstraint GetRightHandAimConstraint() => rightHandAimConstraint;
         public TwoBoneIKConstraint GetLeftHandIK() => leftHandIK;
