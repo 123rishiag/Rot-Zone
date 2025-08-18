@@ -22,7 +22,7 @@ namespace Game.Player
         public float accelerationFactor = 5f;
         public float decelerationFactor = 2.5f;
         public float directionSmoothSpeed = 20f;
-        public float rotationSpeed = 10f;
+        public float rotationSpeed = 200f;
 
         [Header("Gravity Settings")]
         public float gravityFactor = 9.81f;

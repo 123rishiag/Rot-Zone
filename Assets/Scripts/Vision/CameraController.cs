@@ -26,13 +26,14 @@ namespace Game.Vision
             // Setting Variables
             CameraModel = new CameraModel(_cameraData);
             CameraView = Object.Instantiate(_cameraData.cameraPrefab, _parentPanel).GetComponent<CameraView>();
+            CameraView.Init(_playerService.GetController().GetCameraPivotTransform(),
+                _playerService.GetController().GetTransform());
 
             // Setting Services
             InputService = _inputService;
             PlayerService = _playerService;
 
             // Setting Elements
-            SetViewInit();
             inputControls = InputService.GetInputControls();
 
             Yaw = 0f;
@@ -41,8 +42,6 @@ namespace Game.Vision
             inputControls.Camera.MouseDelta.performed += ctx => mouseDelta = ctx.ReadValue<Vector2>();
             inputControls.Camera.MouseDelta.canceled += ctx => mouseDelta = Vector2.zero;
         }
-
-        protected abstract void SetViewInit();
 
         public void Update() => AimCamera();
 
@@ -55,6 +54,9 @@ namespace Game.Vision
             Pitch -= dy * CameraModel.CameraSensitivity * Time.deltaTime;
 
             Pitch = Mathf.Clamp(Pitch, -10f, 35f);
+
+            CameraView.CmCamera.Follow.rotation =
+                Quaternion.Euler(Pitch, Yaw, CameraView.CmCamera.Follow.eulerAngles.z);
         }
 
         // Getters

@@ -20,7 +20,7 @@ MonoBehaviour:
     accelerationFactor: 5
     decelerationFactor: 2.5
     directionSmoothSpeed: 20
-    rotationSpeed: 10
+    rotationSpeed: 200
     gravityFactor: 9.81
     groundCheckDistance: 0.2
     groundLayer:

@@ -12,12 +12,6 @@ namespace Game.Vision
                 _inputService, _playerService)
         { }
 
-        protected override void SetViewInit()
-        {
-            CameraView.Init(PlayerService.GetController().GetTransform(),
-                PlayerService.GetController().GetTransform());
-        }
-
         protected override void AimCamera() { }
 
         // Getters
