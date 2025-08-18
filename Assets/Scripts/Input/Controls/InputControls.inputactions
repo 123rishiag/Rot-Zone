@@ -303,15 +303,6 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "MousePosition",
-                    "type": "Value",
-                    "id": "eff90c83-eabf-4338-a783-de5435391372",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": true
-                },
-                {
                     "name": "MouseDelta",
                     "type": "Value",
                     "id": "ec6cb0f7-a9de-4955-9782-a3bc110b6ebd",
@@ -330,17 +321,6 @@
                     "processors": "",
                     "groups": "",
                     "action": "SwitchCamera",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "c08c014a-1b7f-493c-8ab1-31fbf5251850",
-                    "path": "<Mouse>/position",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "MousePosition",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

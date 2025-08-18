@@ -196,6 +196,11 @@ namespace Game.Player
             moveDirection = Vector3.Lerp(moveDirection, targetDirection,
                 Time.deltaTime * playerModel.DirectionSmoothSpeed);
         }
+        public void RotatePlayerTowards(Quaternion _rotateTo)
+        {
+            playerView.transform.rotation = Quaternion.RotateTowards(playerView.transform.rotation, _rotateTo,
+                Time.deltaTime * playerModel.RotationSpeed);
+        }
         private void ApplyGravity()
         {
             // If Player is on Ground, give some velocity to keep the player grounded,
@@ -388,7 +393,6 @@ namespace Game.Player
         public PlayerActionStateMachine GetActionStateMachine() => playerActionStateMachine;
 
         public Transform GetTransform() => playerView.transform;
-        public Transform GetAimTransform() => playerView.GetAimTransform();
         public Transform GetCameraPivotTransform() => playerView.GetCameraPivotTransform();
         public Vector3 GetMoveDirection() => moveDirection;
         public float GetCurrentSpeed() => currentSpeed;

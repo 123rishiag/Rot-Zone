@@ -12,20 +12,19 @@ namespace Game.Vision
                 _inputService, _playerService)
         { }
 
-        protected override void SetViewInit()
-        {
-            CameraView.Init(PlayerService.GetController().GetCameraPivotTransform(),
-                PlayerService.GetController().GetCameraPivotTransform());
-        }
-
         protected override void AimCamera()
         {
             base.AimCamera();
-            PlayerService.GetController().GetTransform().rotation =
-                Quaternion.Euler(CameraView.CmCamera.LookAt.eulerAngles.x, Yaw, CameraView.CmCamera.LookAt.eulerAngles.z);
+
+            PlayerController playerController = PlayerService.GetController();
+            Vector3 moveDirection = playerController.GetXZNormalized(playerController.GetMoveDirection());
+            if (moveDirection != Vector3.zero)
+            {
+                PlayerService.GetController().RotatePlayerTowards(Quaternion.LookRotation(moveDirection));
+            }
         }
 
         // Getters
-        public override Transform GetCameraTransform() => CameraView.CmCamera.LookAt.transform;
+        public override Transform GetCameraTransform() => CameraView.CmCamera.Follow.transform;
     }
 }
