@@ -104,10 +104,6 @@ namespace Game.Vision
                         cameraController = new ThirdPersonArmedCameraController(cameraData, cmCamera.transform,
                             inputService, playerService);
                         break;
-                    case CameraType.FIRST_PERSON_ARMED:
-                        cameraController = new FirstPersonArmedCameraController(cameraData, cmCamera.transform,
-                            inputService, playerService);
-                        break;
                     case CameraType.DEFAULT:
                         cameraController = new DefaultCameraController(cameraData, cmCamera.transform,
                             inputService, playerService);
