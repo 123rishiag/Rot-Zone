@@ -23,6 +23,7 @@ namespace Game.Player
 
         private Vector3 moveDirection;
         private Vector3 lastMoveDirection;
+        private Vector3 rotationTarget;
         private float verticalVelocity;
         private float currentSpeed;
 
@@ -79,6 +80,7 @@ namespace Game.Player
             playerModel.Reset(_playerData);
 
             lastMoveDirection = Vector3.zero;
+            rotationTarget = Vector3.zero;
             verticalVelocity = 0f;
             currentSpeed = 0f;
 
@@ -198,6 +200,20 @@ namespace Game.Player
         }
         public void RotatePlayerTowards(Quaternion _rotateTo)
         {
+            if (playerMovementStateMachine.GetCurrentState() == PlayerMovementState.IDLE)
+
+            {
+                rotationTarget = _rotateTo.eulerAngles;
+
+                float currentYaw = Owner.GetView().transform.eulerAngles.y;
+                float targetYaw = Owner.GetRotationTarget().y;
+                float deltaYaw = Mathf.DeltaAngle(currentYaw, targetYaw);
+                if (Mathf.Abs(deltaYaw) > 0.001f)
+                {
+                    playerMovementStateMachine.ChangeState(PlayerMovementState.TURN_IN_PLACE);
+                }
+            }
+
             playerView.transform.rotation = Quaternion.RotateTowards(playerView.transform.rotation, _rotateTo,
                 Time.deltaTime * playerModel.RotationSpeed);
         }
@@ -395,6 +411,7 @@ namespace Game.Player
         public Transform GetTransform() => playerView.transform;
         public Transform GetCameraPivotTransform() => playerView.GetCameraPivotTransform();
         public Vector3 GetMoveDirection() => moveDirection;
+        public Vector3 GetRotationTarget() => rotationTarget;
         public float GetCurrentSpeed() => currentSpeed;
         public Vector3 GetXZNormalized(Vector3 _direction)
         {

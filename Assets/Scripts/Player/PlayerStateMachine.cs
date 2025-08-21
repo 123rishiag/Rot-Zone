@@ -7,6 +7,7 @@ namespace Game.Player
         IDLE,
         WALK,
         RUN,
+        TURN_IN_PLACE,
         FALL,
         HURT,
         DEAD,
@@ -34,6 +35,7 @@ namespace Game.Player
             States.Add(PlayerMovementState.IDLE, new PlayerMovementIdleState<PlayerController>(this));
             States.Add(PlayerMovementState.WALK, new PlayerMovementWalkState<PlayerController>(this));
             States.Add(PlayerMovementState.RUN, new PlayerMovementRunState<PlayerController>(this));
+            States.Add(PlayerMovementState.TURN_IN_PLACE, new PlayerMovementTurnInPlaceState<PlayerController>(this));
             States.Add(PlayerMovementState.FALL, new PlayerMovementFallState<PlayerController>(this));
             States.Add(PlayerMovementState.HURT, new PlayerMovementHurtState<PlayerController>(this));
             States.Add(PlayerMovementState.DEAD, new PlayerMovementDeadState<PlayerController>(this));

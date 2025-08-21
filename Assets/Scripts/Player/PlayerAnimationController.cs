@@ -10,6 +10,7 @@ namespace Game.Player
         public readonly int movementArmedLocomotionHash = Animator.StringToHash("Movement Armed Locomotion");
         public readonly int fallHash = Animator.StringToHash("Fall");
         public readonly int hurtHash = Animator.StringToHash("Hurt");
+        public readonly int turnLocomotionHash = Animator.StringToHash("Turn Locomotion");
 
         public readonly int weaponFireHash = Animator.StringToHash("Weapon_Fire");
         public readonly int weaponIdleHash = Animator.StringToHash("Weapon_Idle");
@@ -18,6 +19,7 @@ namespace Game.Player
         private readonly int moveXHash = Animator.StringToHash("moveX");
         private readonly int moveZHash = Animator.StringToHash("moveZ");
         private readonly int speedHash = Animator.StringToHash("speed");
+        public readonly int turnHash = Animator.StringToHash("turn");
 
         private readonly int movementLayerIndex = 0;
         private readonly int pistolLayerIndex = 1;
@@ -61,9 +63,9 @@ namespace Game.Player
         {
             UpdateAnimationLayerWeight();
             UpdateIKWeight();
-            UpdateAnimationParameters();
+            UpdateMovementAnimationParameters();
         }
-        private void UpdateAnimationParameters()
+        private void UpdateMovementAnimationParameters()
         {
             float currentSpeed = playerController.GetCurrentSpeed();
             float walkSpeed = playerController.GetModel().WalkSpeed;
