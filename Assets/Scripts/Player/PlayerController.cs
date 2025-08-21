@@ -42,7 +42,7 @@ namespace Game.Player
         // Private Services
         public EventService EventService { get; private set; }
         public InputService InputService { get; private set; }
-        private CameraService cameraService;
+        public CameraService CameraService { get; private set; }
 
         public PlayerController(PlayerData _playerData, PlayerView _playerPrefab, Vector3 _spawnPosition,
             EventService _eventService, InputService _inputService, WeaponService _weaponService, CameraService _cameraService)
@@ -57,7 +57,7 @@ namespace Game.Player
             // Setting Services
             EventService = _eventService;
             InputService = _inputService;
-            cameraService = _cameraService;
+            CameraService = _cameraService;
 
             // Setting Elements
             CreateStateMachine();
@@ -184,8 +184,8 @@ namespace Game.Player
             if (inputDirection.magnitude > 0.1f)
             {
                 // Fetching Target Direction where player is trying to move in world based on input and camera 
-                targetDirection = (GetXZNormalized(cameraService.GetCurrentCameraTransform().forward) * inputDirection.z +
-                    GetXZNormalized(cameraService.GetCurrentCameraTransform().right) * inputDirection.x).normalized;
+                targetDirection = (GetXZNormalized(CameraService.GetCurrentCameraTransform().forward) * inputDirection.z +
+                    GetXZNormalized(CameraService.GetCurrentCameraTransform().right) * inputDirection.x).normalized;
 
                 lastMoveDirection = moveDirection;
             }
@@ -200,19 +200,20 @@ namespace Game.Player
         }
         public void RotatePlayerTowards(Quaternion _rotateTo)
         {
+            /*
             if (playerMovementStateMachine.GetCurrentState() == PlayerMovementState.IDLE)
-
             {
                 rotationTarget = _rotateTo.eulerAngles;
-
+                
                 float currentYaw = Owner.GetView().transform.eulerAngles.y;
                 float targetYaw = Owner.GetRotationTarget().y;
                 float deltaYaw = Mathf.DeltaAngle(currentYaw, targetYaw);
-                if (Mathf.Abs(deltaYaw) > 0.001f)
+                if (Mathf.Abs(deltaYaw) > 25f)
                 {
                     playerMovementStateMachine.ChangeState(PlayerMovementState.TURN_IN_PLACE);
                 }
             }
+            */
 
             playerView.transform.rotation = Quaternion.RotateTowards(playerView.transform.rotation, _rotateTo,
                 Time.deltaTime * playerModel.RotationSpeed);
@@ -269,7 +270,7 @@ namespace Game.Player
             Vector3 newOffset;
             if (!TryUseLockedTarget(out newHitPoint, out newOffset))
             {
-                Ray ray = cameraService.GetMainCamera().ViewportPointToRay(Vector3.one * 0.5f);
+                Ray ray = CameraService.GetMainCamera().ViewportPointToRay(Vector3.one * 0.5f);
                 int combinedLayerMask = playerModel.AimLayer | playerModel.LockLayer;
 
                 if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, combinedLayerMask))
@@ -286,7 +287,7 @@ namespace Game.Player
             }
 
             hitPoint = Vector3.Lerp(hitPoint, newHitPoint, Time.deltaTime *
-                cameraService.GetCurrentCameraController().GetModel().CameraSensitivity);
+                CameraService.GetCurrentCameraController().GetModel().CameraSensitivity);
 
             UpdateAim();
 
@@ -311,7 +312,7 @@ namespace Game.Player
             {
                 return false;
             }
-            Vector3 screenPos = cameraService.GetMainCamera().WorldToScreenPoint(lastHit.transform.position);
+            Vector3 screenPos = CameraService.GetMainCamera().WorldToScreenPoint(lastHit.transform.position);
             if (screenPos.z <= 0 ||
                 screenPos.x < 0 || screenPos.x > Screen.width ||
                 screenPos.y < 0 || screenPos.y > Screen.height)
@@ -325,7 +326,7 @@ namespace Game.Player
         }
         private void UpdateAim()
         {
-            Transform cameraTransform = cameraService.GetMainCamera().transform;
+            Transform cameraTransform = CameraService.GetMainCamera().transform;
             // Adding 1f threshold, so it is atleast away from gun point
             float crosshairDistance = Vector3.Distance(playerView.transform.position, cameraTransform.position) + 1f;
 
