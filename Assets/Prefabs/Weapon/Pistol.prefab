@@ -274,7 +274,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   firePoint: {fileID: 4261978965016723175}
   aimLaser: {fileID: 8553761934989580409}
-  aimCrosshair: {fileID: 2140269619990472789}
 --- !u!1 &3423532606244060772
 GameObject:
   m_ObjectHideFlags: 0
@@ -410,7 +409,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 0
   m_TargetDisplay: 0
 --- !u!114 &7885391400780985393
 MonoBehaviour:
