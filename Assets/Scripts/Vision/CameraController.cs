@@ -43,6 +43,8 @@ namespace Game.Vision
             inputControls.Camera.MouseDelta.canceled += ctx => mouseDelta = Vector2.zero;
         }
 
+        public void Reset() => SetCameraDefaultFOV();
+
         public void Update() => AimCamera();
 
         protected virtual void AimCamera()
@@ -53,11 +55,15 @@ namespace Game.Vision
             Yaw += dx * CameraModel.CameraSensitivity * Time.deltaTime;
             Pitch -= dy * CameraModel.CameraSensitivity * Time.deltaTime;
 
-            Pitch = Mathf.Clamp(Pitch, -10f, 35f);
+            Pitch = Mathf.Clamp(Pitch, -CameraModel.CameraPitchThresholdMin, CameraModel.CameraPitchThresholdMax);
 
             CameraView.CmCamera.Follow.rotation =
                 Quaternion.Euler(Pitch, Yaw, CameraView.CmCamera.Follow.eulerAngles.z);
         }
+
+        // Setters
+        public void SetCameraDefaultFOV() => CameraView.CmCamera.Lens.FieldOfView = CameraModel.CameraDefaultFOV;
+        public void SetCameraZoomFOV() => CameraView.CmCamera.Lens.FieldOfView = CameraModel.CameraZoomFOV;
 
         // Getters
         public CameraModel GetModel() => CameraModel;

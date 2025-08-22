@@ -17,11 +17,23 @@ MonoBehaviour:
     cameraPrefab: {fileID: 4710181870690450919, guid: 793690a496bcbf443ad8134a24ea6084, type: 3}
     cameraAnimationClip: {fileID: 7400000, guid: f70acc5abb3586347b51c865e7a3a5f5, type: 2}
     cameraSensitivity: 20
+    cameraPitchThresholdMin: 10
+    cameraPitchThresholdMax: 35
+    cameraDefaultFOV: 60
+    cameraZoomFOV: 60
   - cameraType: 1
     cameraPrefab: {fileID: 4710181870690450919, guid: 329486839f48a8e4b8c3aa476dd1a860, type: 3}
     cameraAnimationClip: {fileID: 7400000, guid: 300d84f309f3823418ae2d7922140d75, type: 2}
     cameraSensitivity: 20
+    cameraPitchThresholdMin: 10
+    cameraPitchThresholdMax: 35
+    cameraDefaultFOV: 60
+    cameraZoomFOV: 30
   - cameraType: 2
     cameraPrefab: {fileID: 4710181870690450919, guid: 6ab45735f365c2741ae5bee145e987bc, type: 3}
     cameraAnimationClip: {fileID: 7400000, guid: c49956b8e088f6b4392b8a8175ab522b, type: 2}
     cameraSensitivity: 20
+    cameraPitchThresholdMin: 10
+    cameraPitchThresholdMax: 35
+    cameraDefaultFOV: 60
+    cameraZoomFOV: 30
