@@ -157,6 +157,7 @@ namespace Game.Vision
         {
             currentCameraController = cameraControllers.Find(controller => controller.GetModel().CameraType == _cameraType);
             cmCameraAnimator.Play(currentCameraController.GetModel().CameraAnimationClip.name);
+            GetCurrentCameraController().Reset();
         }
 
         // Getters
