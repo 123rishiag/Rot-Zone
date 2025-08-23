@@ -17,8 +17,8 @@ namespace Game.Vision
         public AnimationClip cameraAnimationClip;
 
         public int cameraSensitivity = 20;
-        public int cameraPitchThresholdMin = 10;
-        public int cameraPitchThresholdMax = 35;
+        public int cameraPitchThresholdMin = 20;
+        public int cameraPitchThresholdMax = 10;
         public int cameraDefaultFOV = 60;
         public int cameraZoomFOV = 30;
     }
