@@ -1,5 +1,7 @@
 using Game.Event;
 using Game.Projectile;
+using Game.Utility;
+using System.Collections;
 using UnityEngine;
 
 namespace Game.Weapon
@@ -20,12 +22,15 @@ namespace Game.Weapon
         public int CurrentAmmo { get; private set; }
         public int TotalAmmoLeft { get; private set; }
 
+        private WaitForSeconds GapInSingleShot;
+
         // Private Services
-        protected EventService eventService;
+        protected EventService EventService { get; private set; }
+        private MiscService miscService;
         private ProjectileService projectileService;
 
         public WeaponController(WeaponData _weaponData, Transform _parentPanel,
-            EventService _eventService, ProjectileService _projectileService)
+            EventService _eventService, MiscService _miscService, ProjectileService _projectileService)
         {
             // Setting Variables
             weaponModel = new WeaponModel(_weaponData);
@@ -36,8 +41,12 @@ namespace Game.Weapon
             CurrentAmmo = 0;
             TotalAmmoLeft = 0;
 
+            GapInSingleShot = new WaitForSeconds(weaponModel.WeaponAmmoGapInSingleShot);
+            //GapInSingleShot = new WaitForSeconds(0.1f);
+
             // Setting Services
-            eventService = _eventService;
+            EventService = _eventService;
+            miscService = _miscService;
             projectileService = _projectileService;
         }
 
@@ -77,14 +86,34 @@ namespace Game.Weapon
 
         public void FireWeapon()
         {
-            if (IsAmmoLeft())
-            {
-                projectileService.FireProjectile(weaponModel.WeaponProjectileType, cachedFirePosition, cachedFireDirection);
-                --CurrentAmmo;
-                PlayFireSound();
-            }
+            int consecutiveFireAmmo = Mathf.Min(CurrentAmmo, weaponModel.WeaponAmmoCountInSingleShot);
+            PerformFire(consecutiveFireAmmo);
+            CurrentAmmo -= consecutiveFireAmmo;
             lastFireTime = Time.time;
         }
+        private void PerformFire(int _consecutiveFireAmmo)
+        {
+            miscService.StartCoroutine(BurstFire(_consecutiveFireAmmo));
+        }
+        private IEnumerator BurstFire(int _consecutiveFireAmmo)
+        {
+            for (int i = 0; i < _consecutiveFireAmmo; ++i)
+            {
+                FireSingleShot();
+                yield return GapInSingleShot;
+            }
+        }
+        private void FireSingleShot()
+        {
+            Vector3 direction = (cachedFireDirection + new Vector3(
+                    Random.Range(-weaponModel.WeaponSpreadFactor, weaponModel.WeaponSpreadFactor),
+                    Random.Range(-weaponModel.WeaponSpreadFactor, weaponModel.WeaponSpreadFactor),
+                    Random.Range(-weaponModel.WeaponSpreadFactor, weaponModel.WeaponSpreadFactor)
+               )).normalized;
+            projectileService.FireProjectile(weaponModel.WeaponProjectileType, cachedFirePosition, direction);
+            PlayFireSound();
+        }
+
         public void UpdateWeaponAimPoint(Vector3 _target)
         {
             aimTarget = Vector3.Lerp(aimTarget, _target, Time.deltaTime * weaponModel.WeaponAimSpeed);
@@ -126,7 +155,7 @@ namespace Game.Weapon
         public bool CanFireWeapon()
         {
             return (lastFireTime == 0f ||
-                (Time.time > lastFireTime + 1 / weaponModel.WeaponFireRateInSeconds)
+                (Time.time > lastFireTime + weaponModel.WeaponFireRateInSeconds)
                 ) ? true : false;
         }
 

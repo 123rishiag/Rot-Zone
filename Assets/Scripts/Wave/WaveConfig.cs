@@ -30,7 +30,7 @@ namespace Game.Wave
     public class PlayerSpawnAmmoData
     {
         public WeaponType weaponType;
-        public int ammoToAdd = 1;
+        public int ammoToAdd = 100;
     }
     [Serializable]
     public class EnemySpawnData : SpawnData

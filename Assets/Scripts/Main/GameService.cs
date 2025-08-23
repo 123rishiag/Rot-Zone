@@ -3,6 +3,7 @@ using Game.Player;
 using Game.Projectile;
 using Game.Sound;
 using Game.UI;
+using Game.Utility;
 using Game.Vision;
 using Game.Wave;
 using Game.Weapon;
@@ -18,12 +19,15 @@ namespace Game.Main
         public CinemachineStateDrivenCamera cmCamera;
 
         [Header("Sound Variables")]
-        [SerializeField] public SoundConfig soundConfig;
-        [SerializeField] public AudioSource bgmSource;
-        [SerializeField] public AudioSource sfxSource;
+        public SoundConfig soundConfig;
+        public AudioSource bgmSource;
+        public AudioSource sfxSource;
 
         [Header("UI Variables")]
-        [SerializeField] public UIView uiCanvas;
+        public UIView uiCanvas;
+
+        [Header("Other Variables")]
+        public MiscService miscPanel;
 
         [Header("Pool Panels")]
         public Transform projectilePoolPanel;

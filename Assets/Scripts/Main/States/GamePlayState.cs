@@ -28,6 +28,7 @@ namespace Game.Main
                 CheckGamePause();
 
                 // Event Service
+                // Misc Service
                 // Input Service
                 // Sound Service
                 // UI Service
@@ -45,6 +46,7 @@ namespace Game.Main
             if (Owner.GetWaveService().GetWaveStateMachine().GetCurrentState() == WaveState.PROGRESS)
             {
                 // Event Service
+                // Misc Service
                 // Input Service
                 // Sound Service
                 // UI Service
@@ -62,6 +64,7 @@ namespace Game.Main
             if (Owner.GetWaveService().GetWaveStateMachine().GetCurrentState() == WaveState.PROGRESS)
             {
                 // Event Service
+                // Misc Service
                 // Input Service
                 // Sound Service
                 // UI Service

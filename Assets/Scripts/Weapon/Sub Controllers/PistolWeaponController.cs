@@ -1,6 +1,7 @@
 using Game.Event;
 using Game.Projectile;
 using Game.Sound;
+using Game.Utility;
 using UnityEngine;
 
 namespace Game.Weapon
@@ -8,13 +9,13 @@ namespace Game.Weapon
     public class PistolWeaponController : WeaponController
     {
         public PistolWeaponController(WeaponData _weaponData, Transform _parentPanel,
-            EventService _eventService, ProjectileService _projectileService)
-            : base(_weaponData, _parentPanel, _eventService, _projectileService)
+            EventService _eventService, MiscService _miscService, ProjectileService _projectileService)
+            : base(_weaponData, _parentPanel, _eventService, _miscService, _projectileService)
         {
         }
         public override void PlayFireSound()
         {
-            eventService.OnPlaySoundEffectEvent.Invoke(SoundType.FIRE_PISTOL);
+            EventService.OnPlaySoundEffectEvent.Invoke(SoundType.FIRE_PISTOL);
         }
     }
 }
