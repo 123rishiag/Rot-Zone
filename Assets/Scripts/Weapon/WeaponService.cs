@@ -1,5 +1,6 @@
 using Game.Event;
 using Game.Projectile;
+using Game.Utility;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,6 +16,7 @@ namespace Game.Weapon
 
         // Private Services
         private EventService eventService;
+        private MiscService miscService;
         private ProjectileService projectileService;
 
         public WeaponService(WeaponConfig _weaponConfig)
@@ -25,10 +27,11 @@ namespace Game.Weapon
             weaponControllers = new List<WeaponController>();
         }
 
-        public void Init(EventService _eventService, ProjectileService _projectileService)
+        public void Init(EventService _eventService, MiscService _miscService, ProjectileService _projectileService)
         {
             // Setting Services
             eventService = _eventService;
+            miscService = _miscService;
             projectileService = _projectileService;
         }
 
@@ -51,15 +54,15 @@ namespace Game.Weapon
             {
                 case WeaponType.PISTOL:
                     weaponController = new PistolWeaponController(GetWeaponData(_weaponType), _parentPanel,
-                        eventService, projectileService);
+                        eventService, miscService, projectileService);
                     break;
                 case WeaponType.RIFLE:
                     weaponController = new RifleWeaponController(GetWeaponData(_weaponType), _parentPanel,
-                        eventService, projectileService);
+                        eventService, miscService, projectileService);
                     break;
                 case WeaponType.SHOTGUN:
                     weaponController = new ShotgunWeaponController(GetWeaponData(_weaponType), _parentPanel,
-                        eventService, projectileService);
+                        eventService, miscService, projectileService);
                     break;
                 default:
                     Debug.LogError($"Unhandled Weapon Type: {_weaponType}");

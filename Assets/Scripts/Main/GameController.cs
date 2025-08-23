@@ -22,6 +22,7 @@ namespace Game.Main
 
         // Private Services
         private EventService eventService;
+        private MiscService miscService;
         private InputService inputService;
         private SoundService soundService;
         private UIService uiService;
@@ -62,6 +63,7 @@ namespace Game.Main
         private void CreateServices()
         {
             eventService = new EventService();
+            miscService = gameService.miscPanel.GetComponent<MiscService>();
             inputService = new InputService();
             soundService = new SoundService(gameService.soundConfig, gameService.bgmSource, gameService.sfxSource);
             uiService = new UIService(gameService.uiCanvas, this);
@@ -77,11 +79,12 @@ namespace Game.Main
         private void InjectDependencies()
         {
             // Event Service
+            // Misc Service
             inputService.Init();
             soundService.Init(eventService);
             uiService.Init(eventService);
             projectileService.Init();
-            weaponService.Init(eventService, projectileService);
+            weaponService.Init(eventService, miscService, projectileService);
             playerService.Init(eventService, inputService, weaponService, cameraService);
             enemyService.Init(eventService, playerService);
             spawnService.Init(playerService, enemyService);
@@ -97,6 +100,7 @@ namespace Game.Main
         public void Reset()
         {
             // Event Service
+            // Misc Service
             // Input Service
             soundService.Reset();
             uiService.Reset();
@@ -111,6 +115,7 @@ namespace Game.Main
         public void Destroy()
         {
             // Event Service
+            // Misc Service
             inputService.Destroy();
             // Sound Service
             uiService.Destroy();
@@ -160,7 +165,9 @@ namespace Game.Main
 
         // Getters
         public EventService GetEventService() => eventService;
+        public MiscService GetMiscService() => miscService;
         public InputService GetInputService() => inputService;
+        public SoundService GetSoundService() => soundService;
         public UIService GetUIService() => uiService;
         public ProjectileService GetProjectileService() => projectileService;
         public WeaponService GetWeaponService() => weaponService;

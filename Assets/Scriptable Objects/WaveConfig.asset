@@ -18,11 +18,11 @@ MonoBehaviour:
       playerHealth: 2
       playerSpawnAmmoDatas:
       - weaponType: 1
-        ammoToAdd: 5
+        ammoToAdd: 50
       - weaponType: 2
-        ammoToAdd: 25
+        ammoToAdd: 250
       - weaponType: 3
-        ammoToAdd: 2
+        ammoToAdd: 20
     enemySpawnDatas:
     - enemyType: 0
       enemyCount: 2
@@ -33,11 +33,11 @@ MonoBehaviour:
       playerHealth: 4
       playerSpawnAmmoDatas:
       - weaponType: 1
-        ammoToAdd: 10
+        ammoToAdd: 100
       - weaponType: 2
-        ammoToAdd: 50
+        ammoToAdd: 500
       - weaponType: 3
-        ammoToAdd: 4
+        ammoToAdd: 40
     enemySpawnDatas:
     - enemyType: 0
       enemyCount: 4
@@ -48,11 +48,11 @@ MonoBehaviour:
       playerHealth: 5
       playerSpawnAmmoDatas:
       - weaponType: 1
-        ammoToAdd: 20
+        ammoToAdd: 200
       - weaponType: 2
-        ammoToAdd: 100
+        ammoToAdd: 1000
       - weaponType: 3
-        ammoToAdd: 8
+        ammoToAdd: 80
     enemySpawnDatas:
     - enemyType: 0
       enemyCount: 8
