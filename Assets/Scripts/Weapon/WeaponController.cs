@@ -22,7 +22,7 @@ namespace Game.Weapon
         public int CurrentAmmo { get; private set; }
         public int TotalAmmoLeft { get; private set; }
 
-        private WaitForSeconds GapInSingleShot;
+        private WaitForSeconds gapInSingleShotYield;
 
         // Private Services
         protected EventService EventService { get; private set; }
@@ -37,17 +37,17 @@ namespace Game.Weapon
             weaponView = Object.Instantiate(_weaponData.weaponPrefab, _parentPanel).GetComponent<WeaponView>();
             weaponView.Init(this);
 
-            lastFireTime = 0f;
-            CurrentAmmo = 0;
-            TotalAmmoLeft = 0;
-
-            GapInSingleShot = new WaitForSeconds(weaponModel.WeaponAmmoGapInSingleShot);
-            //GapInSingleShot = new WaitForSeconds(0.1f);
-
             // Setting Services
             EventService = _eventService;
             miscService = _miscService;
             projectileService = _projectileService;
+
+            // Setting Elements
+            lastFireTime = 0f;
+            CurrentAmmo = 0;
+            TotalAmmoLeft = 0;
+
+            gapInSingleShotYield = new WaitForSeconds(weaponModel.WeaponAmmoGapInSingleShot);
         }
 
         public void LateUpdate()
@@ -61,13 +61,13 @@ namespace Game.Weapon
         {
             Vector3 hitPoint;
             if (Physics.Raycast(cachedFirePosition, cachedFireDirection, out RaycastHit hit,
-                weaponModel.WeaponAimLaserMaxDistance, aimLayer))
+                weaponModel.WeaponRangeDistanceInMeters, aimLayer))
             {
                 hitPoint = hit.point;
             }
             else
             {
-                hitPoint = cachedFirePosition + cachedFireDirection * weaponModel.WeaponAimLaserMaxDistance;
+                hitPoint = cachedFirePosition + cachedFireDirection * weaponModel.WeaponRangeDistanceInMeters;
             }
             weaponView.UpdateAimLaser(hitPoint);
 
@@ -93,14 +93,14 @@ namespace Game.Weapon
         }
         private void PerformFire(int _consecutiveFireAmmo)
         {
-            miscService.StartCoroutine(BurstFire(_consecutiveFireAmmo));
+            miscService.StartManualCoroutine(BurstFire(_consecutiveFireAmmo));
         }
         private IEnumerator BurstFire(int _consecutiveFireAmmo)
         {
             for (int i = 0; i < _consecutiveFireAmmo; ++i)
             {
                 FireSingleShot();
-                yield return GapInSingleShot;
+                yield return gapInSingleShotYield;
             }
         }
         private void FireSingleShot()
@@ -110,7 +110,8 @@ namespace Game.Weapon
                     Random.Range(-weaponModel.WeaponSpreadFactor, weaponModel.WeaponSpreadFactor),
                     Random.Range(-weaponModel.WeaponSpreadFactor, weaponModel.WeaponSpreadFactor)
                )).normalized;
-            projectileService.FireProjectile(weaponModel.WeaponProjectileType, cachedFirePosition, direction);
+            projectileService.FireProjectile(weaponModel.WeaponProjectileType,
+                cachedFirePosition, direction, weaponModel.WeaponRangeDistanceInMeters);
             PlayFireSound();
         }
 

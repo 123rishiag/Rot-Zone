@@ -16,18 +16,33 @@ MonoBehaviour:
   - projectileType: 0
     projectilePrefab: {fileID: 3627653115222788609, guid: 44cdcd55c8562cc46b31e272eb09fc5b, type: 3}
     projectileSpeed: 50
-    projectileForce: 10
+    projectileImpactForce: 10
     projectileDamage: 1
-    projectileNoActivityDisableTime: 5
+    collisionDamageLayerMask:
+      serializedVersion: 2
+      m_Bits: 2048
+    collisionDestroyLayerMask:
+      serializedVersion: 2
+      m_Bits: 384
   - projectileType: 1
     projectilePrefab: {fileID: -6722416235863785931, guid: 1471e98bb0946d847a15230e4b8cb13c, type: 3}
     projectileSpeed: 100
-    projectileForce: 15
+    projectileImpactForce: 15
     projectileDamage: 3
-    projectileNoActivityDisableTime: 5
+    collisionDamageLayerMask:
+      serializedVersion: 2
+      m_Bits: 2048
+    collisionDestroyLayerMask:
+      serializedVersion: 2
+      m_Bits: 384
   - projectileType: 2
     projectilePrefab: {fileID: 8540918574852251650, guid: 487dbb68ef818f247a229a25fa68bcac, type: 3}
     projectileSpeed: 20
-    projectileForce: 20
+    projectileImpactForce: 20
     projectileDamage: 10
-    projectileNoActivityDisableTime: 5
+    collisionDamageLayerMask:
+      serializedVersion: 2
+      m_Bits: 2048
+    collisionDestroyLayerMask:
+      serializedVersion: 2
+      m_Bits: 384

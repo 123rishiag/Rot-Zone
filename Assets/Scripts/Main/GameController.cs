@@ -83,7 +83,7 @@ namespace Game.Main
             inputService.Init();
             soundService.Init(eventService);
             uiService.Init(eventService);
-            projectileService.Init();
+            projectileService.Init(miscService);
             weaponService.Init(eventService, miscService, projectileService);
             playerService.Init(eventService, inputService, weaponService, cameraService);
             enemyService.Init(eventService, playerService);

@@ -1,3 +1,5 @@
+using UnityEngine;
+
 namespace Game.Projectile
 {
     public class ProjectileModel
@@ -10,17 +12,23 @@ namespace Game.Projectile
         public void Reset(ProjectileData _projectileData)
         {
             ProjectileType = _projectileData.projectileType;
+
             ProjectileSpeed = _projectileData.projectileSpeed;
-            ProjectileForce = _projectileData.projectileForce;
+            ProjectileImpactForce = _projectileData.projectileImpactForce;
             ProjectileDamage = _projectileData.projectileDamage;
-            ProjectileNoActivityDisableTime = _projectileData.projectileNoActivityDisableTime;
+
+            CollisionDamageLayerMask = _projectileData.collisionDamageLayerMask;
+            CollisionDestroyLayerMask = _projectileData.collisionDestroyLayerMask;
         }
 
         // Getters
         public ProjectileType ProjectileType { get; private set; }
+
         public float ProjectileSpeed { get; private set; }
-        public float ProjectileForce { get; private set; }
+        public float ProjectileImpactForce { get; private set; }
         public int ProjectileDamage { get; private set; }
-        public float ProjectileNoActivityDisableTime { get; private set; }
+
+        public LayerMask CollisionDamageLayerMask { get; private set; }
+        public LayerMask CollisionDestroyLayerMask { get; private set; }
     }
 }
