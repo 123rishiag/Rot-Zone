@@ -1,13 +1,6 @@
-using System;
-
 namespace Game.Utility
 {
-    public interface IStateOwner<T> where T : class
-    {
-        public T Owner { get; set; }
-    }
-
-    public interface IState<T, U> where T : class, IStateOwner<T> where U : Enum
+    public interface IState<T> where T : class
     {
         public T Owner { get; set; }
         public void OnStateEnter();

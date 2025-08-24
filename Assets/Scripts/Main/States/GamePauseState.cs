@@ -3,7 +3,7 @@ using Game.Utility;
 
 namespace Game.Main
 {
-    public class GamePauseState<T> : IState<GameController, GameState>
+    public class GamePauseState : IState<GameController>
     {
         public GameController Owner { get; set; }
         private GameStateMachine stateMachine;

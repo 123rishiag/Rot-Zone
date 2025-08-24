@@ -4,7 +4,7 @@ using UnityEngine.AI;
 
 namespace Game.Enemy
 {
-    public class EnemyPatrolState<T> : IState<EnemyController, EnemyState>
+    public class EnemyPatrolState : IState<EnemyController>
     {
         public EnemyController Owner { get; set; }
         private EnemyStateMachine stateMachine;

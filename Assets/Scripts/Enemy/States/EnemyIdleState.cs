@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Game.Enemy
 {
-    public class EnemyIdleState<T> : IState<EnemyController, EnemyState>
+    public class EnemyIdleState : IState<EnemyController>
     {
         public EnemyController Owner { get; set; }
         private EnemyStateMachine stateMachine;

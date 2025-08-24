@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Game.Wave
 {
-    public class WaveStartState<T> : IState<WaveService, WaveState>
+    public class WaveStartState : IState<WaveService>
     {
         public WaveService Owner { get; set; }
         private WaveStateMachine stateMachine;

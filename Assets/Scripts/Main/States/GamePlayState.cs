@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Game.Main
 {
-    public class GamePlayState<T> : IState<GameController, GameState>
+    public class GamePlayState : IState<GameController>
     {
         public GameController Owner { get; set; }
         private GameStateMachine stateMachine;

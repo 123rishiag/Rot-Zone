@@ -4,44 +4,53 @@ using System.Linq;
 
 namespace Game.Utility
 {
-    public class GenericStateMachine<T, U> where T : class, IStateOwner<T> where U : Enum
+    public abstract class GenericStateMachine<U, T> where U : Enum where T : class
     {
-        protected T owner;
-        protected IState<T, U> currentState;
-        protected Dictionary<U, IState<T, U>> States = new Dictionary<U, IState<T, U>>();
+        private T Owner;
+        private IState<T> CurrentState;
+        private Dictionary<U, IState<T>> States = new Dictionary<U, IState<T>>();
 
-        public GenericStateMachine(T _owner) => owner = _owner;
-
-        public void Update() => currentState?.Update();
-        public void FixedUpdate() => currentState?.FixedUpdate();
-        public void LateUpdate() => currentState?.LateUpdate();
-
-        public U GetCurrentState()
+        public GenericStateMachine(T _owner)
         {
-            return States.Keys.FirstOrDefault(key => States[key] == currentState);
+            Owner = _owner;
+            CreateStates();
+            SetOwner();
         }
 
-        protected void ChangeState(IState<T, U> _newState)
+        public void Update() => CurrentState.Update();
+        public void FixedUpdate() => CurrentState?.FixedUpdate();
+        public void LateUpdate() => CurrentState?.LateUpdate();
+
+        private void ChangeState(IState<T> _newState)
         {
-            currentState?.OnStateExit();
-            currentState = _newState;
-            currentState?.OnStateEnter();
+            CurrentState?.OnStateExit();
+            CurrentState = _newState;
+            CurrentState?.OnStateEnter();
         }
 
-        public void ChangeState(U _newState)
+        public void ChangeState(U _newStateEnum)
         {
-            if (States.ContainsKey(_newState))
+            if (States.ContainsKey(_newStateEnum))
             {
-                ChangeState(States[_newState]);
+                ChangeState(States[_newStateEnum]);
             }
         }
 
-        protected void SetOwner()
+        protected abstract void CreateStates();
+
+        protected void AddState(U _stateEnum, IState<T> _state)
         {
-            foreach (IState<T, U> _state in States.Values)
+            States.Add(_stateEnum, _state);
+        }
+
+        private void SetOwner()
+        {
+            foreach (IState<T> _state in States.Values)
             {
-                _state.Owner = owner;
+                _state.Owner = Owner;
             }
         }
+
+        public U GetCurrentState() => States.Keys.FirstOrDefault(key => States[key] == CurrentState);
     }
 }

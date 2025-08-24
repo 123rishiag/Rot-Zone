@@ -2,7 +2,7 @@ using Game.Utility;
 
 namespace Game.Enemy
 {
-    public class EnemyChaseState<T> : IState<EnemyController, EnemyState>
+    public class EnemyChaseState : IState<EnemyController>
     {
         public EnemyController Owner { get; set; }
         private EnemyStateMachine stateMachine;

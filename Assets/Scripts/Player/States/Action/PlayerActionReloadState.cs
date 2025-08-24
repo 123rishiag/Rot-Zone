@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Game.Player
 {
-    public class PlayerActionReloadState<T> : IState<PlayerController, PlayerActionState>
+    public class PlayerActionReloadState : IState<PlayerController>
     {
         public PlayerController Owner { get; set; }
         private PlayerActionStateMachine stateMachine;

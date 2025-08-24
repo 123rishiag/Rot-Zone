@@ -2,7 +2,7 @@ using Game.Utility;
 
 namespace Game.Player
 {
-    public class PlayerMovementWalkState<T> : IState<PlayerController, PlayerMovementState>
+    public class PlayerMovementWalkState : IState<PlayerController>
     {
         public PlayerController Owner { get; set; }
         private PlayerMovementStateMachine stateMachine;

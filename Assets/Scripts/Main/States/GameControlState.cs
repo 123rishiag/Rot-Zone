@@ -2,7 +2,7 @@ using Game.Utility;
 
 namespace Game.Main
 {
-    public class GameControlState<T> : IState<GameController, GameState>
+    public class GameControlState : IState<GameController>
     {
         public GameController Owner { get; set; }
         private GameStateMachine stateMachine;

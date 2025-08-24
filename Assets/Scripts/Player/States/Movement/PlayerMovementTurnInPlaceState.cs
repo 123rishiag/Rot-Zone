@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Game.Player
 {
-    public class PlayerMovementTurnInPlaceState<T> : IState<PlayerController, PlayerMovementState>
+    public class PlayerMovementTurnInPlaceState : IState<PlayerController>
     {
         public PlayerController Owner { get; set; }
         private PlayerMovementStateMachine stateMachine;

@@ -51,8 +51,8 @@ namespace Game.Enemy
         {
             for (int i = enemyPool.pooledItems.Count - 1; i >= 0; i--)
             {
-                // Skipping if the pooled item's isUsed is false
-                if (!enemyPool.pooledItems[i].isUsed)
+                // Skipping if the pooled item's IsUsed is false
+                if (!enemyPool.pooledItems[i].IsUsed)
                 {
                     continue;
                 }
@@ -65,8 +65,8 @@ namespace Game.Enemy
         {
             for (int i = enemyPool.pooledItems.Count - 1; i >= 0; i--)
             {
-                // Skipping if the pooled item's isUsed is false
-                if (!enemyPool.pooledItems[i].isUsed && !_isAllFlag)
+                // Skipping if the pooled item's IsUsed is false
+                if (!enemyPool.pooledItems[i].IsUsed && !_isAllFlag)
                 {
                     continue;
                 }
@@ -112,6 +112,6 @@ namespace Game.Enemy
         }
 
         // Getters
-        public int EnemiesAliveCount() => enemyPool.pooledItems.Count(item => item.isUsed);
+        public int EnemiesAliveCount() => enemyPool.pooledItems.Count(item => item.IsUsed);
     }
 }

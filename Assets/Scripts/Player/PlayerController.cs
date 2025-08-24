@@ -1,6 +1,5 @@
 using Game.Controls;
 using Game.Event;
-using Game.Utility;
 using Game.Vision;
 using Game.Weapon;
 using System.Collections;
@@ -9,7 +8,7 @@ using Object = UnityEngine.Object;
 
 namespace Game.Player
 {
-    public class PlayerController : IStateOwner<PlayerController>
+    public class PlayerController
     {
         // Private Variables
         private PlayerModel playerModel;
@@ -17,7 +16,6 @@ namespace Game.Player
         private PlayerAnimationController playerAnimationController;
         private PlayerWeaponController playerWeaponController;
 
-        public PlayerController Owner { get; set; }
         private PlayerMovementStateMachine playerMovementStateMachine;
         private PlayerActionStateMachine playerActionStateMachine;
 
@@ -66,7 +64,6 @@ namespace Game.Player
 
         private void CreateStateMachine()
         {
-            Owner = this;
             playerMovementStateMachine = new PlayerMovementStateMachine(this);
             playerActionStateMachine = new PlayerActionStateMachine(this);
         }
