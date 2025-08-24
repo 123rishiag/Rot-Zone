@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Game.Player
 {
-    public class PlayerMovementDeadState<T> : IState<PlayerController, PlayerMovementState>
+    public class PlayerMovementDeadState : IState<PlayerController>
     {
         public PlayerController Owner { get; set; }
         private PlayerMovementStateMachine stateMachine;

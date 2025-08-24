@@ -1,19 +1,17 @@
 using Game.Event;
 using Game.Player;
-using Game.Utility;
 using System.Collections;
 using UnityEngine;
 
 namespace Game.Enemy
 {
-    public abstract class EnemyController : IStateOwner<EnemyController>
+    public abstract class EnemyController
     {
         // Private Variables
         private EnemyModel enemyModel;
         private EnemyView enemyView;
         private EnemyAnimationController enemyAnimationController;
 
-        public EnemyController Owner { get; set; }
         private EnemyStateMachine enemyStateMachine;
 
         public float DetectionDistance { get; set; }
@@ -43,7 +41,6 @@ namespace Game.Enemy
 
         private void CreateStateMachine()
         {
-            Owner = this;
             enemyStateMachine = new EnemyStateMachine(this);
         }
 
@@ -70,7 +67,7 @@ namespace Game.Enemy
 
         public void RotateTowardsPlayer()
         {
-            Transform enemyTransform = Owner.GetTransform();
+            Transform enemyTransform = GetTransform();
             Vector3 direction = (playerService.GetController().GetTransform().position -
                 enemyTransform.position).normalized;
 

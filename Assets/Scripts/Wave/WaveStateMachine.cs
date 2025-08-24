@@ -9,20 +9,15 @@ namespace Game.Wave
         END,
     }
 
-    public class WaveStateMachine : GenericStateMachine<WaveService, WaveState>
+    public class WaveStateMachine : GenericStateMachine<WaveState, WaveService>
     {
-        public WaveStateMachine(WaveService _owner) : base(_owner)
-        {
-            owner = _owner;
-            CreateStates();
-            SetOwner();
-        }
+        public WaveStateMachine(WaveService _owner) : base(_owner) { }
 
-        private void CreateStates()
+        protected override void CreateStates()
         {
-            States.Add(WaveState.START, new WaveStartState<WaveService>(this));
-            States.Add(WaveState.PROGRESS, new WaveProgressState<WaveService>(this));
-            States.Add(WaveState.END, new WaveEndState<WaveService>(this));
+            AddState(WaveState.START, new WaveStartState(this));
+            AddState(WaveState.PROGRESS, new WaveProgressState(this));
+            AddState(WaveState.END, new WaveEndState(this));
         }
     }
 }

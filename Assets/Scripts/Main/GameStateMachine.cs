@@ -13,24 +13,19 @@ namespace Game.Main
         GAME_OVER
     }
 
-    public class GameStateMachine : GenericStateMachine<GameController, GameState>
+    public class GameStateMachine : GenericStateMachine<GameState, GameController>
     {
-        public GameStateMachine(GameController _owner) : base(_owner)
-        {
-            owner = _owner;
-            CreateStates();
-            SetOwner();
-        }
+        public GameStateMachine(GameController _owner) : base(_owner) { }
 
-        private void CreateStates()
+        protected override void CreateStates()
         {
-            States.Add(GameState.GAME_START, new GameStartState<GameController>(this));
-            States.Add(GameState.GAME_MENU, new GameMenuState<GameController>(this));
-            States.Add(GameState.GAME_CONTROL, new GameControlState<GameController>(this));
-            States.Add(GameState.GAME_PLAY, new GamePlayState<GameController>(this));
-            States.Add(GameState.GAME_PAUSE, new GamePauseState<GameController>(this));
-            States.Add(GameState.GAME_RESTART, new GameRestartState<GameController>(this));
-            States.Add(GameState.GAME_OVER, new GameOverState<GameController>(this));
+            AddState(GameState.GAME_START, new GameStartState(this));
+            AddState(GameState.GAME_MENU, new GameMenuState(this));
+            AddState(GameState.GAME_CONTROL, new GameControlState(this));
+            AddState(GameState.GAME_PLAY, new GamePlayState(this));
+            AddState(GameState.GAME_PAUSE, new GamePauseState(this));
+            AddState(GameState.GAME_RESTART, new GameRestartState(this));
+            AddState(GameState.GAME_OVER, new GameOverState(this));
         }
     }
 }

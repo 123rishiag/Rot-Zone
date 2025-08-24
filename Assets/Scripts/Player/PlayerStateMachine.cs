@@ -21,42 +21,32 @@ namespace Game.Player
         RELOAD,
     }
 
-    public class PlayerMovementStateMachine : GenericStateMachine<PlayerController, PlayerMovementState>
+    public class PlayerMovementStateMachine : GenericStateMachine<PlayerMovementState, PlayerController>
     {
-        public PlayerMovementStateMachine(PlayerController _owner) : base(_owner)
-        {
-            owner = _owner;
-            CreateStates();
-            SetOwner();
-        }
+        public PlayerMovementStateMachine(PlayerController _owner) : base(_owner) { }
 
-        private void CreateStates()
+        protected override void CreateStates()
         {
-            States.Add(PlayerMovementState.IDLE, new PlayerMovementIdleState<PlayerController>(this));
-            States.Add(PlayerMovementState.WALK, new PlayerMovementWalkState<PlayerController>(this));
-            States.Add(PlayerMovementState.RUN, new PlayerMovementRunState<PlayerController>(this));
-            States.Add(PlayerMovementState.TURN_IN_PLACE, new PlayerMovementTurnInPlaceState<PlayerController>(this));
-            States.Add(PlayerMovementState.FALL, new PlayerMovementFallState<PlayerController>(this));
-            States.Add(PlayerMovementState.HURT, new PlayerMovementHurtState<PlayerController>(this));
-            States.Add(PlayerMovementState.DEAD, new PlayerMovementDeadState<PlayerController>(this));
+            AddState(PlayerMovementState.IDLE, new PlayerMovementIdleState(this));
+            AddState(PlayerMovementState.WALK, new PlayerMovementWalkState(this));
+            AddState(PlayerMovementState.RUN, new PlayerMovementRunState(this));
+            AddState(PlayerMovementState.TURN_IN_PLACE, new PlayerMovementTurnInPlaceState(this));
+            AddState(PlayerMovementState.FALL, new PlayerMovementFallState(this));
+            AddState(PlayerMovementState.HURT, new PlayerMovementHurtState(this));
+            AddState(PlayerMovementState.DEAD, new PlayerMovementDeadState(this));
         }
     }
 
-    public class PlayerActionStateMachine : GenericStateMachine<PlayerController, PlayerActionState>
+    public class PlayerActionStateMachine : GenericStateMachine<PlayerActionState, PlayerController>
     {
-        public PlayerActionStateMachine(PlayerController _owner) : base(_owner)
-        {
-            owner = _owner;
-            CreateStates();
-            SetOwner();
-        }
+        public PlayerActionStateMachine(PlayerController _owner) : base(_owner) { }
 
-        private void CreateStates()
+        protected override void CreateStates()
         {
-            States.Add(PlayerActionState.NONE, new PlayerActionNoneState<PlayerController>(this));
-            States.Add(PlayerActionState.AIM, new PlayerActionAimState<PlayerController>(this));
-            States.Add(PlayerActionState.FIRE, new PlayerActionFireState<PlayerController>(this));
-            States.Add(PlayerActionState.RELOAD, new PlayerActionReloadState<PlayerController>(this));
+            AddState(PlayerActionState.NONE, new PlayerActionNoneState(this));
+            AddState(PlayerActionState.AIM, new PlayerActionAimState(this));
+            AddState(PlayerActionState.FIRE, new PlayerActionFireState(this));
+            AddState(PlayerActionState.RELOAD, new PlayerActionReloadState(this));
         }
     }
 }

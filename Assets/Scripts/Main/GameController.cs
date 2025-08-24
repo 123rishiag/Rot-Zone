@@ -7,7 +7,6 @@ using Game.Projectile;
 using Game.Sound;
 using Game.Spawn;
 using Game.UI;
-using Game.Utility;
 using Game.Vision;
 using Game.Wave;
 using Game.Weapon;
@@ -16,7 +15,7 @@ using UnityEngine.SceneManagement;
 
 namespace Game.Main
 {
-    public class GameController : IStateOwner<GameController>
+    public class GameController
     {
         // Private Variables
         private GameService gameService;
@@ -35,7 +34,6 @@ namespace Game.Main
         private CameraService cameraService;
         private WaveService waveService;
 
-        public GameController Owner { get; set; }
         private GameStateMachine gameStateMachine;
         public bool IsPausePressed { get; set; }
         public GameController(GameService _gameService)
@@ -94,7 +92,6 @@ namespace Game.Main
         }
         private void CreateStateMachine()
         {
-            Owner = this;
             gameStateMachine = new GameStateMachine(this);
         }
 

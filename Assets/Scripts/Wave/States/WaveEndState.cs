@@ -2,7 +2,7 @@ using Game.Utility;
 
 namespace Game.Wave
 {
-    public class WaveEndState<T> : IState<WaveService, WaveState>
+    public class WaveEndState : IState<WaveService>
     {
         public WaveService Owner { get; set; }
         private WaveStateMachine stateMachine;

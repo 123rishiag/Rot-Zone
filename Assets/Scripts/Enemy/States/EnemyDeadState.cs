@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Game.Enemy
 {
-    public class EnemyDeadState<T> : IState<EnemyController, EnemyState>
+    public class EnemyDeadState : IState<EnemyController>
     {
         public EnemyController Owner { get; set; }
         private EnemyStateMachine stateMachine;

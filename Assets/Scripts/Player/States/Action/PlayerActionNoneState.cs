@@ -3,7 +3,7 @@ using Game.Weapon;
 
 namespace Game.Player
 {
-    public class PlayerActionNoneState<T> : IState<PlayerController, PlayerActionState>
+    public class PlayerActionNoneState : IState<PlayerController>
     {
         public PlayerController Owner { get; set; }
         private PlayerActionStateMachine stateMachine;

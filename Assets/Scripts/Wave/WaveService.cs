@@ -3,19 +3,18 @@ using Game.Enemy;
 using Game.Event;
 using Game.Player;
 using Game.Spawn;
-using Game.Utility;
 using System;
 
 namespace Game.Wave
 {
-    public class WaveService : IStateOwner<WaveService>
+    public class WaveService
     {
         // Private Variables
         private WaveConfig waveConfig;
         private int currentWaveIndex;
         public WaveType CurrentWaveType { get; private set; }
         public bool IsLastWaveComplete { get; set; }
-        public WaveService Owner { get; set; }
+
         private WaveStateMachine waveStateMachine;
 
         // Private Services
@@ -48,7 +47,6 @@ namespace Game.Wave
 
         private void CreateStateMachine()
         {
-            Owner = this;
             waveStateMachine = new WaveStateMachine(this);
         }
 

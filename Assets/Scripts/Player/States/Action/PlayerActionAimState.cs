@@ -3,7 +3,7 @@ using Game.Weapon;
 
 namespace Game.Player
 {
-    public class PlayerActionAimState<T> : IState<PlayerController, PlayerActionState>
+    public class PlayerActionAimState : IState<PlayerController>
     {
         public PlayerController Owner { get; set; }
         private PlayerActionStateMachine stateMachine;

@@ -14,25 +14,20 @@ namespace Game.Enemy
         DEAD,
     }
 
-    public class EnemyStateMachine : GenericStateMachine<EnemyController, EnemyState>
+    public class EnemyStateMachine : GenericStateMachine<EnemyState, EnemyController>
     {
-        public EnemyStateMachine(EnemyController _owner) : base(_owner)
-        {
-            owner = _owner;
-            CreateStates();
-            SetOwner();
-        }
+        public EnemyStateMachine(EnemyController _owner) : base(_owner) { }
 
-        private void CreateStates()
+        protected override void CreateStates()
         {
-            States.Add(EnemyState.IDLE, new EnemyIdleState<EnemyController>(this));
-            States.Add(EnemyState.PATROL, new EnemyPatrolState<EnemyController>(this));
-            States.Add(EnemyState.DETECT, new EnemyDetectState<EnemyController>(this));
-            States.Add(EnemyState.CHASE, new EnemyChaseState<EnemyController>(this));
-            States.Add(EnemyState.ATTACK, new EnemyAttackState<EnemyController>(this));
-            States.Add(EnemyState.HURT, new EnemyHurtState<EnemyController>(this));
-            States.Add(EnemyState.STUN, new EnemyStunState<EnemyController>(this));
-            States.Add(EnemyState.DEAD, new EnemyDeadState<EnemyController>(this));
+            AddState(EnemyState.IDLE, new EnemyIdleState(this));
+            AddState(EnemyState.PATROL, new EnemyPatrolState(this));
+            AddState(EnemyState.DETECT, new EnemyDetectState(this));
+            AddState(EnemyState.CHASE, new EnemyChaseState(this));
+            AddState(EnemyState.ATTACK, new EnemyAttackState(this));
+            AddState(EnemyState.HURT, new EnemyHurtState(this));
+            AddState(EnemyState.STUN, new EnemyStunState(this));
+            AddState(EnemyState.DEAD, new EnemyDeadState(this));
         }
     }
 }
