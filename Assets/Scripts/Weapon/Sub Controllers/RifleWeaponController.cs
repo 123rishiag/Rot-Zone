@@ -1,7 +1,7 @@
 using Game.Event;
+using Game.Misc;
 using Game.Projectile;
 using Game.Sound;
-using Game.Utility;
 using UnityEngine;
 
 namespace Game.Weapon

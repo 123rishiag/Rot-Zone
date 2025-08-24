@@ -1,6 +1,7 @@
 using Game.Controls;
 using Game.Enemy;
 using Game.Event;
+using Game.Misc;
 using Game.Player;
 using Game.Projectile;
 using Game.Sound;
@@ -63,7 +64,7 @@ namespace Game.Main
         private void CreateServices()
         {
             eventService = new EventService();
-            miscService = gameService.miscPanel.GetComponent<MiscService>();
+            miscService = new MiscService(gameService.miscPrefab);
             inputService = new InputService();
             soundService = new SoundService(gameService.soundConfig, gameService.bgmSource, gameService.sfxSource);
             uiService = new UIService(gameService.uiCanvas, this);

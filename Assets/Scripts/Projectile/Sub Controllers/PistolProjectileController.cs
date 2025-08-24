@@ -1,4 +1,4 @@
-using Game.Utility;
+using Game.Misc;
 using UnityEngine;
 
 namespace Game.Projectile
