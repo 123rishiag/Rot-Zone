@@ -1,6 +1,6 @@
 using Game.Event;
+using Game.Misc;
 using Game.Projectile;
-using Game.Utility;
 using System.Collections;
 using UnityEngine;
 
@@ -93,7 +93,7 @@ namespace Game.Weapon
         }
         private void PerformFire(int _consecutiveFireAmmo)
         {
-            miscService.StartManualCoroutine(BurstFire(_consecutiveFireAmmo));
+            miscService.GetController().StartManualCoroutine(BurstFire(_consecutiveFireAmmo));
         }
         private IEnumerator BurstFire(int _consecutiveFireAmmo)
         {

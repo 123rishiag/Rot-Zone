@@ -1,9 +1,9 @@
 using Game.Enemy;
+using Game.Misc;
 using Game.Player;
 using Game.Projectile;
 using Game.Sound;
 using Game.UI;
-using Game.Utility;
 using Game.Vision;
 using Game.Wave;
 using Game.Weapon;
@@ -27,7 +27,7 @@ namespace Game.Main
         public UIView uiCanvas;
 
         [Header("Other Variables")]
-        public MiscService miscPanel;
+        public MiscView miscPrefab;
 
         [Header("Pool Panels")]
         public Transform projectilePoolPanel;

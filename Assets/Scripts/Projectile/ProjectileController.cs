@@ -1,4 +1,4 @@
-using Game.Utility;
+using Game.Misc;
 using System.Collections;
 using UnityEngine;
 
@@ -43,7 +43,7 @@ namespace Game.Projectile
             // Stopping existing projectile Coroutine if running
             if (currentProjectileHideCoroutine != null)
             {
-                miscService.StopManualCoroutine(currentProjectileHideCoroutine);
+                miscService.GetController().StopManualCoroutine(currentProjectileHideCoroutine);
             }
 
             projectileModel.Reset(_projectileData);
@@ -70,12 +70,14 @@ namespace Game.Projectile
         private void StartOnDistanceHideCoroutine()
         {
             // Hiding Projectile After Distance Traveled
-            currentProjectileHideCoroutine = miscService.StartManualCoroutine(HideViewCoroutine(hideProjectileOnDistanceYield));
+            currentProjectileHideCoroutine =
+                miscService.GetController().StartManualCoroutine(HideViewCoroutine(hideProjectileOnDistanceYield));
         }
         public void StartOnCollisionHideCoroutine()
         {
             // Hiding Projectile After Collision
-            currentProjectileHideCoroutine = miscService.StartManualCoroutine(HideViewCoroutine(hideProjectileOnCollisionYield));
+            currentProjectileHideCoroutine =
+                miscService.GetController().StartManualCoroutine(HideViewCoroutine(hideProjectileOnCollisionYield));
         }
         private IEnumerator HideViewCoroutine(WaitForSeconds _waitForSeconds)
         {

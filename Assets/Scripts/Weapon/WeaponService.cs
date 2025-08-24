@@ -1,6 +1,6 @@
 using Game.Event;
+using Game.Misc;
 using Game.Projectile;
-using Game.Utility;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
