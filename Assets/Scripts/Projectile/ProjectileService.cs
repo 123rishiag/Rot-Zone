@@ -1,3 +1,4 @@
+using Game.Utility;
 using UnityEngine;
 
 namespace Game.Projectile
@@ -17,10 +18,10 @@ namespace Game.Projectile
             projectileParentPanel = _parentPanel;
         }
 
-        public void Init()
+        public void Init(MiscService _miscService)
         {
             // Setting Variables
-            projectilePool = new ProjectilePool(projectileConfig, projectileParentPanel);
+            projectilePool = new ProjectilePool(projectileConfig, projectileParentPanel, _miscService);
         }
         public void Reset()
         {
@@ -49,16 +50,20 @@ namespace Game.Projectile
             }
         }
 
-        public ProjectileController FireProjectile(ProjectileType _projectileType, Vector3 _firePosition, Vector3 _fireDirection)
+        public ProjectileController FireProjectile(ProjectileType _projectileType,
+            Vector3 _firePosition, Vector3 _fireDirection, int _fireDistance)
         {
             switch (_projectileType)
             {
                 case ProjectileType.PISTOL_PROJECTILE:
-                    return projectilePool.GetProjectile<PistolProjectileController>(_projectileType, _firePosition, _fireDirection);
+                    return projectilePool.GetProjectile<PistolProjectileController>(_projectileType,
+                        _firePosition, _fireDirection, _fireDistance);
                 case ProjectileType.RIFLE_PROJECTILE:
-                    return projectilePool.GetProjectile<RifleProjectileController>(_projectileType, _firePosition, _fireDirection);
+                    return projectilePool.GetProjectile<RifleProjectileController>(_projectileType,
+                        _firePosition, _fireDirection, _fireDistance);
                 case ProjectileType.SHOTGUN_PROJECTILE:
-                    return projectilePool.GetProjectile<ShotgunProjectileController>(_projectileType, _firePosition, _fireDirection);
+                    return projectilePool.GetProjectile<ShotgunProjectileController>(_projectileType,
+                        _firePosition, _fireDirection, _fireDistance);
                 default:
                     Debug.LogError($"Unhandled ProjectileType: {_projectileType}");
                     return null;

@@ -1,3 +1,5 @@
+using Game.Utility;
+using System.Collections;
 using UnityEngine;
 
 namespace Game.Projectile
@@ -8,8 +10,16 @@ namespace Game.Projectile
         private ProjectileModel projectileModel;
         private ProjectileView projectileView;
 
+        private Coroutine currentProjectileHideCoroutine;
+        private WaitForSeconds hideProjectileOnDistanceYield;
+        private WaitForSeconds hideProjectileOnCollisionYield;
+
+        // Private Services
+        private MiscService miscService;
+
         public ProjectileController(ProjectileData _projectileData, Transform _parentPanel,
-            Vector3 _firePosition, Vector3 _fireDirection)
+            Vector3 _firePosition, Vector3 _fireDirection, int _fireDistance,
+            MiscService _miscService)
         {
             // Setting Variables
             projectileModel = new ProjectileModel(_projectileData);
@@ -17,15 +27,27 @@ namespace Game.Projectile
                 Object.Instantiate(_projectileData.projectilePrefab, _parentPanel).GetComponent<ProjectileView>();
             projectileView.Init(this);
 
+            // Setting Services
+            miscService = _miscService;
+
             // Setting Elements
+            float timeInSeconds = (_fireDistance + 1f) / projectileModel.ProjectileSpeed; // Little Extra Threshold
+            hideProjectileOnDistanceYield = new WaitForSeconds(timeInSeconds);
+            hideProjectileOnCollisionYield = new WaitForSeconds(0.01f);
+
             Reset(_projectileData, _firePosition, _fireDirection);
         }
 
         public void Reset(ProjectileData _projectileData, Vector3 _firePosition, Vector3 _fireDirection)
         {
+            // Stopping existing projectile Coroutine if running
+            if (currentProjectileHideCoroutine != null)
+            {
+                miscService.StopManualCoroutine(currentProjectileHideCoroutine);
+            }
+
             projectileModel.Reset(_projectileData);
             projectileView.ShowView();
-
             FireProjectile(_firePosition, _fireDirection);
         }
 
@@ -42,6 +64,23 @@ namespace Game.Projectile
 
             rigidbody.linearVelocity = _fireDirection * projectileModel.ProjectileSpeed;
             rigidbody.angularVelocity = Vector3.zero; // Resetting rotation momentum
+
+            StartOnDistanceHideCoroutine();
+        }
+        private void StartOnDistanceHideCoroutine()
+        {
+            // Hiding Projectile After Distance Traveled
+            currentProjectileHideCoroutine = miscService.StartManualCoroutine(HideViewCoroutine(hideProjectileOnDistanceYield));
+        }
+        public void StartOnCollisionHideCoroutine()
+        {
+            // Hiding Projectile After Collision
+            currentProjectileHideCoroutine = miscService.StartManualCoroutine(HideViewCoroutine(hideProjectileOnCollisionYield));
+        }
+        private IEnumerator HideViewCoroutine(WaitForSeconds _waitForSeconds)
+        {
+            yield return _waitForSeconds;
+            projectileView.HideView();
         }
 
         // Getters

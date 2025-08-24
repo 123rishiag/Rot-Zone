@@ -13,22 +13,31 @@ namespace Game.Projectile
         private ProjectileType projectileType;
         private Vector3 firePosition;
         private Vector3 fireDirection;
+        private int fireDistance;
 
-        public ProjectilePool(ProjectileConfig _projectileConfig, Transform _parentPanel)
+        // Private Services
+        private MiscService miscService;
+
+        public ProjectilePool(ProjectileConfig _projectileConfig, Transform _parentPanel,
+            MiscService _miscService)
         {
             // Setting Variables
             projectileConfig = _projectileConfig;
             projectileParentPanel = _parentPanel;
+
+            // Setting Services
+            miscService = _miscService;
         }
 
         public ProjectileController GetProjectile<T>(ProjectileType _projectileType,
-            Vector3 _firePosition, Vector3 _fireDirection)
+            Vector3 _firePosition, Vector3 _fireDirection, int _fireDistance)
             where T : ProjectileController
         {
             // Setting Variables
             projectileType = _projectileType;
             firePosition = _firePosition;
             fireDirection = _fireDirection;
+            fireDistance = _fireDistance;
 
             // Fetching Item
             var item = GetItem<T>();
@@ -46,13 +55,19 @@ namespace Game.Projectile
             {
                 case ProjectileType.PISTOL_PROJECTILE:
                     return new PistolProjectileController(
-                        GetProjectileData(projectileType), projectileParentPanel, firePosition, fireDirection);
+                        GetProjectileData(projectileType), projectileParentPanel,
+                        firePosition, fireDirection, fireDistance,
+                        miscService);
                 case ProjectileType.RIFLE_PROJECTILE:
                     return new RifleProjectileController(
-                        GetProjectileData(projectileType), projectileParentPanel, firePosition, fireDirection);
+                        GetProjectileData(projectileType), projectileParentPanel,
+                        firePosition, fireDirection, fireDistance,
+                        miscService);
                 case ProjectileType.SHOTGUN_PROJECTILE:
                     return new ShotgunProjectileController(
-                        GetProjectileData(projectileType), projectileParentPanel, firePosition, fireDirection);
+                        GetProjectileData(projectileType), projectileParentPanel,
+                        firePosition, fireDirection, fireDistance,
+                        miscService);
                 default:
                     Debug.LogError($"Unhandled ProjectileType: {projectileType}");
                     return null;

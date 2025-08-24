@@ -15,9 +15,15 @@ namespace Game.Projectile
     {
         public ProjectileType projectileType;
         public ProjectileView projectilePrefab;
+
+        [Header("Projectile Feature Settings")]
+        [Range(10, 100)]
         public float projectileSpeed = 10f;
-        public float projectileForce = 10f;
+        public float projectileImpactForce = 10f;
         public int projectileDamage = 1;
-        public float projectileNoActivityDisableTime = 5f;
+
+        [Header("Projectile Collision Settings")]
+        public LayerMask collisionDamageLayerMask;
+        public LayerMask collisionDestroyLayerMask;
     }
 }

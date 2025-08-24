@@ -1,5 +1,4 @@
 using Game.Enemy;
-using System.Collections;
 using UnityEngine;
 
 namespace Game.Projectile
@@ -17,15 +16,12 @@ namespace Game.Projectile
             projectileController = _projectileController;
             projectileRigidBody = GetComponent<Rigidbody>();
             trailRenderer = GetComponent<TrailRenderer>();
-
-            StartCoroutine(HideViewCoroutine(projectileController.GetModel().ProjectileNoActivityDisableTime));
         }
 
         public void ShowView()
         {
             trailRenderer.Clear();
             gameObject.SetActive(true);
-            StartCoroutine(HideViewCoroutine(projectileController.GetModel().ProjectileNoActivityDisableTime));
         }
         public void HideView()
         {
@@ -35,25 +31,27 @@ namespace Game.Projectile
 
         private void OnCollisionEnter(Collision _collision)
         {
-            EnemyView enemyView = _collision.collider.GetComponentInParent<EnemyView>();
-            if (enemyView != null)
+            if ((projectileController.GetModel().CollisionDamageLayerMask.value &
+                (1 << _collision.collider.gameObject.layer)) != 0)
             {
-                Vector3 impactForce = projectileRigidBody.linearVelocity.normalized *
-                                              projectileController.GetModel().ProjectileForce;
-                int damage = projectileController.GetModel().ProjectileDamage;
-                enemyView.HitImpactCoroutine(impactForce, damage, _collision);
-                HideView();
+                EnemyView enemyView = _collision.collider.GetComponentInParent<EnemyView>();
+                if (enemyView != null)
+                {
+                    Vector3 impactForce = projectileRigidBody.linearVelocity.normalized *
+                                                  projectileController.GetModel().ProjectileImpactForce;
+                    int damage = projectileController.GetModel().ProjectileDamage;
+                    enemyView.HitImpactCoroutine(impactForce, damage, _collision);
+                    projectileController.StartOnCollisionHideCoroutine();
+                }
+            }
+            else if ((projectileController.GetModel().CollisionDestroyLayerMask.value &
+                (1 << _collision.collider.gameObject.layer)) != 0)
+            {
+                projectileController.StartOnCollisionHideCoroutine();
             }
         }
 
         // Getters
         public Rigidbody GetRigidbody() => projectileRigidBody;
-
-        private IEnumerator HideViewCoroutine(float _seconds)
-        {
-            yield return new WaitForSeconds(_seconds);
-            HideView();
-        }
-
     }
 }

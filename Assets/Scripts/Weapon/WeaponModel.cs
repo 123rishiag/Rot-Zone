@@ -4,17 +4,18 @@ namespace Game.Weapon
 {
     public class WeaponModel
     {
+        const int KilometerToMeterMultiplier = 1000;
         public WeaponModel(WeaponData _weaponData)
         {
             WeaponType = _weaponData.weaponType;
 
             WeaponProjectileType = _weaponData.weaponProjectileType;
             WeaponFireType = _weaponData.weaponFireType;
+            WeaponRangeDistanceInMeters = (int)(_weaponData.weaponRangeDistanceInKilometers * KilometerToMeterMultiplier);
             WeaponFireRateInSeconds = _weaponData.weaponFireRateInSeconds;
             WeaponKickBackFactor = _weaponData.weaponKickBackFactor;
             WeaponSpreadFactor = _weaponData.weaponSpreadFactor;
 
-            WeaponAimLaserMaxDistance = _weaponData.weaponAimLaserMaxDistance;
             WeaponAimSpeed = _weaponData.weaponAimSpeed;
 
             WeaponMaxCapacity = _weaponData.weaponMaxCapacity;
@@ -27,11 +28,11 @@ namespace Game.Weapon
 
         public ProjectileType WeaponProjectileType { get; private set; }
         public WeaponFireType WeaponFireType { get; private set; }
+        public int WeaponRangeDistanceInMeters { get; private set; }
         public float WeaponFireRateInSeconds { get; private set; }
         public int WeaponKickBackFactor { get; private set; }
         public float WeaponSpreadFactor { get; private set; }
 
-        public float WeaponAimLaserMaxDistance { get; private set; }
         public float WeaponAimSpeed { get; private set; }
 
         public int WeaponMaxCapacity { get; private set; }
