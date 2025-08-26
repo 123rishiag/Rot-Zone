@@ -40,7 +40,7 @@ namespace Game.Player
         // Private Services
         public EventService EventService { get; private set; }
         public InputService InputService { get; private set; }
-        public CameraService cameraService;
+        public CameraService CameraService { get; private set; }
 
         public PlayerController(PlayerData _playerData, PlayerView _playerPrefab, Vector3 _spawnPosition,
             EventService _eventService, InputService _inputService, WeaponService _weaponService, CameraService _cameraService)
@@ -50,12 +50,12 @@ namespace Game.Player
             playerView = Object.Instantiate(_playerPrefab).GetComponent<PlayerView>();
             playerView.Init(this);
             playerAnimationController = new PlayerAnimationController(playerView.GetAnimator(), this);
-            playerWeaponController = new PlayerWeaponController(this, _eventService, _weaponService);
+            playerWeaponController = new PlayerWeaponController(this, _eventService, _weaponService, _cameraService);
 
             // Setting Services
             EventService = _eventService;
             InputService = _inputService;
-            cameraService = _cameraService;
+            CameraService = _cameraService;
 
             // Setting Elements
             CreateStateMachine();
@@ -151,8 +151,8 @@ namespace Game.Player
             inputControls.Player.Fire.performed += ctx => IsFiring = true;
             inputControls.Player.Fire.canceled += ctx => IsFiring = false;
 
-            inputControls.Player.Zoom.started += ctx => cameraService.GetCurrentCameraController().SetCameraZoomFOV();
-            inputControls.Player.Zoom.canceled += ctx => cameraService.GetCurrentCameraController().SetCameraDefaultFOV();
+            inputControls.Player.Zoom.started += ctx => CameraService.GetCurrentCameraController().SetCameraZoomFOV();
+            inputControls.Player.Zoom.canceled += ctx => CameraService.GetCurrentCameraController().SetCameraDefaultFOV();
 
             inputControls.Player.Lock.performed += ctx => isLocking = true;
             inputControls.Player.Lock.canceled += ctx => isLocking = false;
@@ -184,8 +184,8 @@ namespace Game.Player
             if (inputDirection.magnitude > 0.1f)
             {
                 // Fetching Target Direction where player is trying to move in world based on input and camera 
-                targetDirection = (GetXZNormalized(cameraService.GetCurrentCameraTransform().forward) * inputDirection.z +
-                    GetXZNormalized(cameraService.GetCurrentCameraTransform().right) * inputDirection.x).normalized;
+                targetDirection = (GetXZNormalized(CameraService.GetCurrentCameraTransform().forward) * inputDirection.z +
+                    GetXZNormalized(CameraService.GetCurrentCameraTransform().right) * inputDirection.x).normalized;
 
                 lastMoveDirection = moveDirection;
             }
@@ -274,7 +274,7 @@ namespace Game.Player
                 float weaponRange = (playerWeaponController.GetCurrentWeaponType() != WeaponType.NONE) ?
                     playerWeaponController.GetCurrentWeapon().GetModel().WeaponRangeDistanceInMeters : Mathf.Infinity;
 
-                Ray ray = cameraService.GetMainCamera().ViewportPointToRay(Vector3.one * 0.5f); // center of screen
+                Ray ray = CameraService.GetMainCamera().ViewportPointToRay(Vector3.one * 0.5f); // center of screen
                 RaycastHit hit;
 
                 if (Physics.Raycast(ray, out hit, weaponRange, playerModel.LockLayer))
@@ -298,7 +298,7 @@ namespace Game.Player
             }
 
             hitPoint = Vector3.Lerp(hitPoint, newHitPoint, Time.deltaTime *
-                cameraService.GetCurrentCameraController().GetModel().CameraSensitivity);
+                CameraService.GetCurrentCameraController().GetModel().CameraSensitivity);
 
             UpdateAim(isTargetInHit);
 
@@ -323,7 +323,7 @@ namespace Game.Player
             {
                 return false;
             }
-            Vector3 screenPos = cameraService.GetMainCamera().WorldToScreenPoint(lastHit.transform.position);
+            Vector3 screenPos = CameraService.GetMainCamera().WorldToScreenPoint(lastHit.transform.position);
             if (screenPos.z <= 0 ||
                 screenPos.x < 0 || screenPos.x > Screen.width ||
                 screenPos.y < 0 || screenPos.y > Screen.height)
@@ -337,7 +337,7 @@ namespace Game.Player
         }
         private void UpdateAim(bool _isTargetInHit)
         {
-            Transform cameraTransform = cameraService.GetMainCamera().transform;
+            Transform cameraTransform = CameraService.GetMainCamera().transform;
             // Adding 1f threshold, so it is atleast away from gun point
             float crosshairDistance = Vector3.Distance(playerView.transform.position, cameraTransform.position) + 1f;
 
