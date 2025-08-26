@@ -4,14 +4,13 @@ namespace Game.Weapon
 {
     public class WeaponModel
     {
-        const int KilometerToMeterMultiplier = 1000;
         public WeaponModel(WeaponData _weaponData)
         {
             WeaponType = _weaponData.weaponType;
 
             WeaponProjectileType = _weaponData.weaponProjectileType;
             WeaponFireType = _weaponData.weaponFireType;
-            WeaponRangeDistanceInMeters = (int)(_weaponData.weaponRangeDistanceInKilometers * KilometerToMeterMultiplier);
+            WeaponRangeDistanceInMeters = _weaponData.weaponRangeDistanceInMeters;
             WeaponFireRateInSeconds = _weaponData.weaponFireRateInSeconds;
             WeaponKickBackFactor = _weaponData.weaponKickBackFactor;
             WeaponSpreadFactor = _weaponData.weaponSpreadFactor;

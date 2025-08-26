@@ -268,12 +268,23 @@ namespace Game.Player
         {
             Vector3 newHitPoint;
             Vector3 newOffset;
+            bool isTargetInHit = false;
             if (!TryUseLockedTarget(out newHitPoint, out newOffset))
             {
-                Ray ray = cameraService.GetMainCamera().ViewportPointToRay(Vector3.one * 0.5f);
-                int combinedLayerMask = playerModel.AimLayer | playerModel.LockLayer;
+                float weaponRange = (playerWeaponController.GetCurrentWeaponType() != WeaponType.NONE) ?
+                    playerWeaponController.GetCurrentWeapon().GetModel().WeaponRangeDistanceInMeters : Mathf.Infinity;
 
-                if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, combinedLayerMask))
+                Ray ray = cameraService.GetMainCamera().ViewportPointToRay(Vector3.one * 0.5f); // center of screen
+                RaycastHit hit;
+
+                if (Physics.Raycast(ray, out hit, weaponRange, playerModel.LockLayer))
+                {
+                    newHitPoint = hit.point;
+                    newOffset = hit.normal;
+                    lastHit = hit;
+                    isTargetInHit = true;
+                }
+                else if (Physics.Raycast(ray, out hit, weaponRange, playerModel.AimLayer))
                 {
                     newHitPoint = hit.point;
                     newOffset = hit.normal;
@@ -289,7 +300,7 @@ namespace Game.Player
             hitPoint = Vector3.Lerp(hitPoint, newHitPoint, Time.deltaTime *
                 cameraService.GetCurrentCameraController().GetModel().CameraSensitivity);
 
-            UpdateAim();
+            UpdateAim(isTargetInHit);
 
             playerView.DrawDebugCircle(hitPoint, lastHit.normal, 1f);
         }
@@ -324,7 +335,7 @@ namespace Game.Player
             _offset = lastHit.normal;
             return true;
         }
-        private void UpdateAim()
+        private void UpdateAim(bool _isTargetInHit)
         {
             Transform cameraTransform = cameraService.GetMainCamera().transform;
             // Adding 1f threshold, so it is atleast away from gun point
@@ -337,7 +348,7 @@ namespace Game.Player
 
             if (playerWeaponController.GetCurrentWeaponType() != WeaponType.NONE)
             {
-                playerWeaponController.GetCurrentWeapon().UpdateWeaponAimPoint(hitPoint);
+                playerWeaponController.GetCurrentWeapon().UpdateWeaponAim(hitPoint, _isTargetInHit);
             }
         }
         #endregion

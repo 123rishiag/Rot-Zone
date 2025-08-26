@@ -17,10 +17,10 @@ MonoBehaviour:
     weaponPrefab: {fileID: 1389142212802258589, guid: 748d19574625db444877ca05561b6aea, type: 3}
     weaponProjectileType: 0
     weaponFireType: 0
-    weaponRangeDistanceInKilometers: 0.5
+    weaponRangeDistanceInMeters: 30
     weaponFireRateInSeconds: 0.5
     weaponKickBackFactor: 3
-    weaponSpreadFactor: 0.02
+    weaponSpreadFactor: 0.002
     weaponAimSpeed: 100
     weaponMaxCapacity: 8
     weaponAmmoCountInSingleShot: 1
@@ -29,10 +29,10 @@ MonoBehaviour:
     weaponPrefab: {fileID: -7221344354335743011, guid: 7444562fe5798e846a4045a93e123308, type: 3}
     weaponProjectileType: 1
     weaponFireType: 1
-    weaponRangeDistanceInKilometers: 1
+    weaponRangeDistanceInMeters: 150
     weaponFireRateInSeconds: 1
     weaponKickBackFactor: 2
-    weaponSpreadFactor: 0.01
+    weaponSpreadFactor: 0.005
     weaponAimSpeed: 100
     weaponMaxCapacity: 100
     weaponAmmoCountInSingleShot: 5
@@ -41,7 +41,7 @@ MonoBehaviour:
     weaponPrefab: {fileID: 9203822970734637043, guid: c9841888fa5041d499ada59f73087c6a, type: 3}
     weaponProjectileType: 2
     weaponFireType: 0
-    weaponRangeDistanceInKilometers: 0.25
+    weaponRangeDistanceInMeters: 40
     weaponFireRateInSeconds: 1
     weaponKickBackFactor: 9
     weaponSpreadFactor: 0.05

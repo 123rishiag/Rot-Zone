@@ -21,14 +21,14 @@ namespace Game.Weapon
         [Header("Weapon Fire Settings")]
         public ProjectileType weaponProjectileType;
         public WeaponFireType weaponFireType;
-        [Range(0.1f, 1f)]
-        public float weaponRangeDistanceInKilometers = 0.1f;
+        [Range(10, 200)]
+        public int weaponRangeDistanceInMeters = 100;
         [Range(0.1f, 2f)]
         public float weaponFireRateInSeconds = 1f;
         [Range(2, 9)]
         public int weaponKickBackFactor = 3;
-        [Range(0.01f, 0.05f)]
-        public float weaponSpreadFactor = 0.05f;
+        [Range(0.001f, 0.01f)]
+        public float weaponSpreadFactor = 0.01f;
 
         [Header("Weapon Aim Settings")]
         public float weaponAimSpeed = 100f;
