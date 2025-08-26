@@ -115,9 +115,10 @@ namespace Game.Weapon
             PlayFireSound();
         }
 
-        public void UpdateWeaponAimPoint(Vector3 _target)
+        public void UpdateWeaponAim(Vector3 _target, bool _isTargetInHit = false)
         {
             aimTarget = Vector3.Lerp(aimTarget, _target, Time.deltaTime * weaponModel.WeaponAimSpeed);
+            weaponView.UpdateCrossHairUIColor(_isTargetInHit);
         }
 
         public abstract void PlayFireSound();
