@@ -26,7 +26,7 @@ MonoBehaviour:
       m_Bits: 384
   - projectileType: 1
     projectilePrefab: {fileID: -6722416235863785931, guid: 1471e98bb0946d847a15230e4b8cb13c, type: 3}
-    projectileSpeed: 900
+    projectileSpeed: 600
     projectileImpactForce: 15
     projectileDamage: 3
     collisionDamageLayerMask:
