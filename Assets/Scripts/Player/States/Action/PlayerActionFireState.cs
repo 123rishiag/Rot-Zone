@@ -14,13 +14,9 @@ namespace Game.Player
 
         public void OnStateEnter()
         {
-            Owner.GetWeaponController().FireWeapon();
             Owner.GetAnimationController().EnableIKWeight(
                 Owner.GetWeaponController().GetCurrentWeaponType(), true);
-            if (!IsFireAnimationInProgress())
-            {
-                Owner.GetView().GetAnimator().Play(Owner.GetAnimationController().weaponFireHash);
-            }
+            Owner.GetView().GetAnimator().Play(Owner.GetAnimationController().weaponFireHash);
             if (Owner.GetWeaponController().GetCurrentWeapon().CurrentAmmo == 0)
             {
                 Owner.EventService.OnPlaySoundEffectEvent.Invoke(SoundType.WEAPON_EMPTY);
@@ -29,6 +25,11 @@ namespace Game.Player
         public void Update()
         {
             CheckTransitionConditions();
+
+            if (Owner.GetWeaponController().GetCurrentWeapon().CanFireWeapon())
+            {
+                Owner.GetWeaponController().FireWeapon();
+            }
 
             Owner.UpdateActionVariables();
         }
@@ -47,11 +48,7 @@ namespace Game.Player
             {
                 stateMachine.ChangeState(PlayerActionState.RELOAD);
             }
-            else if (Owner.GetWeaponController().GetCurrentWeapon().CanFireWeapon() && Owner.IsFiring)
-            {
-                stateMachine.ChangeState(PlayerActionState.FIRE);
-            }
-            else if (IsFireAnimationInProgress() && !Owner.IsFiring)
+            else if(!IsFireAnimationInProgress() || !Owner.IsFiring)
             {
                 stateMachine.ChangeState(PlayerActionState.AIM);
             }
@@ -64,7 +61,7 @@ namespace Game.Player
                 Owner.GetView().GetAnimator().GetCurrentAnimatorStateInfo(weaponLayerIndex);
 
             return (stateInfo.shortNameHash == Owner.GetAnimationController().weaponFireHash &&
-                stateInfo.normalizedTime >= 0.5f);
+                stateInfo.normalizedTime <= 0.5f);
         }
     }
 }
