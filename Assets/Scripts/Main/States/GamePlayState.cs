@@ -15,7 +15,10 @@ namespace Game.Main
         public void OnStateEnter()
         {
             Time.timeScale = 1f; // Resume the game
+
+            Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
+
             Owner.IsPausePressed = false;
             Owner.GetEventService().OnPlaySoundEffectEvent.Invoke(SoundType.GAME_PLAY);
         }
@@ -80,6 +83,7 @@ namespace Game.Main
         public void OnStateExit()
         {
             Time.timeScale = 0f; // Stop the game
+            Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
         }
 

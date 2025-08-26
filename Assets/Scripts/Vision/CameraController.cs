@@ -43,8 +43,6 @@ namespace Game.Vision
             inputControls.Camera.MouseDelta.canceled += ctx => mouseDelta = Vector2.zero;
         }
 
-        public void Reset() => SetCameraDefaultFOV();
-
         public void Update() => AimCamera();
 
         protected virtual void AimCamera()
