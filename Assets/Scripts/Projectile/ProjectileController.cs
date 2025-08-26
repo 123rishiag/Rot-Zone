@@ -10,8 +10,9 @@ namespace Game.Projectile
         private ProjectileModel projectileModel;
         private ProjectileView projectileView;
 
-        private Coroutine currentProjectileHideCoroutine;
-        private WaitForSeconds hideProjectileOnDistanceYield;
+        private Coroutine currentProjectileCoroutine;
+        private WaitForSeconds enableGravityOnDistanceYield;
+        private WaitForSeconds hideProjectileOnTimeYield;
         private WaitForSeconds hideProjectileOnCollisionYield;
 
         // Private Services
@@ -32,7 +33,8 @@ namespace Game.Projectile
 
             // Setting Elements
             float timeInSeconds = (_fireDistance + 1f) / projectileModel.ProjectileSpeed; // Little Extra Threshold
-            hideProjectileOnDistanceYield = new WaitForSeconds(timeInSeconds);
+            enableGravityOnDistanceYield = new WaitForSeconds(timeInSeconds);
+            hideProjectileOnTimeYield = new WaitForSeconds(5f); // Hiding Projectile in 5 seconds after gravity
             hideProjectileOnCollisionYield = new WaitForSeconds(0.01f);
 
             Reset(_projectileData, _firePosition, _fireDirection);
@@ -41,9 +43,9 @@ namespace Game.Projectile
         public void Reset(ProjectileData _projectileData, Vector3 _firePosition, Vector3 _fireDirection)
         {
             // Stopping existing projectile Coroutine if running
-            if (currentProjectileHideCoroutine != null)
+            if (currentProjectileCoroutine != null)
             {
-                miscService.GetController().StopManualCoroutine(currentProjectileHideCoroutine);
+                miscService.GetController().StopManualCoroutine(currentProjectileCoroutine);
             }
 
             projectileModel.Reset(_projectileData);
@@ -54,6 +56,7 @@ namespace Game.Projectile
         private void FireProjectile(Vector3 _firePosition, Vector3 _fireDirection)
         {
             Rigidbody rigidbody = projectileView.GetRigidbody();
+            rigidbody.useGravity = false;
 
             // Making sure, projectile launches after a threshold from firepoint
             Vector3 newPosition = _firePosition + _fireDirection * 0.2f;
@@ -65,19 +68,32 @@ namespace Game.Projectile
             rigidbody.linearVelocity = _fireDirection * projectileModel.ProjectileSpeed;
             rigidbody.angularVelocity = Vector3.zero; // Resetting rotation momentum
 
-            StartOnDistanceHideCoroutine();
+            StartOnDistanceEnableGravityCoroutine();
         }
-        private void StartOnDistanceHideCoroutine()
+        private void StartOnDistanceEnableGravityCoroutine()
         {
-            // Hiding Projectile After Distance Traveled
-            currentProjectileHideCoroutine =
-                miscService.GetController().StartManualCoroutine(HideViewCoroutine(hideProjectileOnDistanceYield));
+            // Enabling Gravity After Distance Traveled
+            currentProjectileCoroutine = miscService.GetController().StartManualCoroutine(
+                OnDistanceEnableGravityCoroutine(enableGravityOnDistanceYield));
+        }
+        private void StartOnTimeHideCoroutine()
+        {
+            // Hiding Projectile After Gravity Enabled
+            currentProjectileCoroutine =
+                miscService.GetController().StartManualCoroutine(HideViewCoroutine(hideProjectileOnTimeYield));
         }
         public void StartOnCollisionHideCoroutine()
         {
             // Hiding Projectile After Collision
-            currentProjectileHideCoroutine =
+            currentProjectileCoroutine =
                 miscService.GetController().StartManualCoroutine(HideViewCoroutine(hideProjectileOnCollisionYield));
+        }
+        private IEnumerator OnDistanceEnableGravityCoroutine(WaitForSeconds _waitForSeconds)
+        {
+            yield return _waitForSeconds;
+            Rigidbody rigidbody = projectileView.GetRigidbody();
+            rigidbody.useGravity = true;
+            StartOnTimeHideCoroutine();
         }
         private IEnumerator HideViewCoroutine(WaitForSeconds _waitForSeconds)
         {
