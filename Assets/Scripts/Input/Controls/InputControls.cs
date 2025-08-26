@@ -129,15 +129,6 @@ public partial class @InputControls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""Lock"",
-                    ""type"": ""Button"",
-                    ""id"": ""583de685-b003-4f9d-b5f1-9f0f836b0d2f"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
                     ""name"": ""WeaponOne"",
                     ""type"": ""Button"",
                     ""id"": ""798b865f-55eb-4cca-8eb3-7bf3c1dd6dce"",
@@ -373,17 +364,6 @@ public partial class @InputControls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""de1de158-15c4-448a-b966-92f64461c65f"",
-                    ""path"": ""<Keyboard>/f"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Lock"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""dedbb485-d007-480c-a2e5-44e12a70eae3"",
                     ""path"": ""<Mouse>/rightButton"",
                     ""interactions"": """",
@@ -460,7 +440,6 @@ public partial class @InputControls: IInputActionCollection2, IDisposable
         m_Player_Run = m_Player.FindAction("Run", throwIfNotFound: true);
         m_Player_Fire = m_Player.FindAction("Fire", throwIfNotFound: true);
         m_Player_Zoom = m_Player.FindAction("Zoom", throwIfNotFound: true);
-        m_Player_Lock = m_Player.FindAction("Lock", throwIfNotFound: true);
         m_Player_WeaponOne = m_Player.FindAction("WeaponOne", throwIfNotFound: true);
         m_Player_WeaponTwo = m_Player.FindAction("WeaponTwo", throwIfNotFound: true);
         m_Player_WeaponThree = m_Player.FindAction("WeaponThree", throwIfNotFound: true);
@@ -558,7 +537,6 @@ public partial class @InputControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Run;
     private readonly InputAction m_Player_Fire;
     private readonly InputAction m_Player_Zoom;
-    private readonly InputAction m_Player_Lock;
     private readonly InputAction m_Player_WeaponOne;
     private readonly InputAction m_Player_WeaponTwo;
     private readonly InputAction m_Player_WeaponThree;
@@ -591,10 +569,6 @@ public partial class @InputControls: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Player/Zoom".
         /// </summary>
         public InputAction @Zoom => m_Wrapper.m_Player_Zoom;
-        /// <summary>
-        /// Provides access to the underlying input action "Player/Lock".
-        /// </summary>
-        public InputAction @Lock => m_Wrapper.m_Player_Lock;
         /// <summary>
         /// Provides access to the underlying input action "Player/WeaponOne".
         /// </summary>
@@ -653,9 +627,6 @@ public partial class @InputControls: IInputActionCollection2, IDisposable
             @Zoom.started += instance.OnZoom;
             @Zoom.performed += instance.OnZoom;
             @Zoom.canceled += instance.OnZoom;
-            @Lock.started += instance.OnLock;
-            @Lock.performed += instance.OnLock;
-            @Lock.canceled += instance.OnLock;
             @WeaponOne.started += instance.OnWeaponOne;
             @WeaponOne.performed += instance.OnWeaponOne;
             @WeaponOne.canceled += instance.OnWeaponOne;
@@ -694,9 +665,6 @@ public partial class @InputControls: IInputActionCollection2, IDisposable
             @Zoom.started -= instance.OnZoom;
             @Zoom.performed -= instance.OnZoom;
             @Zoom.canceled -= instance.OnZoom;
-            @Lock.started -= instance.OnLock;
-            @Lock.performed -= instance.OnLock;
-            @Lock.canceled -= instance.OnLock;
             @WeaponOne.started -= instance.OnWeaponOne;
             @WeaponOne.performed -= instance.OnWeaponOne;
             @WeaponOne.canceled -= instance.OnWeaponOne;
@@ -972,13 +940,6 @@ public partial class @InputControls: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnZoom(InputAction.CallbackContext context);
-        /// <summary>
-        /// Method invoked when associated input action "Lock" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-        /// </summary>
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnLock(InputAction.CallbackContext context);
         /// <summary>
         /// Method invoked when associated input action "WeaponOne" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>

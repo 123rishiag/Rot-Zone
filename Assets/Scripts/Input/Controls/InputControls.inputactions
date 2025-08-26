@@ -43,15 +43,6 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Lock",
-                    "type": "Button",
-                    "id": "583de685-b003-4f9d-b5f1-9f0f836b0d2f",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "WeaponOne",
                     "type": "Button",
                     "id": "798b865f-55eb-4cca-8eb3-7bf3c1dd6dce",
@@ -282,17 +273,6 @@
                     "processors": "",
                     "groups": "",
                     "action": "WeaponReload",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "de1de158-15c4-448a-b966-92f64461c65f",
-                    "path": "<Keyboard>/f",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Lock",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
