@@ -83,6 +83,7 @@ namespace Game.Main
         public void OnStateExit()
         {
             Time.timeScale = 0f; // Stop the game
+
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
         }
