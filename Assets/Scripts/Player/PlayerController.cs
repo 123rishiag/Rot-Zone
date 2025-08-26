@@ -27,8 +27,6 @@ namespace Game.Player
 
         private Vector3 inputDirection;
 
-        private bool isLocking;
-
         private RaycastHit lastHit;
         private Vector3 hitPoint;
 
@@ -80,8 +78,6 @@ namespace Game.Player
             rotationTarget = Vector3.zero;
             verticalVelocity = 0f;
             currentSpeed = 0f;
-
-            isLocking = false;
 
             currentHealth = 0;
             IsAlive = true;
@@ -153,9 +149,6 @@ namespace Game.Player
 
             inputControls.Player.Zoom.started += ctx => CameraService.GetCurrentCameraController().SetCameraZoomFOV();
             inputControls.Player.Zoom.canceled += ctx => CameraService.GetCurrentCameraController().SetCameraDefaultFOV();
-
-            inputControls.Player.Lock.performed += ctx => isLocking = true;
-            inputControls.Player.Lock.canceled += ctx => isLocking = false;
 
             inputControls.Player.WeaponOne.started += ctx => playerWeaponController.EquipWeapon(WeaponType.PISTOL);
             inputControls.Player.WeaponTwo.started += ctx => playerWeaponController.EquipWeapon(WeaponType.RIFLE);
@@ -269,32 +262,30 @@ namespace Game.Player
             Vector3 newHitPoint;
             Vector3 newOffset;
             bool isTargetInHit = false;
-            if (!TryUseLockedTarget(out newHitPoint, out newOffset))
-            {
-                float weaponRange = (playerWeaponController.GetCurrentWeaponType() != WeaponType.NONE) ?
+
+            float weaponRange = (playerWeaponController.GetCurrentWeaponType() != WeaponType.NONE) ?
                     playerWeaponController.GetCurrentWeapon().GetModel().WeaponRangeDistanceInMeters : Mathf.Infinity;
 
-                Ray ray = CameraService.GetMainCamera().ViewportPointToRay(Vector3.one * 0.5f); // center of screen
-                RaycastHit hit;
+            Ray ray = CameraService.GetMainCamera().ViewportPointToRay(Vector3.one * 0.5f); // center of screen
+            RaycastHit hit;
 
-                if (Physics.Raycast(ray, out hit, weaponRange, playerModel.LockLayer))
-                {
-                    newHitPoint = hit.point;
-                    newOffset = hit.normal;
-                    lastHit = hit;
-                    isTargetInHit = true;
-                }
-                else if (Physics.Raycast(ray, out hit, weaponRange, playerModel.AimLayer))
-                {
-                    newHitPoint = hit.point;
-                    newOffset = hit.normal;
-                    lastHit = hit;
-                }
-                else
-                {
-                    newHitPoint = ray.GetPoint(100f);
-                    newOffset = ray.direction;
-                }
+            if (Physics.Raycast(ray, out hit, weaponRange, playerModel.LockLayer))
+            {
+                newHitPoint = hit.point;
+                newOffset = hit.normal;
+                lastHit = hit;
+                isTargetInHit = true;
+            }
+            else if (Physics.Raycast(ray, out hit, weaponRange, playerModel.AimLayer))
+            {
+                newHitPoint = hit.point;
+                newOffset = hit.normal;
+                lastHit = hit;
+            }
+            else
+            {
+                newHitPoint = ray.GetPoint(100f);
+                newOffset = ray.direction;
             }
 
             hitPoint = Vector3.Lerp(hitPoint, newHitPoint, Time.deltaTime *
@@ -304,37 +295,7 @@ namespace Game.Player
 
             playerView.DrawDebugCircle(hitPoint, lastHit.normal, 1f);
         }
-        private bool TryUseLockedTarget(out Vector3 _hitPoint, out Vector3 _offset)
-        {
-            _hitPoint = Vector3.zero;
-            _offset = Vector3.up;
 
-            if (!isLocking || lastHit.collider == null)
-            {
-                return false;
-            }
-
-            if (!lastHit.collider.gameObject.activeInHierarchy)
-            {
-                return false;
-            }
-            int lastHitLayer = lastHit.collider.gameObject.layer;
-            if (((1 << lastHitLayer) & playerModel.LockLayer) == 0)
-            {
-                return false;
-            }
-            Vector3 screenPos = CameraService.GetMainCamera().WorldToScreenPoint(lastHit.transform.position);
-            if (screenPos.z <= 0 ||
-                screenPos.x < 0 || screenPos.x > Screen.width ||
-                screenPos.y < 0 || screenPos.y > Screen.height)
-            {
-                return false;
-            }
-
-            _hitPoint = lastHit.collider.bounds.center;
-            _offset = lastHit.normal;
-            return true;
-        }
         private void UpdateAim(bool _isTargetInHit)
         {
             Transform cameraTransform = CameraService.GetMainCamera().transform;
