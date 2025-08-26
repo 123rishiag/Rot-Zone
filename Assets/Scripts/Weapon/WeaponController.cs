@@ -54,25 +54,6 @@ namespace Game.Weapon
         {
             cachedFirePosition = weaponView.GetFirePoint().position;
             cachedFireDirection = (aimTarget - cachedFirePosition).normalized;
-            UpdateAimLaser();
-        }
-
-        private void UpdateAimLaser()
-        {
-            Vector3 hitPoint;
-            if (Physics.Raycast(cachedFirePosition, cachedFireDirection, out RaycastHit hit,
-                weaponModel.WeaponRangeDistanceInMeters, aimLayer))
-            {
-                hitPoint = hit.point;
-            }
-            else
-            {
-                hitPoint = cachedFirePosition + cachedFireDirection * weaponModel.WeaponRangeDistanceInMeters;
-            }
-            weaponView.UpdateAimLaser(hitPoint);
-
-            // For Debug
-            // Debug.DrawLine(cachedFirePosition, hitPoint, Color.cyan, 0.1f);
         }
 
         public void ReloadWeapon()

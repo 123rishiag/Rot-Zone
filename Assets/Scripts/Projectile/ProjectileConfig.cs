@@ -17,7 +17,7 @@ namespace Game.Projectile
         public ProjectileView projectilePrefab;
 
         [Header("Projectile Feature Settings")]
-        [Range(100, 1500)]
+        [Range(100, 1000)]
         public float projectileSpeed = 300f;
         public float projectileImpactForce = 10f;
         public int projectileDamage = 1;
