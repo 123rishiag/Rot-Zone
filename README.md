@@ -6,11 +6,33 @@ Rot Zone is a 3D zombie survival shooter, where player fight off waves of zombie
 
 ---
 
-## Architectural Overview
+## Gameplay Media
+
+Below are Game Screenshots:
+
+![Screenshot 1](Media/Screenshots/1.png)
+![Screenshot 2](Media/Screenshots/2.png)
+![Screenshot 3](Media/Screenshots/3.png)
+![Screenshot 4](Media/Screenshots/4.png)
+![Screenshot 5](Media/Screenshots/5.png)
+![Screenshot 6](Media/Screenshots/6.png)
 
 Below is the block diagram illustrating the **core architecture**:
 
-![Architectural Overview](docs/block_diagram.png)
+![Architectural Overview](Media/block_diagram.png)
+
+---
+
+## Video Demo
+
+[Watch the Gameplay Demo](https://drive.google.com/file/d/1_7covLIkqqKyQKN9CepokI98XiPd528o/view?usp=sharing)  
+[Watch the Architecture Explanation](https://www.loom.com/share/cadac715ed3844d68c7608c74f70ce1e?sid=25da374c-d0fe-44d6-90bf-7649e0271e4d)
+
+---
+
+## Play Link
+
+[Play the Game](https://123rishiag.github.io/Rot-Zone/)
 
 ---
 
@@ -265,18 +287,5 @@ Stores reusable configurations for player, enemies, weapons, projectiles and wav
    git clone https://github.com/123rishiag/Rot-Zone.git
    ```
 2. Open the project in Unity.
-
----
-
-## Video Demo
-
-[Watch the Gameplay Demo](https://www.loom.com/share/6b9599ffb9b843f9ab881a10d626d5dc?sid=15938040-660c-4a67-9318-2f87f5c4ea48)  
-[Watch the Architecture Explanation](https://www.loom.com/share/cadac715ed3844d68c7608c74f70ce1e?sid=25da374c-d0fe-44d6-90bf-7649e0271e4d)
-
----
-
-## Play Link
-
-[Play the Game](https://123rishiag.github.io/Rot-Zone/)
 
 ---
