@@ -314,15 +314,6 @@
             "id": "e649e76e-9951-41f7-a154-8cc15de1bd40",
             "actions": [
                 {
-                    "name": "SwitchCamera",
-                    "type": "Button",
-                    "id": "ae19a009-8027-40e6-aeb9-8cda631562aa",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "MouseDelta",
                     "type": "Value",
                     "id": "ec6cb0f7-a9de-4955-9782-a3bc110b6ebd",
@@ -333,17 +324,6 @@
                 }
             ],
             "bindings": [
-                {
-                    "name": "",
-                    "id": "72a7ad77-0b4d-41fc-b4e7-6aaa60119102",
-                    "path": "<Keyboard>/c",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "SwitchCamera",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
                 {
                     "name": "",
                     "id": "3bac2afa-4d5c-455a-857d-7f39a63d7f18",

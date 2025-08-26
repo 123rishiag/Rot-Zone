@@ -63,8 +63,6 @@ namespace Game.Vision
         private void AssignInputs()
         {
             InputControls inputControls = inputService.GetInputControls();
-
-            inputControls.Camera.SwitchCamera.started += ctx => SwitchCamera();
         }
         private void InitializeVariables()
         {
@@ -138,18 +136,6 @@ namespace Game.Vision
 
             // Adding all States
             cmCamera.Instructions = instructionList.ToArray();
-        }
-
-        private void SwitchCamera()
-        {
-            CameraType currentCameraType = currentCameraController.GetModel().CameraType;
-            int currentIndex = Array.IndexOf(Enum.GetValues(typeof(CameraType)), currentCameraType);
-            int maxLength = Enum.GetValues(typeof(CameraType)).Length;
-            int nextIndex = (currentIndex + 1) % maxLength;
-
-            CameraType cameraType = (CameraType)Enum.GetValues(typeof(CameraType)).GetValue(nextIndex);
-
-            SetCamera(cameraType);
         }
 
         // Setters

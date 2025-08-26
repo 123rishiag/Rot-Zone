@@ -1,9 +1,11 @@
 using Game.Event;
 using Game.Sound;
+using Game.Vision;
 using Game.Weapon;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using CameraType = Game.Vision.CameraType;
 
 namespace Game.Player
 {
@@ -19,9 +21,10 @@ namespace Game.Player
         // Private Services
         private EventService eventService;
         private WeaponService weaponService;
+        private CameraService cameraService;
 
         public PlayerWeaponController(PlayerController _playerController,
-            EventService _eventService, WeaponService _weaponService)
+            EventService _eventService, WeaponService _weaponService, CameraService _cameraService)
         {
             // Setting Variables
             playerController = _playerController;
@@ -29,6 +32,7 @@ namespace Game.Player
             // Setting Services
             eventService = _eventService;
             weaponService = _weaponService;
+            cameraService = _cameraService;
 
             // Setting Variables
             currentWeaponType = WeaponType.NONE;
@@ -61,7 +65,7 @@ namespace Game.Player
         {
             if (playerController.GetMovementStateMachine().GetCurrentState() == PlayerMovementState.FALL)
             {
-                currentWeaponType = WeaponType.NONE;
+                SetWeaponAndCamera(WeaponType.NONE);
             }
             else if (currentWeaponType == _weaponType)
             {
@@ -69,7 +73,7 @@ namespace Game.Player
             }
             else
             {
-                currentWeaponType = _weaponType;
+                SetWeaponAndCamera(_weaponType);
             }
 
             // Resetting Movement State and Action State  while equipment changes,
@@ -94,6 +98,19 @@ namespace Game.Player
 
             SetCurrentWeaponSetting();
             playerController.UpdateAmmoUI();
+        }
+
+        private void SetWeaponAndCamera(WeaponType _weaponType)
+        {
+            currentWeaponType = _weaponType;
+            if (_weaponType == WeaponType.NONE)
+            {
+                cameraService.SetCamera(CameraType.THIRD_PERSON_UNARMED);
+            }
+            else
+            {
+                cameraService.SetCamera(CameraType.THIRD_PERSON_ARMED);
+            }
         }
 
         private void SwitchOffWeapons()
