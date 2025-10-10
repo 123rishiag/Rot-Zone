@@ -13,10 +13,6 @@ namespace Game.Enemy
 
         public void OnStateEnter()
         {
-            Owner.DetectionDistance = Owner.GetModel().DetectionMaxDistance * Owner.GetModel().DetectionIncreaseFactor;
-            Owner.GetView().SetConeDetectMaterial(true);
-
-            var enemyModel = Owner.GetModel();
             Owner.GetView().StopNavMeshAgent(true);
 
             Owner.GetView().GetAnimator().CrossFade(Owner.GetAnimationController().detectHash, 0.1f);
@@ -37,10 +33,7 @@ namespace Game.Enemy
         }
         public void FixedUpdate() { }
         public void LateUpdate() { }
-        public void OnStateExit()
-        {
-            Owner.DetectionDistance = Owner.GetModel().DetectionMaxDistance;
-        }
+        public void OnStateExit() { }
 
         private bool IsDetectAnimationFinished()
         {

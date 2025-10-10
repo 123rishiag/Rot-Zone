@@ -16,13 +16,6 @@ namespace Game.Enemy
         {
             idleTimer = 0f;
 
-            Owner.GetView().GetAnimator().enabled = true;
-            Owner.GetView().SetRagDollActive(true);
-            Owner.GetView().GetCharacterController().enabled = true;
-            Owner.GetView().GetNavMeshAgent().enabled = true;
-
-            Owner.GetView().SetConeDetectMaterial(false);
-
             Owner.GetView().StopNavMeshAgent(true);
             var animator = Owner.GetView().GetAnimator();
             if (animator != null && animator.isActiveAndEnabled)
@@ -35,7 +28,7 @@ namespace Game.Enemy
         {
             idleTimer += Time.deltaTime;
 
-            if (Owner.IsPlayerDetected() || Owner.GetDistanceFromPlayer() <= Owner.GetModel().DetectionMinDistance)
+            if (Owner.GetDistanceFromPlayer() <= Owner.GetModel().DetectionMinDistance)
             {
                 stateMachine.ChangeState(EnemyState.DETECT);
             }

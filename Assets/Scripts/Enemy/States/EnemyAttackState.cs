@@ -13,9 +13,6 @@ namespace Game.Enemy
 
         public void OnStateEnter()
         {
-            Owner.DetectionDistance = Owner.GetModel().DetectionMaxDistance * Owner.GetModel().DetectionIncreaseFactor;
-
-            var enemyModel = Owner.GetModel();
             Owner.GetView().StopNavMeshAgent(true);
 
             Owner.GetView().SetTrailRenderActive(true);
@@ -26,7 +23,7 @@ namespace Game.Enemy
         {
             if (IsAttackAnimationFinished())
             {
-                if (Owner.GetDistanceFromPlayer() > Owner.DetectionDistance)
+                if (Owner.GetDistanceFromPlayer() > Owner.GetModel().DetectionMaxDistance)
                 {
                     stateMachine.ChangeState(EnemyState.IDLE);
                 }
@@ -42,8 +39,6 @@ namespace Game.Enemy
         public void LateUpdate() { }
         public void OnStateExit()
         {
-            Owner.DetectionDistance = Owner.GetModel().DetectionMaxDistance;
-
             Owner.GetView().SetTrailRenderActive(false);
         }
 

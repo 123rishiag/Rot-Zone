@@ -18,12 +18,7 @@ namespace Game.Enemy
         {
             deadTimer = 0f;
 
-            var enemyModel = Owner.GetModel();
-
-            Owner.GetView().GetAnimator().enabled = false;
-            Owner.GetView().SetRagDollActive(true);
-            Owner.GetView().GetCharacterController().enabled = false;
-            Owner.GetView().GetNavMeshAgent().enabled = false;
+            Owner.GetView().StopNavMeshAgent(true);
 
             Owner.GetView().GetAnimator().Play(Owner.GetAnimationController().deadHash);
             Owner.EventService.OnPlaySoundEffectEvent.Invoke(SoundType.ENEMY_DEAD);

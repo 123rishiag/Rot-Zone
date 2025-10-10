@@ -13,9 +13,8 @@ namespace Game.Enemy
         public readonly int detectHash = Animator.StringToHash("Detect");
         public readonly int chaseHash = Animator.StringToHash("Chase");
         public readonly int attackHash = Animator.StringToHash("Attack");
-        public readonly int hurtHash = Animator.StringToHash("Hurt");
         public readonly int stunHash = Animator.StringToHash("Stun");
-        public readonly int deadHash = Animator.StringToHash("Idle");
+        public readonly int deadHash = Animator.StringToHash("Dead");
 
         public EnemyAnimationController(Animator _enemyAnimator, EnemyController _enemyController)
         {

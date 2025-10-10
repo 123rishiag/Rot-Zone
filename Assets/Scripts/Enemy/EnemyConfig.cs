@@ -33,9 +33,7 @@ namespace Game.Enemy
         [Header("Detection Settings")]
         public float detectionMinDistance = 1f;
         public float detectionMaxDistance = 10f;
-        public float detectionAngleDegree = 120f;
         public float detectionMinScreamDistance = 5f;
-        public float detectionIncreaseFactor = 2f;
         public float stopDistance = 1f;
     }
 }

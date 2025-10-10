@@ -17,7 +17,6 @@ namespace Game.Enemy
         {
             stunTimer = 0f;
 
-            var enemyModel = Owner.GetModel();
             Owner.GetView().StopNavMeshAgent(true);
 
             Owner.GetView().GetAnimator().CrossFade(Owner.GetAnimationController().stunHash, 0.5f);

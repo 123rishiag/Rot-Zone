@@ -14,7 +14,6 @@ namespace Game.Projectile
             ProjectileType = _projectileData.projectileType;
 
             ProjectileSpeed = _projectileData.projectileSpeed;
-            ProjectileImpactForce = _projectileData.projectileImpactForce;
             ProjectileDamage = _projectileData.projectileDamage;
 
             CollisionDamageLayerMask = _projectileData.collisionDamageLayerMask;
@@ -25,7 +24,6 @@ namespace Game.Projectile
         public ProjectileType ProjectileType { get; private set; }
 
         public float ProjectileSpeed { get; private set; }
-        public float ProjectileImpactForce { get; private set; }
         public int ProjectileDamage { get; private set; }
 
         public LayerMask CollisionDamageLayerMask { get; private set; }
