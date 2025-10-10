@@ -1,6 +1,5 @@
 using Game.Event;
 using Game.Player;
-using System.Collections;
 using UnityEngine;
 
 namespace Game.Enemy
@@ -14,7 +13,6 @@ namespace Game.Enemy
 
         private EnemyStateMachine enemyStateMachine;
 
-        public float DetectionDistance { get; set; }
         private int currentHealth;
 
         // Private Services
@@ -50,11 +48,9 @@ namespace Game.Enemy
             enemyStateMachine.ChangeState(EnemyState.IDLE);
             enemyModel.Reset(_enemyData);
 
-            DetectionDistance = enemyModel.DetectionMaxDistance;
             currentHealth = enemyModel.MaxHealth;
 
             enemyView.SetPosition(_spawnPosition);
-            enemyView.SetRagDollActive(true);
             enemyView.SetTrailRenderActive(false);
             enemyView.ShowView();
         }
@@ -62,7 +58,6 @@ namespace Game.Enemy
         public void Update()
         {
             enemyStateMachine.Update();
-            enemyView.DrawDetectionCone();
         }
 
         public void RotateTowardsPlayer()
@@ -83,28 +78,13 @@ namespace Game.Enemy
                 );
         }
 
-        public IEnumerator HitImpact(Vector3 _impactForce, int _damage, Collision _hitCollision)
+        public void HitImpact(int _damage)
         {
-            enemyStateMachine.ChangeState(EnemyState.IDLE);
             DecreaseHealth(_damage);
-            var hitPoint = _hitCollision.contacts[0].point;
 
-            yield return new WaitForEndOfFrame();
-
-            if (currentHealth != 0)
-            {
-                enemyStateMachine.ChangeState(EnemyState.HURT);
-            }
-            else
+            if (currentHealth == 0)
             {
                 enemyStateMachine.ChangeState(EnemyState.DEAD);
-                yield return new WaitForEndOfFrame();
-
-                Rigidbody impactedRigidbody = _hitCollision.collider.attachedRigidbody;
-                if (impactedRigidbody != null)
-                {
-                    impactedRigidbody.AddForceAtPosition(_impactForce, hitPoint, ForceMode.Impulse);
-                }
             }
         }
         private void DecreaseHealth(int _damage)
@@ -115,36 +95,6 @@ namespace Game.Enemy
         }
 
         // Getters
-        public bool IsPlayerDetected()
-        {
-            float detectionAngleDegree = enemyModel.DetectionAngleDegree;
-            float detectionAngleHalf = detectionAngleDegree / 2f;
-
-            LayerMask layerMask = playerService.GetController().GetLayerMask();
-            Transform target = playerService.GetController().GetTransform();
-
-            Vector3 origin = enemyView.transform.position + Vector3.up;
-            Vector3 toTarget = (target.position + Vector3.up - origin);
-            float distance = toTarget.magnitude;
-
-            if (distance > DetectionDistance)
-                return false;
-
-            // Normalizing direction and computing angle using dot product
-            Vector3 forward = enemyView.transform.forward;
-            toTarget.Normalize();
-            float dot = Vector3.Dot(forward, toTarget);
-            float angleToTarget = Mathf.Acos(dot) * Mathf.Rad2Deg;
-
-            // Returning if player is outside detection angle
-            if (angleToTarget > detectionAngleHalf)
-                return false;
-
-            if (!Physics.Raycast(origin, toTarget, out RaycastHit hit, DetectionDistance, layerMask.value))
-                return false;
-
-            return hit.transform == target;
-        }
         public float GetDistanceFromPlayer()
         {
             float distance = Vector3.Distance(enemyView.transform.position, GetPlayerPosition());

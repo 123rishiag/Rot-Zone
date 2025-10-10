@@ -28,7 +28,7 @@ namespace Game.Enemy
         }
         public void Update()
         {
-            if (Owner.IsPlayerDetected() || Owner.GetDistanceFromPlayer() <= Owner.GetModel().DetectionMinDistance)
+            if (Owner.GetDistanceFromPlayer() <= Owner.GetModel().DetectionMinDistance)
             {
                 stateMachine.ChangeState(EnemyState.DETECT);
             }

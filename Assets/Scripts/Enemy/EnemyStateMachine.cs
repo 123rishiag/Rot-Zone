@@ -9,7 +9,6 @@ namespace Game.Enemy
         DETECT,
         CHASE,
         ATTACK,
-        HURT,
         STUN,
         DEAD,
     }
@@ -25,7 +24,6 @@ namespace Game.Enemy
             AddState(EnemyState.DETECT, new EnemyDetectState(this));
             AddState(EnemyState.CHASE, new EnemyChaseState(this));
             AddState(EnemyState.ATTACK, new EnemyAttackState(this));
-            AddState(EnemyState.HURT, new EnemyHurtState(this));
             AddState(EnemyState.STUN, new EnemyStunState(this));
             AddState(EnemyState.DEAD, new EnemyDeadState(this));
         }

@@ -23,13 +23,10 @@ MonoBehaviour:
     chaseSpeed: 5
     attackForce: 3
     attackDamage: 1
-    detectionMinDistance: 1
-    detectionMaxDistance: 10
-    detectionAngleDegree: 120
+    detectionMinDistance: 300
+    detectionMaxDistance: 500
     detectionMinScreamDistance: 5
-    detectionIncreaseFactor: 2
     stopDistance: 1
-    isGizmosEnabled: 1
   - enemyType: 1
     enemyPrefab: {fileID: 8397725917302991160, guid: fbdc5a250866cc542aa85f77b78f1161, type: 3}
     maxHealth: 20
@@ -40,10 +37,7 @@ MonoBehaviour:
     chaseSpeed: 10
     attackForce: 5
     attackDamage: 2
-    detectionMinDistance: 1
-    detectionMaxDistance: 5
-    detectionAngleDegree: 240
+    detectionMinDistance: 300
+    detectionMaxDistance: 500
     detectionMinScreamDistance: 2
-    detectionIncreaseFactor: 3
     stopDistance: 1
-    isGizmosEnabled: 1

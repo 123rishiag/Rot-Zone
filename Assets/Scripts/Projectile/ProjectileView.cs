@@ -37,10 +37,8 @@ namespace Game.Projectile
                 EnemyView enemyView = _collision.collider.GetComponentInParent<EnemyView>();
                 if (enemyView != null)
                 {
-                    Vector3 impactForce = projectileRigidBody.linearVelocity.normalized *
-                                                  projectileController.GetModel().ProjectileImpactForce;
                     int damage = projectileController.GetModel().ProjectileDamage;
-                    enemyView.HitImpactCoroutine(impactForce, damage, _collision);
+                    enemyView.HitImpact(damage);
                     projectileController.StartOnCollisionHideCoroutine();
                 }
             }
