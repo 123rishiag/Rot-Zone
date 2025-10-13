@@ -1,4 +1,5 @@
 using Game.Event;
+using Game.Misc;
 using Game.Player;
 using Game.Spawn;
 using Game.Wave;
@@ -18,6 +19,7 @@ namespace Game.Enemy
 
         // Private Services
         private EventService eventService;
+        private MiscService miscService;
         private PlayerService playerService;
 
         public EnemyService(EnemyConfig _enemyConfig, Transform _parentPanel)
@@ -27,14 +29,15 @@ namespace Game.Enemy
             enemyParentPanel = _parentPanel;
         }
 
-        public void Init(EventService _eventService, PlayerService _playerService)
+        public void Init(EventService _eventService, MiscService _miscService, PlayerService _playerService)
         {
             // Setting Services
             eventService = _eventService;
+            miscService = _miscService;
             playerService = _playerService;
 
             // Setting Elements
-            enemyPool = new EnemyPool(enemyConfig, enemyParentPanel, _eventService, _playerService);
+            enemyPool = new EnemyPool(enemyConfig, enemyParentPanel, _eventService, _miscService, _playerService);
         }
 
         public void Reset()

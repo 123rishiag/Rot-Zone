@@ -85,7 +85,7 @@ namespace Game.Main
             projectileService.Init(miscService);
             weaponService.Init(eventService, miscService, projectileService);
             playerService.Init(eventService, inputService, weaponService, cameraService);
-            enemyService.Init(eventService, playerService);
+            enemyService.Init(eventService, miscService, playerService);
             spawnService.Init(playerService, enemyService);
             cameraService.Init(inputService, playerService);
             waveService.Init(eventService, inputService, spawnService, playerService, enemyService);

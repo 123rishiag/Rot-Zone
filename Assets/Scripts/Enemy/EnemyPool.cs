@@ -1,4 +1,5 @@
 using Game.Event;
+using Game.Misc;
 using Game.Player;
 using Game.Utility;
 using System;
@@ -17,10 +18,11 @@ namespace Game.Enemy
 
         // Private Services
         private EventService eventService;
+        private MiscService miscService;
         private PlayerService playerService;
 
         public EnemyPool(EnemyConfig _enemyConfig, Transform _parentPanel,
-            EventService _eventService, PlayerService _playerService)
+            EventService _eventService, MiscService _miscService, PlayerService _playerService)
         {
             // Setting Variables
             enemyConfig = _enemyConfig;
@@ -28,6 +30,7 @@ namespace Game.Enemy
 
             // Setting Services
             eventService = _eventService;
+            miscService = _miscService;
             playerService = _playerService;
         }
 
@@ -55,11 +58,11 @@ namespace Game.Enemy
                 case EnemyType.SLOW_ZOMBIE:
                     return new SlowEnemyController(
                         GetEnemyData(enemyType), enemyParentPanel, spawnPosition,
-                        eventService, playerService);
+                        eventService, miscService, playerService);
                 case EnemyType.FAST_ZOMBIE:
                     return new FastEnemyController(
                         GetEnemyData(enemyType), enemyParentPanel, spawnPosition,
-                        eventService, playerService);
+                        eventService, miscService, playerService);
                 default:
                     Debug.LogError($"Unhandled EnemyType: {enemyType}");
                     return null;
