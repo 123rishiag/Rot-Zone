@@ -10,7 +10,7 @@ namespace Game.Projectile
         private ProjectileModel projectileModel;
         private ProjectileView projectileView;
 
-        private Coroutine currentProjectileCoroutine;
+        private IEnumerator currentProjectileRoutine;
         private WaitForSeconds enableGravityOnDistanceYield;
         private WaitForSeconds hideProjectileOnTimeYield;
         private WaitForSeconds hideProjectileOnCollisionYield;
@@ -43,9 +43,9 @@ namespace Game.Projectile
         public void Reset(ProjectileData _projectileData, Vector3 _firePosition, Vector3 _fireDirection)
         {
             // Stopping existing projectile Coroutine if running
-            if (currentProjectileCoroutine != null)
+            if (currentProjectileRoutine != null)
             {
-                miscService.GetController().StopManualCoroutine(currentProjectileCoroutine);
+                miscService.GetController().StopManualCoroutine(currentProjectileRoutine);
             }
 
             projectileModel.Reset(_projectileData);
@@ -73,19 +73,19 @@ namespace Game.Projectile
         private void StartOnDistanceEnableGravityCoroutine()
         {
             // Enabling Gravity After Distance Traveled
-            currentProjectileCoroutine = miscService.GetController().StartManualCoroutine(
+            currentProjectileRoutine = miscService.GetController().StartManualCoroutine(
                 OnDistanceEnableGravityCoroutine(enableGravityOnDistanceYield));
         }
         private void StartOnTimeHideCoroutine()
         {
             // Hiding Projectile After Gravity Enabled
-            currentProjectileCoroutine =
+            currentProjectileRoutine =
                 miscService.GetController().StartManualCoroutine(HideViewCoroutine(hideProjectileOnTimeYield));
         }
         public void StartOnCollisionHideCoroutine()
         {
             // Hiding Projectile After Collision
-            currentProjectileCoroutine =
+            currentProjectileRoutine =
                 miscService.GetController().StartManualCoroutine(HideViewCoroutine(hideProjectileOnCollisionYield));
         }
         private IEnumerator OnDistanceEnableGravityCoroutine(WaitForSeconds _waitForSeconds)

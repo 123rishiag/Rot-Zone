@@ -21,14 +21,19 @@ namespace Game.Misc
             slowDownRoutine = SlowDownRoutine();
         }
 
-        public Coroutine StartManualCoroutine(IEnumerator _coroutine) => miscView.StartCoroutine(_coroutine);
-        public void StopManualCoroutine(Coroutine _coroutineHandle) => miscView.StopCoroutine(_coroutineHandle);
+        public IEnumerator StartManualCoroutine(IEnumerator _routine)
+        {
+            miscView.StartCoroutine(_routine);
+            return _routine;
+        }
+
+        public void StopManualCoroutine(IEnumerator _routineHandle) => miscView.StopCoroutine(_routineHandle);
 
         public void StartSlowDownCoroutine(float _seconds)
         {
             slowDownWaitForSecondsRealtimeYield = new WaitForSecondsRealtime(_seconds);
             slowDownRoutine = SlowDownRoutine();
-            miscView.StopCoroutine(slowDownRoutine);
+            StopManualCoroutine(slowDownRoutine);
             StartManualCoroutine(slowDownRoutine);
         }
 
