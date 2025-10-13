@@ -26,6 +26,8 @@ namespace Game.Enemy
             DetectionMaxDistance = _enemyData.detectionMaxDistance;
             DetectionMinScreamDistance = _enemyData.detectionMinScreamDistance;
             StopDistance = _enemyData.stopDistance;
+
+            DeathSlowDownTimeInSeconds = _enemyData.deathSlowDownTimeInSeconds;
         }
 
         public EnemyType EnemyType { get; private set; }
@@ -45,5 +47,7 @@ namespace Game.Enemy
         public float DetectionMaxDistance { get; private set; }
         public float DetectionMinScreamDistance { get; private set; }
         public float StopDistance { get; private set; }
+
+        public float DeathSlowDownTimeInSeconds { get; private set; }
     }
 }

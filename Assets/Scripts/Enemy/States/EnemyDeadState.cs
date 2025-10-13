@@ -22,6 +22,9 @@ namespace Game.Enemy
 
             Owner.GetView().GetAnimator().Play(Owner.GetAnimationController().deadHash);
             Owner.EventService.OnPlaySoundEffectEvent.Invoke(SoundType.ENEMY_DEAD);
+
+
+            Owner.MiscService.GetController().StartSlowDownCoroutine(Owner.GetModel().DeathSlowDownTimeInSeconds);
         }
 
         public void Update()

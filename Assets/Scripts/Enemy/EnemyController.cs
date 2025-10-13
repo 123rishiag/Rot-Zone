@@ -1,4 +1,5 @@
 using Game.Event;
+using Game.Misc;
 using Game.Player;
 using UnityEngine;
 
@@ -17,10 +18,11 @@ namespace Game.Enemy
 
         // Private Services
         public EventService EventService { get; private set; }
+        public MiscService MiscService { get; private set; }
         private PlayerService playerService;
 
         public EnemyController(EnemyData _enemyData, Transform _parentPanel, Vector3 _spawnPosition,
-            EventService _eventService, PlayerService _playerService)
+            EventService _eventService, MiscService _miscService, PlayerService _playerService)
         {
             // Setting Variables
             enemyModel = new EnemyModel(_enemyData);
@@ -30,6 +32,7 @@ namespace Game.Enemy
 
             // Setting Services
             EventService = _eventService;
+            MiscService = _miscService;
             playerService = _playerService;
 
             // Setting Elements

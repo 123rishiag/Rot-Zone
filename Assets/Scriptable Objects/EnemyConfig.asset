@@ -27,6 +27,7 @@ MonoBehaviour:
     detectionMaxDistance: 500
     detectionMinScreamDistance: 5
     stopDistance: 1
+    deathSlowDownTimeInSeconds: 2
   - enemyType: 1
     enemyPrefab: {fileID: 8397725917302991160, guid: fbdc5a250866cc542aa85f77b78f1161, type: 3}
     maxHealth: 20
@@ -41,3 +42,4 @@ MonoBehaviour:
     detectionMaxDistance: 500
     detectionMinScreamDistance: 2
     stopDistance: 1
+    deathSlowDownTimeInSeconds: 3

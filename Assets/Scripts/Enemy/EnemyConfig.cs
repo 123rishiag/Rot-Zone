@@ -35,5 +35,8 @@ namespace Game.Enemy
         public float detectionMaxDistance = 10f;
         public float detectionMinScreamDistance = 5f;
         public float stopDistance = 1f;
+
+        [Header("Death Settings")]
+        public float deathSlowDownTimeInSeconds = 2f;
     }
 }
