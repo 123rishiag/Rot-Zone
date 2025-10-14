@@ -219,7 +219,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.3, y: 1.3, z: 1.3}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 4942700923986213928}
@@ -284,8 +284,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c79dbed09ac274e4b9c17deecb8ad81b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  normalConeMaterial: {fileID: 2100000, guid: dc09d3b7ac9fc0343bc7861be0b19216, type: 2}
-  detectedConeMaterial: {fileID: 2100000, guid: 29c5dd2021d50de46b938dedf388a981, type: 2}
 --- !u!1 &976479748713330027
 GameObject:
   m_ObjectHideFlags: 0
