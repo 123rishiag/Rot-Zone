@@ -34,6 +34,7 @@ namespace Game.Main
                 // Misc Service
                 // Input Service
                 // Sound Service
+                // VFX Service
                 // UI Service
                 Owner.GetProjectileService().Update();
                 // Weapon Service
@@ -52,6 +53,7 @@ namespace Game.Main
                 // Misc Service
                 // Input Service
                 // Sound Service
+                // VFX Service
                 // UI Service
                 // Projectile Service
                 // Weapon Service
@@ -70,6 +72,7 @@ namespace Game.Main
                 // Misc Service
                 // Input Service
                 // Sound Service
+                // VFX Service
                 // UI Service
                 // Projectile Service
                 Owner.GetWeaponService().LateUpdate();
