@@ -7,6 +7,7 @@ using Game.Projectile;
 using Game.Sound;
 using Game.Spawn;
 using Game.UI;
+using Game.VFX;
 using Game.Vision;
 using Game.Wave;
 using Game.Weapon;
@@ -25,6 +26,7 @@ namespace Game.Main
         private MiscService miscService;
         private InputService inputService;
         private SoundService soundService;
+        private VFXService vfxService;
         private UIService uiService;
         private ProjectileService projectileService;
         private WeaponService weaponService;
@@ -65,6 +67,7 @@ namespace Game.Main
             miscService = new MiscService(gameService.miscPrefab);
             inputService = new InputService();
             soundService = new SoundService(gameService.soundConfig, gameService.bgmSource, gameService.sfxSource);
+            vfxService = new VFXService();
             uiService = new UIService(gameService.uiCanvas, this);
             projectileService = new ProjectileService(gameService.projectileConfig, gameService.projectilePoolPanel);
             weaponService = new WeaponService(gameService.weaponConfig);
@@ -81,6 +84,7 @@ namespace Game.Main
             // Misc Service
             inputService.Init();
             soundService.Init(eventService);
+            // VFX Service
             uiService.Init(eventService);
             projectileService.Init(miscService);
             weaponService.Init(eventService, miscService, projectileService);
@@ -101,6 +105,7 @@ namespace Game.Main
             // Misc Service
             // Input Service
             soundService.Reset();
+            // VFX Service
             uiService.Reset();
             projectileService.Reset();
             // Weapon Service
@@ -116,6 +121,7 @@ namespace Game.Main
             // Misc Service
             inputService.Destroy();
             // Sound Service
+            // VFX Service
             uiService.Destroy();
             // Projectile Service
             // Weapon Service
@@ -166,6 +172,7 @@ namespace Game.Main
         public MiscService GetMiscService() => miscService;
         public InputService GetInputService() => inputService;
         public SoundService GetSoundService() => soundService;
+        public VFXService GetVFXService() => vfxService;
         public UIService GetUIService() => uiService;
         public ProjectileService GetProjectileService() => projectileService;
         public WeaponService GetWeaponService() => weaponService;
